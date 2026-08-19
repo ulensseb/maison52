@@ -70,8 +70,8 @@
   #stage{position:fixed;inset:0;z-index:1;pointer-events:none;transform:translateY(0);transition:transform .55s ease;}
   #stage canvas{display:block;}
   /* Sur le hero, la scène 3D est décalée vers le bas pour ne plus chevaucher le texte */
-  body:not(.scrolled) #stage{transform:translateY(18svh);}
-  @supports not (height:1svh){body:not(.scrolled) #stage{transform:translateY(18vh);}}
+  body:not(.scrolled) #stage{transform:translateY(25svh);}
+  @supports not (height:1svh){body:not(.scrolled) #stage{transform:translateY(25vh);}}
   #stage{transition:transform .9s cubic-bezier(.4,0,.2,1);}
   /* Bloc solide derrière le texte du hero (ceinture + bretelle si Three.js pas encore chargé) */
   #hero .hero-text{background:var(--craie);padding:18px 24px 40px;margin:-18px -6vw 0;position:relative;z-index:10;}
