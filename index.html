@@ -583,7 +583,7 @@
   var COL = {
     wall: 0xEFE8D8, wallEdge: 0x1F1E1A,
     roof: 0x6B6E72, ground: 0xE9E3D3,
-    frame: 0x5A4E3E, paneOff: 0x2C282A, paneOn: 0xE6B160,
+    frame: 0x1F1E1A, paneOff: 0x1F1E1A, paneOn: 0xE6B160,
     door: 0x1F1E1A, laiton: 0x9B7D42
   };
 
@@ -598,7 +598,7 @@
 
   /* corps */
   var W = 9, H = 9, D = 7;
-  var matWall = new THREE.MeshLambertMaterial({color: 0xF2ECDC});
+  var matWall = new THREE.MeshLambertMaterial({color: 0xEFE8D8});
   var body = new THREE.Mesh(new THREE.BoxGeometry(W, H, D), matWall);
   body.position.y = 0;
   body.castShadow = true; body.receiveShadow = true;
@@ -606,23 +606,23 @@
   house.add(body);
 
   /* soubassement (pierre bleue) */
-  var plinth = new THREE.Mesh(new THREE.BoxGeometry(W + 0.24, 1.1, D + 0.24), new THREE.MeshLambertMaterial({color: 0x746D5E}));
+  var plinth = new THREE.Mesh(new THREE.BoxGeometry(W + 0.24, 1.1, D + 0.24), new THREE.MeshLambertMaterial({color: 0x6B6E72}));
   plinth.position.y = -H/2 + 0.55;
   edged(plinth, 0x1F1E1A, 0.5);
   house.add(plinth);
 
   /* corniche sous toiture */
-  var cornice = new THREE.Mesh(new THREE.BoxGeometry(W + 0.7, 0.45, D + 0.7), new THREE.MeshLambertMaterial({color: 0xE9E1CC}));
+  var cornice = new THREE.Mesh(new THREE.BoxGeometry(W + 0.7, 0.45, D + 0.7), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
   cornice.position.y = H/2 + 0.22;
   cornice.castShadow = true;
   edged(cornice, COL.laiton, 0.55);
   house.add(cornice);
-  var cornice2 = new THREE.Mesh(new THREE.BoxGeometry(W + 0.45, 0.18, D + 0.45), new THREE.MeshLambertMaterial({color: 0xDFD6BE}));
+  var cornice2 = new THREE.Mesh(new THREE.BoxGeometry(W + 0.45, 0.18, D + 0.45), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
   cornice2.position.y = H/2 - 0.08;
   house.add(cornice2);
 
   /* bandeau entre étages */
-  var stringcourse = new THREE.Mesh(new THREE.BoxGeometry(W + 0.16, 0.22, D + 0.16), new THREE.MeshLambertMaterial({color: 0xE5DCC6}));
+  var stringcourse = new THREE.Mesh(new THREE.BoxGeometry(W + 0.16, 0.22, D + 0.16), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
   stringcourse.position.y = 0.15;
   house.add(stringcourse);
 
@@ -662,11 +662,11 @@
 
   /* cheminées jumelles */
   [-2.9, 2.9].forEach(function(cx){
-    var chim = new THREE.Mesh(new THREE.BoxGeometry(0.85, 2.4, 0.85), new THREE.MeshLambertMaterial({color: 0x8B7F6E}));
+    var chim = new THREE.Mesh(new THREE.BoxGeometry(0.85, 2.4, 0.85), new THREE.MeshLambertMaterial({color: 0x6B6E72}));
     chim.position.set(cx, H/2 + 2.1, -0.9);
     edged(chim, COL.laiton, 0.4);
     house.add(chim);
-    var cap = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.22, 1.05), new THREE.MeshLambertMaterial({color: 0xE9E1CC}));
+    var cap = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.22, 1.05), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
     cap.position.set(cx, H/2 + 3.32, -0.9);
     house.add(cap);
   });
@@ -677,7 +677,7 @@
   ground.position.y = -H/2 - 0.01;
   ground.receiveShadow = true;
   scene.add(ground);
-  var path = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.05, 7), new THREE.MeshLambertMaterial({color: 0xEAE3D2}));
+  var path = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.05, 7), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
   path.position.set(0, -H/2 + 0.03, D/2 + 3.5);
   house.add(path);
   function bush(x, z, s, c){
@@ -722,13 +722,13 @@
     g.position.set(t.pos[0], t.pos[1], t.pos[2]);
     g.rotation.y = t.rotY;
     /* encadrement pierre claire */
-    var surround = new THREE.Mesh(new THREE.PlaneGeometry(1.95, 2.9), new THREE.MeshLambertMaterial({color: 0xE9E1CC}));
+    var surround = new THREE.Mesh(new THREE.PlaneGeometry(1.95, 2.9), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
     surround.position.z = -0.01;
     /* linteau */
-    var lintel = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.22, 0.16), new THREE.MeshLambertMaterial({color: 0xDFD6BE}));
+    var lintel = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.22, 0.16), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
     lintel.position.set(0, 1.5, 0.02);
     /* appui de fenêtre */
-    var sill = new THREE.Mesh(new THREE.BoxGeometry(1.95, 0.16, 0.3), new THREE.MeshLambertMaterial({color: 0xDFD6BE}));
+    var sill = new THREE.Mesh(new THREE.BoxGeometry(1.95, 0.16, 0.3), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
     sill.position.set(0, -1.32, 0.08);
     edged(sill, COL.wallEdge, 0.35);
     var frame = new THREE.Mesh(new THREE.PlaneGeometry(1.55, 2.5), new THREE.MeshLambertMaterial({color: COL.frame}));
@@ -753,7 +753,7 @@
   var doorG = new THREE.Group();
   doorG.position.set(0, -H/2 + 1.75, D/2 + 0.06);
   /* encadrement pierre + imposte cintrée */
-  var doorSurround = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 4.0), new THREE.MeshLambertMaterial({color: 0xE9E1CC}));
+  var doorSurround = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 4.0), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
   doorSurround.position.set(0, 0.28, -0.01);
   var fanMat = new THREE.MeshBasicMaterial({color: 0x1B2B22});
   var fan = new THREE.Mesh(new THREE.CircleGeometry(0.85, 24, 0, Math.PI), fanMat);
@@ -781,7 +781,7 @@
   windows['porte'] = {group: doorG, mat: fanMat, lit: 0, isDoor: true, barMat: knobMat};
   /* perron */
   [[2.6, 0.22, 1.4, 0.11], [2.2, 0.22, 1.0, 0.33]].forEach(function(s){
-    var step = new THREE.Mesh(new THREE.BoxGeometry(s[0], s[1], s[2]), new THREE.MeshLambertMaterial({color: 0xDDD3BC}));
+    var step = new THREE.Mesh(new THREE.BoxGeometry(s[0], s[1], s[2]), new THREE.MeshLambertMaterial({color: 0xEFE8D8}));
     step.position.set(0, -H/2 + s[3], D/2 + s[2]/2);
     edged(step, COL.wallEdge, 0.3);
     house.add(step);
