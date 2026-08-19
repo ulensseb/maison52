@@ -69,6 +69,9 @@
   /* ---------- expérience 3D ---------- */
   #stage{position:fixed;inset:0;z-index:1;pointer-events:none;}
   #stage canvas{display:block;}
+  /* Cache la moitié haute de la scène 3D à l'ouverture pour que la maison soit sous le texte */
+  #stage-mask{position:fixed;top:0;left:0;right:0;height:52svh;background:var(--craie);z-index:2;pointer-events:none;transition:opacity .55s ease;}
+  body.scrolled #stage-mask{opacity:0;}
   .no3d #stage{display:none;}
   #experience{position:relative;z-index:2;}
   .panel{min-height:100svh;display:flex;align-items:center;padding:0 6vw;position:relative;}
@@ -242,6 +245,7 @@
 </nav>
 
 <div id="stage" aria-hidden="true"></div>
+<div id="stage-mask" aria-hidden="true"></div>
 
 <div id="fullpages" aria-hidden="true">
   <div class="fullpage" data-stop="2">
