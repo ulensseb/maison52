@@ -11,7 +11,7 @@
 <meta property="og:description" content="Six chambres. Une ambition. Une maison de maître de 310 m² pour jeunes entrepreneurs, près de Louvain-la-Neuve.">
 <meta property="og:url" content="https://maison52.be/">
 <meta property="og:locale" content="fr_BE">
-<meta name="theme-color" content="#F5F1E8">
+<meta name="theme-color" content="#0E0D0B">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -33,17 +33,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* palette premium noire : fond profond, laiton lumineux, texte crème */
     --sapin:#22382D;
     --sapin-fonce:#182A21;
     --sapin-nuit:#0F1D16;
-    --craie:#F5F1E8;
-    --craie-2:#EDE8DB;
-    --lin:#D9CBB4;
-    --laiton:#B08D4F;
-    --laiton-clair:#C9A96A;
-    --encre:#23231F;
-    --gris:#6E6A60;
-    --blanc:#FDFBF6;
+    --craie:#0E0D0B;
+    --craie-2:#17150F;
+    --lin:#2A251C;
+    --laiton:#C9A96A;
+    --laiton-clair:#E6C88A;
+    --encre:#F1EBDD;
+    --gris:#8A857A;
+    --blanc:#1A1712;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;scroll-snap-type:y proximity;}
@@ -56,7 +57,7 @@
 
   /* ---------- nav ---------- */
   nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:18px 5vw;transition:background .35s ease, box-shadow .35s ease;}
-  nav.scrolled{background:rgba(245,241,232,0.95);backdrop-filter:blur(8px);box-shadow:0 2px 18px rgba(35,35,31,0.08);}
+  nav.scrolled{background:rgba(14,13,11,0.92);backdrop-filter:blur(10px);box-shadow:0 2px 20px rgba(0,0,0,0.35);}
   .nav-brand{font-family:'Schibsted Grotesk',sans-serif;font-size:22px;font-weight:600;color:var(--encre);letter-spacing:0.04em;text-decoration:none;display:flex;align-items:center;gap:10px;transition:color .3s;}
   .nav-brand .mini52{width:34px;height:34px;border:1.2px solid var(--laiton);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:15px;color:var(--laiton);}
   .nav-links{display:flex;gap:26px;align-items:center;}
@@ -75,7 +76,7 @@
   #stage{transition:transform .9s cubic-bezier(.4,0,.2,1);}
   /* Bloc solide derrière le texte du hero (ceinture + bretelle si Three.js pas encore chargé) */
   #hero .hero-text{background:var(--craie);padding:18px 24px 40px;margin:-18px -6vw 0;position:relative;z-index:10;}
-  #hero .hero-text::after{content:"";position:absolute;left:0;right:0;top:100%;height:60px;background:linear-gradient(to bottom,var(--craie),rgba(245,241,232,0));pointer-events:none;}
+  #hero .hero-text::after{content:"";position:absolute;left:0;right:0;top:100%;height:60px;background:linear-gradient(to bottom,var(--craie),rgba(14,13,11,0));pointer-events:none;}
   .no3d #stage{display:none;}
   #experience{position:relative;z-index:2;}
   .panel{min-height:100svh;display:flex;align-items:center;padding:0 6vw;position:relative;}
@@ -97,7 +98,7 @@
   #hero h1 .line:nth-child(1) > span{animation-delay:.3s;}
   #hero h1 .line:nth-child(2) > span{animation-delay:.45s;}
   @keyframes riseup{to{transform:translateY(0)}}
-  #hero .baseline{font-family:'Schibsted Grotesk',sans-serif;font-style:italic;font-size:clamp(17px,2vw,22px);margin-top:14px;color:#5A564A;opacity:0;animation:fadeup 1s .9s ease forwards;display:inline-block;background:rgba(245,241,232,0.92);padding:6px 22px;border-radius:30px;}
+  #hero .baseline{font-family:'Schibsted Grotesk',sans-serif;font-style:italic;font-size:clamp(17px,2vw,22px);margin-top:14px;color:var(--gris);opacity:0;animation:fadeup 1s .9s ease forwards;display:inline-block;background:rgba(255,255,255,0.04);padding:6px 22px;border-radius:30px;border:1px solid rgba(201,169,106,0.18);}
   #hero .over{font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:var(--laiton);margin-bottom:26px;opacity:0;animation:fadeup 1s .15s ease forwards;}
   @keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .scroll-hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--gris);animation:hint 2.6s ease-in-out infinite;}
