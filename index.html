@@ -41,6 +41,7 @@
   --line-hi:rgba(240,235,224,0.28);
   --laiton:#C9A96A;
   --laiton-dim:rgba(201,169,106,0.55);
+  --craie:#0A0A0A;
   --display:'Bricolage Grotesque','Helvetica Neue',Helvetica,Arial,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
 }
@@ -99,7 +100,7 @@ ul{list-style:none}
 
 /* HERO */
 #hero{min-height:100vh;padding:clamp(120px,15vh,180px) clamp(24px,4vw,64px) clamp(80px,10vh,120px);align-items:flex-end}
-.hero-text{position:relative;max-width:min(1100px,92vw);padding:clamp(20px,3vw,36px);background:rgba(10,10,10,.72);backdrop-filter:blur(4px);border:1px solid var(--line);z-index:6}
+.hero-text{position:relative;max-width:min(1100px,92vw);margin:clamp(16px,3vw,32px) auto;padding:clamp(28px,4.5vw,52px);background:var(--craie);border:1px solid var(--line);z-index:20;isolation:isolate}
 .hero-text .over{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--laiton);margin-bottom:clamp(20px,3vh,32px);display:flex;align-items:center;gap:14px}
 .hero-text .over::before{content:"";display:inline-block;width:38px;height:1px;background:var(--laiton)}
 .hero-text h1{font-family:var(--display);font-weight:700;font-size:clamp(48px,9.4vw,180px);line-height:.92;letter-spacing:-.04em;margin:0;font-variation-settings:"opsz" 96}
@@ -620,31 +621,51 @@ footer{border-top:1px solid var(--line);padding:clamp(60px,8vh,90px) clamp(24px,
 (function(){
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Preloader counter
+  // Preloader counter — hard 3s ceiling, guaranteed reveal
   var preCount = document.getElementById('preCount');
   var preFill  = document.getElementById('preFill');
   var pre      = document.getElementById('preloader');
-  var progress = 0, ready = false;
+  var CEIL_MS  = 3000;
+  var start    = (window.performance && performance.now) ? performance.now() : Date.now();
+  var revealed = false;
+  var interval = null;
   function pad(n){ n = n|0; return (n<10?'00':n<100?'0':'') + n; }
-  var interval = setInterval(function(){
-    var target = ready ? 100 : Math.min(94, progress + (Math.random()*3 + 1.4));
-    progress += (target - progress) * 0.18;
-    var v = Math.min(100, Math.round(progress));
+  function paint(v){
+    v = Math.max(0, Math.min(100, v|0));
     if(preCount) preCount.textContent = pad(v);
     if(preFill)  preFill.style.right = (100 - v) + '%';
-    if(ready && v >= 100){
-      clearInterval(interval);
-      setTimeout(function(){
-        if(pre) pre.classList.add('done');
-        document.body.classList.add('ready');
-      }, 260);
+  }
+  function reveal(){
+    if(revealed) return;
+    revealed = true;
+    if(interval){ clearInterval(interval); interval = null; }
+    paint(100);
+    document.body.classList.add('ready');
+    if(pre){
+      pre.classList.add('done');
+      pre.style.opacity = '0';
+      pre.style.pointerEvents = 'none';
+      setTimeout(function(){ if(pre) pre.style.display = 'none'; }, 900);
     }
+  }
+  // Exposed hook so the 3D script can signal genuine readiness
+  window.__maison52Reveal = reveal;
+  function now(){ return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  interval = setInterval(function(){
+    var elapsed = now() - start;
+    var frac = Math.min(1, elapsed / CEIL_MS);
+    // ease-out for a natural feel while still hitting 100 at the ceiling
+    var eased = 1 - Math.pow(1 - frac, 2);
+    var v = Math.round(eased * 100);
+    if(window.__threeReady) v = 100;
+    paint(v);
+    if(v >= 100 || elapsed >= CEIL_MS){ reveal(); }
   }, 40);
-  window.addEventListener('load', function(){
-    setTimeout(function(){ ready = true; }, 500);
-  });
-  // failsafe
-  setTimeout(function(){ ready = true; }, 4200);
+  // Belt & suspenders: absolute failsafes in case setInterval is throttled
+  setTimeout(reveal, CEIL_MS + 200);
+  setTimeout(reveal, 5000);
+  window.addEventListener('load', function(){ setTimeout(reveal, 100); });
+  window.addEventListener('error', function(){ setTimeout(reveal, 50); });
 
   // Cursor
   var cursor = document.getElementById('cursor');
@@ -1133,6 +1154,7 @@ footer{border-top:1px solid var(--line);padding:clamp(60px,8vh,90px) clamp(24px,
     });
 
     renderer.render(scene, camera);
+    if(!window.__threeReady){ window.__threeReady = true; if(window.__maison52Reveal) window.__maison52Reveal(); }
     requestAnimationFrame(update);
   }
   var gFade = 1;
