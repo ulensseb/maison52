@@ -88,6 +88,8 @@ a{color:inherit;text-decoration:none}
 #stage{position:fixed;inset:0;z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
 #veil{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;background:var(--fond);will-change:opacity}
+#progress{position:fixed;right:8px;top:18vh;height:64vh;width:2px;background:var(--hair);z-index:45;border-radius:2px;pointer-events:none}
+#progress i{position:absolute;left:0;top:0;width:100%;height:12%;background:var(--ambre);border-radius:2px;will-change:transform}
 #grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
@@ -135,6 +137,8 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .stat .n{font-family:'Newsreader',serif;font-weight:500;font-size:4.6vw;line-height:1}
 .stat .n small{font-size:.42em}
 .stat .l{margin-top:1.2em;color:var(--muted)}
+.stat .k{font-family:'Newsreader',serif;font-weight:500;font-size:2vw}
+.stat .l2{margin-top:.9em;font-size:14px;line-height:1.65;color:var(--muted)}
 
 .blocs{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--hair);border-left:1px solid var(--hair)}
 .bloc{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:3vw;min-height:11vw}
@@ -143,6 +147,11 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .bloc p{font-size:14px;line-height:1.65;color:var(--muted)}
 .factstrip{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1em;padding-top:4vh;margin-top:6vh;border-top:1px solid var(--hair);color:var(--muted)}
 
+.vielist{border-top:1px solid var(--hair)}
+.vielist li{list-style:none;display:grid;grid-template-columns:repeat(12,1fr);gap:2.6vw;padding:4vh 0;border-bottom:1px solid var(--hair);align-items:baseline}
+.vielist .idx{grid-column:1/2;font-family:'Oswald',sans-serif;color:var(--ambre);font-size:10.5px;letter-spacing:.18em}
+.vielist h4{grid-column:2/6;font-family:'Newsreader',serif;font-weight:500;font-size:2vw}
+.vielist p{grid-column:7/12;font-size:14.5px;line-height:1.7;color:var(--muted)}
 .uplist{border-top:1px solid var(--hair)}
 .uplist li{list-style:none;display:grid;grid-template-columns:repeat(12,1fr);gap:2.6vw;padding:3.6vh 0;border-bottom:1px solid var(--hair);align-items:baseline}
 .uplist .idx{grid-column:1/2;font-family:'Oswald',sans-serif;color:var(--ambre);font-size:10.5px;letter-spacing:.18em}
@@ -160,7 +169,8 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2vw}
 .ph{aspect-ratio:4/3;border:1px solid var(--hair);display:flex;align-items:flex-end;padding:1.2vw;position:relative;background:var(--fond-2)}
 .ph .caps{color:var(--muted)}
-.photos-note{margin-top:4vh;color:var(--muted);font-size:13px}
+.photos-soon{font-size:3.2vw;line-height:1.2;margin-top:2vh}
+.photos-note{margin-top:3vh;color:var(--muted);font-size:13px}
 
 /* statement nuit : texte seul sur la maison illuminée */
 #night-statement{position:fixed;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;
@@ -170,7 +180,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 #night-statement .label{color:rgba(242,230,214,.55);margin-bottom:2.5vh}
 #night-statement h2{font-size:6vw;line-height:1.05}
 
-/* candidater : section classique sur fond clair */
+/* rejoindre : section classique sur fond clair */
 #s-candidater{position:relative;z-index:20;background:var(--fond);border-top:1px solid var(--hair);padding:15vh var(--pad) 13vh}
 #s-candidater .label{color:var(--muted);margin-bottom:4.5vh}
 #s-candidater .label .amber{color:var(--ambre)}
@@ -217,9 +227,10 @@ footer .muted{color:var(--muted)}
 footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted);max-width:90ch}
 
 @media(max-width:640px){
-  #stage{clip-path:inset(30% 6% 18% 6%)}
+  #stage{clip-path:inset(30% 2% 18% 2%)}
   #hero-ui h1{font-size:15vw}
   #hero-ui .badge{bottom:13vh}
+  #hero-ui .count{display:none}
   nav .brand .muted{display:none}
   #corners{display:none}
   .fullpage{padding:10vh 6vw 8vh}
@@ -244,6 +255,13 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
   .blocs{grid-template-columns:1fr}
   .bloc h4{font-size:5.8vw}
   .uplist .txt{grid-column:2/13;font-size:4.9vw}
+  .vielist li{grid-template-columns:1fr;gap:1.2vh;padding:3.2vh 0}
+  .vielist .idx{grid-column:auto}
+  .vielist h4{grid-column:auto;font-size:6vw}
+  .vielist p{grid-column:auto;font-size:14px}
+  .stats.quali{grid-template-columns:1fr;gap:4vh}
+  .stat .k{font-size:6.5vw}
+  .photos-soon{font-size:8vw}
   .faq-q h5{font-size:4.6vw}
   .faq-q .ind{font-size:4.6vw}
   .photos{grid-template-columns:1fr 1fr}
@@ -262,6 +280,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 
 <div id="stage"></div>
 <div id="veil"></div>
+<div id="progress"><i></i></div>
 <div id="grain"></div>
 
 <nav id="nav">
@@ -273,7 +292,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
     <a href="#" data-stop="2">La maison</a>
     <a href="#" data-stop="4">Pour qui</a>
     <a href="#" data-stop="5">Questions</a>
-    <a class="cta" href="#s-candidater">Candidater</a>
+    <a class="cta" href="#s-candidater">Rejoindre</a>
   </div>
 </nav>
 
@@ -312,12 +331,17 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 <section class="fullpage" id="fp-2">
   <div class="label caps"><span class="amber">02</span> · La vie au 52</div>
   <h3 class="serif">Tout pour vivre et travailler</h3>
-  <div class="blocs">
-    <div class="bloc"><div class="num">01</div><h4>Ta chambre</h4><p>Grande, lumineuse, non meublée : tu l'aménages comme tu veux. Les premiers arrivés choisissent.</p></div>
-    <div class="bloc"><div class="num">02</div><h4>Le bureau</h4><p>Un grand espace de travail partagé, au calme, pour avancer sur ton projet de chez toi.</p></div>
-    <div class="bloc"><div class="num">03</div><h4>La grande table</h4><p>Conseils, contacts, motivation : ce qui se dit à table fait avancer ton business.</p></div>
-    <div class="bloc"><div class="num">04</div><h4>Le groupe</h4><p>Vivre avec des entrepreneurs te pousse à te dépasser. L'isolement en moins, l'émulation en plus.</p></div>
+  <div class="grid">
+    <div class="body-right">
+      <strong>Ta chambre te sert aussi de bureau,</strong> la grande table sert de coworking,
+      et le groupe fait le reste.
+    </div>
   </div>
+  <ul class="vielist">
+    <li><span class="idx">01</span><h4 class="serif">Ta chambre</h4><p>Grande et lumineuse : ton espace de vie et de travail à la fois.</p></li>
+    <li><span class="idx">02</span><h4 class="serif">La table de coworking</h4><p>Conseils, contacts, motivation : ce qui se dit à la grande table fait avancer ton business.</p></li>
+    <li><span class="idx">03</span><h4 class="serif">Le groupe</h4><p>Vivre avec des entrepreneurs te pousse à te dépasser. L'isolement en moins, l'émulation en plus.</p></li>
+  </ul>
   <div class="factstrip caps">
     <span>310 m²</span><span>6 chambres</span><span>Jardin de 4 ares</span>
   </div>
@@ -326,12 +350,18 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 <section class="fullpage" id="fp-3">
   <div class="label caps"><span class="amber">03</span> · Pour qui</div>
   <h3 class="serif">Maison 52 est faite pour toi si...</h3>
-  <ul class="uplist">
-    <li><span class="idx">01</span><span class="txt">Tu veux rencontrer des personnes qui te tirent vers le haut.</span></li>
-    <li><span class="idx">02</span><span class="txt">Tu construis une boîte, une activité d'indépendant ou un projet sérieux.</span></li>
-    <li><span class="idx">03</span><span class="txt">Tu veux progresser plus vite grâce à l'énergie et aux conseils du groupe.</span></li>
-    <li><span class="idx">04</span><span class="txt">Tu veux un vrai chez-toi, à dix minutes de Louvain-la-Neuve.</span></li>
-  </ul>
+  <div class="grid">
+    <div class="body-right">
+      <strong>Tout le monde peut rejoindre l'aventure :</strong> vouloir construire
+      quelque chose suffit.
+    </div>
+  </div>
+  <div class="stats quali">
+    <div class="stat"><div class="k serif">Un entourage</div><div class="l2">Des personnes qui te tirent vers le haut.</div></div>
+    <div class="stat"><div class="k serif">Un projet</div><div class="l2">Une boîte, une activité d'indépendant ou une idée sérieuse.</div></div>
+    <div class="stat"><div class="k serif">De l'énergie</div><div class="l2">Progresser plus vite grâce aux conseils du groupe.</div></div>
+    <div class="stat"><div class="k serif">Un chez-toi</div><div class="l2">À dix minutes de Louvain-la-Neuve.</div></div>
+  </div>
 </section>
 
 <section class="fullpage" id="fp-4">
@@ -339,36 +369,25 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
   <h3 class="serif">Ce que tout le monde demande</h3>
   <div class="faq">
     <div class="faq-item"><div class="faq-q"><h5>Quel est le loyer ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Le loyer sera annoncé à l'ouverture des candidatures. Les charges (énergie, eau, internet) sont réparties entre les résidents.</p></div></div>
+      <div class="faq-a"><p>Le loyer sera décidé plus tard dans le processus. Les charges (énergie, eau, internet) sont réparties équitablement entre les résidents.</p></div></div>
     <div class="faq-item"><div class="faq-q"><h5>Quel type de bail ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Un bail de colocation unique, signé par l'ensemble des résidents, conforme au droit du bail wallon. Les détails sont présentés lors de la candidature.</p></div></div>
-    <div class="faq-item"><div class="faq-q"><h5>Les chambres sont-elles meublées ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Non, volontairement : tu amènes tes meubles et tu fais de ta chambre un vrai chez-toi. Les espaces communs, eux, sont équipés.</p></div></div>
-    <div class="faq-item"><div class="faq-q"><h5>Qui peut candidater ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Jeunes entrepreneurs, indépendants, porteurs de projet ou jeunes actifs qui construisent quelque chose. La sélection se fait sur dossier et rencontre, pour composer un groupe qui fonctionne.</p></div></div>
-    <div class="faq-item"><div class="faq-q"><h5>Comment se passe la candidature ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Deux étapes : tu nous écris quelques lignes via le formulaire, puis tu visites la maison et tu rencontres le groupe. On répond à chaque candidature.</p></div></div>
-    <div class="faq-item"><div class="faq-q"><h5>Je peux recevoir du monde ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Oui, dans le respect des autres résidents.</p></div></div>
+      <div class="faq-a"><p>Décidé plus tard dans le processus : soit un bail de colocation unique signé par l'ensemble des résidents, soit un bail par résident.</p></div></div>
+    <div class="faq-item"><div class="faq-q"><h5>Qui peut rejoindre la maison ?</h5><span class="ind">+</span></div>
+      <div class="faq-a"><p>Tout le monde. Jeunes entrepreneurs, indépendants, porteurs de projet ou jeunes actifs : vouloir lancer un projet suffit. On se rencontre pour composer un groupe qui fonctionne.</p></div></div>
+    <div class="faq-item"><div class="faq-q"><h5>Comment rejoindre la maison ?</h5><span class="ind">+</span></div>
+      <div class="faq-a"><p>Deux étapes : tu nous écris quelques lignes via le formulaire, puis tu visites la maison. On répond à tout le monde.</p></div></div>
     <div class="faq-item"><div class="faq-q"><h5>Où se trouve la maison, exactement ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>Au centre de Court-Saint-Étienne, à quelques minutes de la gare. L'adresse précise est communiquée aux candidats lors de la visite.</p></div></div>
+      <div class="faq-a"><p>Au centre de Court-Saint-Étienne, à quelques minutes de la gare. L'adresse précise est communiquée lors de la visite.</p></div></div>
     <div class="faq-item"><div class="faq-q"><h5>À partir de quand ?</h5><span class="ind">+</span></div>
-      <div class="faq-a"><p>La maison ouvre après la finalisation des travaux de rénovation. Laisse ta candidature : les premiers arrivés choisissent leur chambre.</p></div></div>
+      <div class="faq-a"><p>Horizon fin 2026, début 2027, après la finalisation des travaux de rénovation. Les premiers arrivés choisissent leur chambre.</p></div></div>
   </div>
 </section>
 
 <section class="fullpage" id="fp-5">
   <div class="label caps"><span class="amber">05</span> · La maison</div>
   <h3 class="serif">La maison en photos</h3>
-  <div class="photos">
-    <div class="ph"><span class="caps">La façade</span></div>
-    <div class="ph"><span class="caps">Une chambre</span></div>
-    <div class="ph"><span class="caps">Le bureau</span></div>
-    <div class="ph"><span class="caps">La grande table</span></div>
-    <div class="ph"><span class="caps">Le jardin</span></div>
-    <div class="ph"><span class="caps">Le quartier</span></div>
-  </div>
-  <p class="photos-note">Photos publiées à la fin des travaux de rénovation.</p>
+  <p class="photos-soon serif">Les photos arrivent <em>bientôt</em></p>
+  <p class="photos-note">Publiées à la fin des travaux de rénovation.</p>
 </section>
 
 <div id="night-statement">
@@ -389,11 +408,11 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 <div id="after">
   <section id="s-candidater">
     <div class="label caps"><span class="amber">06</span> · Rejoindre</div>
-    <h3 class="serif">Candidater</h3>
+    <h3 class="serif">Rejoindre la maison</h3>
     <div class="grid">
       <div class="intro">
         <strong>Explique-nous en quelques lignes qui tu es et ce que tu construis.</strong>
-        Deux étapes : formulaire, puis visite de la maison. On répond à chaque candidature.
+        Deux étapes : formulaire, puis visite de la maison. On répond à tout le monde.
         <div class="steps">
           <div class="step"><span class="caps">Étape 1</span><div>Formulaire</div></div>
           <div class="step"><span class="caps">Étape 2</span><div>Visite</div></div>
@@ -403,8 +422,8 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
         <label><span class="caps">Prénom et nom</span><input id="f-name" type="text" autocomplete="name" required></label>
         <label><span class="caps">Email</span><input id="f-email" type="email" autocomplete="email" required></label>
         <label><span class="caps">Ton projet, en quelques lignes</span><textarea id="f-msg" required></textarea></label>
-        <button type="submit">Envoyer ma candidature</button>
-        <p class="rgpd">Tes données (nom, email, message) servent uniquement à traiter ta candidature. Pas de newsletter, pas de revente, pas de tracking.</p>
+        <button type="submit">Envoyer mon message</button>
+        <p class="rgpd">Tes données (nom, email, message) servent uniquement à traiter ta demande. Pas de newsletter, pas de revente, pas de tracking.</p>
       </form>
     </div>
   </section>
@@ -417,7 +436,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
       <div><a class="caps" href="mailto:hello@maison52.be">hello@maison52.be</a></div>
     </div>
     <p class="legal">Mentions légales : Maison 52, Court-Saint-Étienne (1490), Belgique · contact : hello@maison52.be.
-    Confidentialité : les données transmises via le formulaire sont utilisées exclusivement pour le traitement des candidatures,
+    Confidentialité : les données transmises via le formulaire sont utilisées exclusivement pour le traitement des demandes de contact,
     jamais partagées ni utilisées à des fins commerciales, et supprimées après traitement. Ce site n'utilise aucun cookie ni outil
     de suivi. Conformément au RGPD, tu peux demander l'accès, la rectification ou la suppression de tes données à l'adresse ci-dessus.</p>
   </footer>
@@ -720,8 +739,12 @@ function buildHouse(THREE, P) {
   const experience = document.getElementById('experience');
   const after = document.getElementById('after');
 
+  const progressThumb = document.querySelector('#progress i');
+  const progressTrack = document.getElementById('progress');
   function onScroll(){
     const segH = innerHeight * 1.3;
+    const gp = Math.max(0, Math.min(1, scrollY / (document.documentElement.scrollHeight - innerHeight)));
+    progressThumb.style.transform = 'translateY(' + (gp * (progressTrack.clientHeight - progressThumb.clientHeight)) + 'px)';
     p = Math.max(0, Math.min(SEGN, scrollY / segH));
 
     /* hero */
@@ -731,7 +754,9 @@ function buildHouse(THREE, P) {
     /* clip du cadre : ouvert dès p>0.15 */
     const g = Math.max(0, Math.min(1, (p - .1) / .55));
     const gt = 1 - Math.pow(1-g, 3);
-    stage.style.clipPath = 'inset(' + (26*(1-gt)) + '% ' + (30*(1-gt)) + '% ' + (12*(1-gt)) + '% ' + (30*(1-gt)) + '%)';
+    const mob = innerWidth < 641;
+    const cT = mob ? 30 : 26, cS = mob ? 2 : 30, cB = mob ? 18 : 12;
+    stage.style.clipPath = 'inset(' + (cT*(1-gt)) + '% ' + (cS*(1-gt)) + '% ' + (cB*(1-gt)) + '% ' + (cS*(1-gt)) + '%)';
 
     /* statement visible autour de p=1 */
     statement.classList.toggle('on', p > .7 && p < 1.6);
@@ -874,7 +899,7 @@ function buildHouse(THREE, P) {
     const e = document.getElementById('f-email').value.trim();
     const m = document.getElementById('f-msg').value.trim();
     if(!n || !e || !m) return;
-    location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Candidature Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
+    location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
   });
 
   onScroll();
