@@ -136,7 +136,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .fullpage{position:relative;z-index:15;background:var(--fond);height:100vh;overflow-y:auto;
   padding:14vh var(--pad) 10vh;scroll-snap-align:start;scroll-snap-stop:always}
 .snapwrap{height:100vh;scroll-snap-align:start;scroll-snap-stop:always}
-.snapwrap > .fullpage{scroll-snap-align:none;scroll-snap-stop:normal}
+.snapwrap > .fullpage{position:fixed;inset:0;height:auto;z-index:14;scroll-snap-align:none;scroll-snap-stop:normal}
 .fullpage .label{color:var(--muted);margin-bottom:4.5vh}
 .fullpage .label .amber{color:var(--ambre)}
 .fullpage h3{font-size:5.6vw;line-height:1.04;letter-spacing:.005em;max-width:13em;margin-bottom:6vh}
@@ -806,6 +806,7 @@ function buildHouse(THREE, P) {
   const sCand = document.getElementById('s-candidater');
   const fp1 = document.getElementById('fp-1');
   const fp5 = document.getElementById('fp-5');
+  const fp1w = fp1.parentElement, fp5w = fp5.parentElement;
   const outro = document.getElementById('outro');
 
   function targetP(){
@@ -853,8 +854,10 @@ function buildHouse(THREE, P) {
     const op5 = Math.max(0, Math.min(1, 1 - (p - 2.05) / .45));
     fp1.style.opacity = op1;
     fp5.style.opacity = op5;
-    fp1.style.transform = 'translateY(' + Math.min(0, Math.max(-segH, scrollY - fp1.offsetTop)) + 'px)';
-    fp5.style.transform = 'translateY(' + Math.max(0, Math.min(segH, scrollY - fp5.offsetTop)) + 'px)';
+    /* pages de bord fixes : visibles uniquement dans leur zone (dessous des pages en flux) */
+    const w1 = fp1w.offsetTop, w5 = fp5w.offsetTop;
+    fp1.style.visibility = (scrollY > w1 - 1.5*segH && scrollY < w1 + .98*segH) ? '' : 'hidden';
+    fp5.style.visibility = (scrollY > w5 - .98*segH && scrollY < w5 + 1.98*segH) ? '' : 'hidden';
     fp1.style.pointerEvents = op1 > .1 ? '' : 'none';
     fp5.style.pointerEvents = op5 > .1 ? '' : 'none';
   }
@@ -957,7 +960,8 @@ function buildHouse(THREE, P) {
     a.addEventListener('click',function(ev){
       ev.preventDefault();
       const el = document.getElementById(a.getAttribute('data-target'));
-      const y = el.getBoundingClientRect().top + scrollY;
+      const tgt = el.parentElement.classList.contains('snapwrap') ? el.parentElement : el;
+      const y = tgt.getBoundingClientRect().top + scrollY;
       window.scrollTo({top: y, behavior: 'auto'});
       midY = smoothY = y;
       p = pT = targetP();
