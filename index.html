@@ -161,7 +161,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .vielist{border-top:1px solid var(--hair)}
 .vielist li{list-style:none;display:grid;grid-template-columns:repeat(12,1fr);gap:2.6vw;padding:4vh 0;border-bottom:1px solid var(--hair);align-items:baseline}
 .vielist .idx{grid-column:1/2;font-family:'Oswald',sans-serif;color:var(--ambre);font-size:10.5px;letter-spacing:.18em}
-.vielist h4{grid-column:2/6;font-family:'Newsreader',serif;font-weight:500;font-size:2vw}
+.vielist h4{grid-column:1/6;font-family:'Newsreader',serif;font-weight:500;font-size:2vw}
 .vielist p{grid-column:7/12;font-size:14.5px;line-height:1.7;color:var(--muted)}
 .vielist.near li{padding:3vh 0}
 .quartier-note{margin-top:4vh;font-size:13.5px;color:var(--muted)}
@@ -202,7 +202,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 #s-candidater .intro strong{color:var(--encre);font-weight:500}
 .steps{display:flex;gap:4em;margin-top:4.5vh}
 .step .caps{color:var(--ambre)}
-.step div{margin-top:.7em;font-family:'Newsreader',serif;font-weight:500;font-size:1.5vw}
+.step div{font-family:'Newsreader',serif;font-weight:500;font-size:1.5vw}
 form{grid-column:8/13;display:flex;flex-direction:column;gap:2.4vh}
 form label{display:block}
 form .caps{color:var(--muted);margin-bottom:.8em;display:block}
@@ -353,10 +353,12 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 <section class="fullpage" id="fp-2">
   <div class="label caps"><span class="amber">02</span> · La vie au 52</div>
   <h3 class="serif">Tout pour vivre et travailler</h3>
-  <ul class="vielist">
-    <li><span class="idx">01</span><h4 class="serif">Ta chambre</h4><p>Grande et lumineuse : ton espace de vie et de travail à la fois.</p></li>
-    <li><span class="idx">02</span><h4 class="serif">La table de coworking</h4><p>Conseils, contacts, motivation : ce qui se dit à la grande table fait avancer ton business.</p></li>
-    <li><span class="idx">03</span><h4 class="serif">Le groupe</h4><p>Vivre avec des entrepreneurs te pousse à te dépasser. L'isolement en moins, l'émulation en plus.</p></li>
+  <ul class="vielist near">
+    <li><h4 class="serif">Ta chambre</h4><p>Grande et lumineuse : ton espace de vie et de travail à la fois.</p></li>
+    <li><h4 class="serif">La table de coworking</h4><p>Conseils, contacts, motivation : ce qui se dit à la grande table fait avancer ton business.</p></li>
+    <li><h4 class="serif">La cuisine</h4><p>Super équipée et toute neuve, comme le reste de la maison : matériaux premium partout.</p></li>
+    <li><h4 class="serif">Le jardin</h4><p>Quatre ares, une grande terrasse et un abri de jardin.</p></li>
+    <li><h4 class="serif">Le groupe</h4><p>Vivre avec des entrepreneurs te pousse à te dépasser. L'isolement en moins, l'émulation en plus.</p></li>
   </ul>
 </section>
 
@@ -394,10 +396,10 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
   <div class="label caps"><span class="amber">05</span> · Le quartier</div>
   <h3 class="serif">Tout est à deux pas</h3>
   <ul class="vielist near">
-    <li><span class="idx">01</span><h4 class="serif">Les courses</h4><p>Delitraiteur juste en face ; Lidl et Delhaize à 3 minutes à pied.</p></li>
-    <li><span class="idx">02</span><h4 class="serif">La gare</h4><p>À 5 minutes à pied : Ottignies en 4 minutes de train, puis directs vers Bruxelles.</p></li>
-    <li><span class="idx">03</span><h4 class="serif">La nature</h4><p>Le parc de Wisterzée à deux pas ; le Bois des Rêves à 8 minutes en vélo.</p></li>
-    <li><span class="idx">04</span><h4 class="serif">Le reste</h4><p>Boulangerie, pharmacie, poste : tout à moins de 5 minutes.</p></li>
+    <li><h4 class="serif">Les courses</h4><p>Delitraiteur juste en face ; Lidl et Delhaize à 3 minutes à pied.</p></li>
+    <li><h4 class="serif">La gare</h4><p>À 5 minutes à pied : Ottignies en 4 minutes de train, puis directs vers Bruxelles.</p></li>
+    <li><h4 class="serif">La nature</h4><p>Le parc de Wisterzée à deux pas ; le Bois des Rêves à 8 minutes en vélo.</p></li>
+    <li><h4 class="serif">Le reste</h4><p>Boulangerie, pharmacie, poste : tout à moins de 5 minutes.</p></li>
   </ul>
   <p class="quartier-note">Les photos de la maison arrivent à la fin des travaux de rénovation.</p>
 </section>
@@ -426,8 +428,8 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
         <strong>Explique-nous en quelques lignes qui tu es et ce que tu construis.</strong>
         Deux étapes : formulaire, puis visite de la maison. On répond à tout le monde.
         <div class="steps">
-          <div class="step"><span class="caps">Étape 1</span><div>Formulaire</div></div>
-          <div class="step"><span class="caps">Étape 2</span><div>Visite</div></div>
+          <div class="step"><div>Formulaire</div></div>
+          <div class="step"><div>Visite</div></div>
         </div>
       </div>
       <form id="applyForm">
