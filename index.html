@@ -584,13 +584,13 @@ function buildHouse(THREE, P) {
   const zF = D / 2 + 0.02;
   // rez : deux grandes fenêtres décorées, porte au centre
   [bays[0], bays[2]].forEach((x, i) => {
-    const win = windowMesh(0.95, 1.35, false, true);
+    const win = windowMesh(0.95, 1.35, i === 1, true);
     win.position.set(x, yRDC, zF);
     g.add(win);
   });
   // étage : deux fenêtres décorées + porte-fenêtre centrale avec balcon
-  [bays[0], bays[2]].forEach((x) => {
-    const win = windowMesh(0.9, 1.3, false, true);
+  [bays[0], bays[2]].forEach((x, i) => {
+    const win = windowMesh(0.9, 1.3, i === 0, true);
     win.position.set(x, yET, zF);
     g.add(win);
   });
@@ -659,7 +659,7 @@ function buildHouse(THREE, P) {
   [-1, 1].forEach(sx => {
     [-D / 4.5, D / 4.5].forEach(z => {
       [[yRDC, 1.25], [yET, 1.2]].forEach((fy, fi) => {
-        const win = windowMesh(0.8, fy[1], sx === 1 && fi === 0, false);
+        const win = windowMesh(0.8, fy[1], sx === 1 ? fi === 0 : (fi === 1 && z > 0), false);
         win.rotation.y = sx * Math.PI / 2;
         win.position.set(sx * (W / 2 + 0.02), fy[0], z);
         g.add(win);
@@ -668,9 +668,9 @@ function buildHouse(THREE, P) {
   });
 
   // façade arrière : 3 travées, 2 niveaux
-  bays.forEach((x) => {
-    [yRDC, yET].forEach(fy => {
-      const win = windowMesh(0.8, 1.2, false, false);
+  bays.forEach((x, bi) => {
+    [yRDC, yET].forEach((fy, fi) => {
+      const win = windowMesh(0.8, 1.2, bi === 1 && fi === 1, false);
       win.rotation.y = Math.PI;
       win.position.set(x, fy, -(D / 2 + 0.02));
       g.add(win);
@@ -795,23 +795,26 @@ function buildHouse(THREE, P) {
   const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;   // easeInOutCubic
 
   const SEGN = 3;
-  let p = 0, nightP = 0;
+  let p = 0, pT = 0, nightP = 0;
   const heroUI = document.getElementById('hero-ui');
   const statement = document.getElementById('statement');
   const nightStatement = document.getElementById('night-statement');
   const sCand = document.getElementById('s-candidater');
+  const fp1 = document.getElementById('fp-1');
+  const fp5 = document.getElementById('fp-5');
   const outro = document.getElementById('outro');
 
-  function applyScroll(){
+  function targetP(){
+    const segH = innerHeight;
+    if (!segH) return pT;
+    /* cible : 0 hero -> 1 phrase -> 2 fenêtre (gelé pendant les pages 01-05) -> 3 nuit */
+    if (scrollY <= segH + 1 && smoothY <= segH + 1) return Math.max(0, Math.min(1, smoothY/segH));
+    if (scrollY <= 2*segH) return Math.max(0, Math.min(2, scrollY/segH));
+    return 2 + Math.max(0, Math.min(1, (scrollY - (outro.offsetTop - segH))/segH));
+  }
+  function applyVisuals(){
     const segH = innerHeight;
     if (!segH) return;
-    /* p : 0 hero -> 1 phrase -> 2 zoom fenêtre (gelé pendant les pages 01-05) -> 3 nuit.
-       hero<->phrase : scroll lissé (vol cinématique, entièrement visible).
-       Dès qu'une page est impliquée : scroll BRUT — la caméra est physiquement accrochée
-       au glissement de la page, aucun retard, aucun arrêt possible. */
-    if (scrollY <= segH + 1 && smoothY <= segH + 1) p = Math.max(0, Math.min(1, smoothY/segH));
-    else if (scrollY <= 2*segH) p = Math.max(0, Math.min(2, scrollY/segH));
-    else p = 2 + Math.max(0, Math.min(1, (scrollY - (outro.offsetTop - segH))/segH));
 
     /* hero */
     heroUI.style.opacity = Math.max(0, 1 - p*2.4);
@@ -838,6 +841,10 @@ function buildHouse(THREE, P) {
       stage.style.opacity = Math.max(0, rC.top/(innerHeight*.6));
       nightStatement.style.opacity = 0;
     } else { stage.style.opacity = 1; nightStatement.style.opacity = ''; }
+
+    /* on entre / on sort par la fenêtre : fondu des pages de bord (pas d'arrivée par le bas) */
+    fp1.style.opacity = Math.max(0, Math.min(1, (p - 1.5) / .45));
+    fp5.style.opacity = Math.max(0, Math.min(1, 1 - (p - 2.05) / .45));
   }
   /* le snap saute d'une page d'un coup ; la caméra rattrape en douceur.
      Double lissage = courbe en S (départ doux, arrivée douce), ~2 s de vol. */
@@ -878,7 +885,11 @@ function buildHouse(THREE, P) {
     midY += (scrollY - midY) * k;
     smoothY += (midY - smoothY) * k;
     if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
-    applyScroll();
+    pT = targetP();
+    const dpp = pT - p;
+    const prate = 0.8 * (0.35 + Math.min(1, Math.abs(dpp)) * 1.3);
+    p += Math.sign(dpp) * Math.min(Math.abs(dpp), prate * dt);
+    applyVisuals();
     let pp = p;
     camAt(pp);
     const aspectComp = Math.min(1.6, Math.max(1, 1.2/three.cam.aspect));
@@ -928,6 +939,7 @@ function buildHouse(THREE, P) {
     const y = sCand.getBoundingClientRect().top + scrollY;
     window.scrollTo({top: y, behavior: 'auto'});
     midY = smoothY = y;
+    p = pT = targetP();
   });
   document.querySelectorAll('nav a[data-target]').forEach(function(a){
     a.addEventListener('click',function(ev){
@@ -936,6 +948,7 @@ function buildHouse(THREE, P) {
       const y = el.getBoundingClientRect().top + scrollY;
       window.scrollTo({top: y, behavior: 'auto'});
       midY = smoothY = y;
+      p = pT = targetP();
     });
   });
 
@@ -964,7 +977,7 @@ function buildHouse(THREE, P) {
     location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
   });
 
-  applyScroll();
+  p = pT = targetP(); applyVisuals();
 })();
 </script>
 </body>
