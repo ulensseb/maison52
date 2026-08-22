@@ -584,13 +584,13 @@ function buildHouse(THREE, P) {
   const zF = D / 2 + 0.02;
   // rez : deux grandes fenêtres décorées, porte au centre
   [bays[0], bays[2]].forEach((x, i) => {
-    const win = windowMesh(0.95, 1.35, false, true);
+    const win = windowMesh(0.95, 1.35, i === 1, true);
     win.position.set(x, yRDC, zF);
     g.add(win);
   });
   // étage : deux fenêtres décorées + porte-fenêtre centrale avec balcon
-  [bays[0], bays[2]].forEach((x) => {
-    const win = windowMesh(0.9, 1.3, false, true);
+  [bays[0], bays[2]].forEach((x, i) => {
+    const win = windowMesh(0.9, 1.3, i === 0, true);
     win.position.set(x, yET, zF);
     g.add(win);
   });
@@ -636,7 +636,8 @@ function buildHouse(THREE, P) {
     const mold = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.45, 0.02), M(P.frame));
     mold.position.set(c[0], c[1], 0.06); doorGrp.add(mold);
   });
-  const dgMat = M(P.glass); dgMat.userData.lit = false; winMats.push(dgMat);
+  const dgMat = M(P.glassOn, { emissive: P.glassOn, emissiveIntensity: .35 });
+  dgMat.userData.lit = true; winMats.push(dgMat);
   const dglass = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.3, 0.02), dgMat);
   dglass.position.set(0, doorH / 2 + 0.19, 0.045); doorGrp.add(dglass);
   const dbarV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.3, 0.025), M(P.frame));
@@ -659,7 +660,7 @@ function buildHouse(THREE, P) {
   [-1, 1].forEach(sx => {
     [-D / 4.5, D / 4.5].forEach(z => {
       [[yRDC, 1.25], [yET, 1.2]].forEach((fy, fi) => {
-        const win = windowMesh(0.8, fy[1], sx === 1 && fi === 0, false);
+        const win = windowMesh(0.8, fy[1], fi === 0, false);
         win.rotation.y = sx * Math.PI / 2;
         win.position.set(sx * (W / 2 + 0.02), fy[0], z);
         g.add(win);
