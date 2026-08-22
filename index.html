@@ -891,12 +891,18 @@ function buildHouse(THREE, P) {
     const oT = outro.offsetTop;
     const inIntro = scrollY <= 2*innerHeight + 1 && smoothY <= 2*innerHeight + 1;
     const inOutro = scrollY >= oT - innerHeight - 1 && smoothY >= oT - innerHeight - 1;
-    /* le retour nuit->05 paraissait plus rapide (composition exp x easing asymetrique) :
-       en montée dans la zone de nuit, lissage plus lent pour compenser */
-    const lam = inIntro ? 2.4 : inOutro ? (scrollY < smoothY - 1 ? 1.7 : 2.4) : 6.5;
+    const lam = (inIntro || inOutro) ? 2.4 : 6.5;
     const k = Math.min(1, 1 - Math.exp(-dt*lam));
-    smoothY += (scrollY - smoothY) * k;
-    if (Math.abs(scrollY - smoothY) < .3){ smoothY = scrollY; }
+    if (inOutro && scrollY < smoothY - 1){
+      /* montée nuit->05 : dans ce sens c'est le DÉBUT du mouvement qui est visible
+         (en descente on ne voit que la fin douce) -> double lissage = départ en S */
+      midY += (scrollY - midY) * k;
+      smoothY += (midY - smoothY) * k;
+    } else {
+      smoothY += (scrollY - smoothY) * k;
+      midY = smoothY;
+    }
+    if (Math.abs(scrollY - smoothY) < .3){ midY = smoothY = scrollY; }
     /* ressort amorti critique : démarre avec le geste, se pose sans à-coup, pas de traîne */
     pT = targetP();
     const W0 = 5.5;
