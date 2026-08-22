@@ -854,14 +854,15 @@ function buildHouse(THREE, P) {
     const op5 = Math.max(0, Math.min(1, 1 - (p - 2.2) / .5));
     fp1.style.opacity = op1;
     fp5.style.opacity = op5;
-    /* pages de bord fixes : plaquées plein écran côté fenêtre (fondu sans saut), mais
-       elles ÉMULENT le défilement normal côté pages voisines (translate = position en flux,
-       avec 8vh de chevauchement caché sous la page z15 pour absorber le retard compositeur) */
+    /* fp-1 : statique plein écran — la 02 (z15) la recouvre/découvre, aucun interstice possible.
+       fp-5 : glisse comme une page en flux à l'arrivée de la 04, avec 25vh de chevauchement
+       caché sous la 04 (z15) pour absorber n'importe quel retard compositeur, puis se plaque
+       plein écran pour le fondu du final. */
     const w1 = fp1w.offsetTop, w5 = fp5w.offsetTop;
-    fp1.style.transform = 'translateY(' + Math.min(0, w1 - scrollY + .08*segH) + 'px)';
-    fp5.style.transform = 'translateY(' + Math.max(0, w5 - scrollY - .08*segH) + 'px)';
-    fp1.style.visibility = (scrollY > w1 - 1.5*segH && scrollY < w1 + .98*segH) ? '' : 'hidden';
-    fp5.style.visibility = (scrollY > w5 - .98*segH && scrollY < w5 + 1.98*segH) ? '' : 'hidden';
+    fp1.style.transform = '';
+    fp5.style.transform = 'translateY(' + Math.max(0, w5 - scrollY - .25*segH) + 'px)';
+    fp1.style.visibility = (scrollY > w1 - 1.5*segH && scrollY < w1 + 1.5*segH) ? '' : 'hidden';
+    fp5.style.visibility = (scrollY > w5 - 1.02*segH && scrollY < w5 + 1.98*segH) ? '' : 'hidden';
     fp1.style.pointerEvents = op1 > .1 ? '' : 'none';
     fp5.style.pointerEvents = op5 > .1 ? '' : 'none';
   }
