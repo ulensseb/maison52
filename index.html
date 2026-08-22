@@ -906,14 +906,15 @@ function buildHouse(THREE, P) {
     const aspectComp = Math.min(1.6, Math.max(1, 1.2/three.cam.aspect));
     three.cam.position.copy(tmpPos);
     /* recul portrait fondu progressivement (un seuil sec faisait sauter la maison à p=1.8) */
-    const compF = Math.max(0, Math.min(1, (1.9 - p) / .3));
+    const compF = Math.max(0, Math.min(1, (1.98 - p) / .12));
     const comp = 1 + (aspectComp - 1) * compF;
     if (comp > 1.001){
       three.cam.position.multiplyScalar(comp);
       three.cam.position.y = tmpPos.y;
     }
-    if (p < .05 && !reduced){
-      three.cam.position.x += Math.sin(t*.25)*.4;
+    if (!reduced){
+      const swayF = Math.max(0, 1 - p/.35);
+      if (swayF > 0) three.cam.position.x += Math.sin(t*.25)*.4*swayF;
     }
     if (three.cam.aspect < .95){
       const sw = Math.max(0, 1 - Math.abs(p - 1.1)/.8);
