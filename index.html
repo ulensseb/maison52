@@ -867,7 +867,10 @@ function buildHouse(THREE, P) {
   (function tick(){
     const dt = Math.min(.06, clock.getDelta());
     const t = clock.elapsedTime;
-    const k = Math.min(1, 1 - Math.exp(-dt*2.4));
+    /* vol lent seulement entre hero et phrase (transition entièrement visible) ;
+       dès qu'une page est impliquée, réponse rapide pour rester synchrone avec elle */
+    const lam = (scrollY <= innerHeight + 1 && smoothY <= innerHeight + 1) ? 2.4 : 6.5;
+    const k = Math.min(1, 1 - Math.exp(-dt*lam));
     midY += (scrollY - midY) * k;
     smoothY += (midY - smoothY) * k;
     if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
