@@ -555,7 +555,8 @@ function buildHouse(THREE, P) {
     grp.add(surround);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.06), M(P.frame));
     grp.add(frame);
-    const glassMat = M(lit ? P.glassOn : P.glass, lit ? { emissive: P.glassOn, emissiveIntensity: 0.55 } : {});
+    const gl = P.glassLit || P.glassOn;
+    const glassMat = M(lit ? gl : P.glass, lit ? { emissive: gl, emissiveIntensity: 0.4 } : {});
     glassMat.userData.lit = lit;
     winMats.push(glassMat);
     const glass = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, h - 0.1, 0.04), glassMat);
@@ -757,7 +758,7 @@ function buildHouse(THREE, P) {
 
     const house = buildHouse(THREE, {
       wall:'#FDFBF6', wallShade:'#E4E0D6', roof:'#3E4347', plinth:'#7E8487',
-      frame:'#FFFFFF', glass:'#7C7568', glassOn:'#F4DCA8', door:'#F7F4EE',
+      frame:'#FFFFFF', glass:'#7C7568', glassOn:'#F4DCA8', glassLit:'#D9A95C', door:'#F7F4EE',
       cornice:'#979D9F', chimney:'#3E4347', sill:'#A2A8AA', iron:'#2F2C29',
       bush:'#5B6446', bush2:'#4E573D', bush3:'#666F4D'
     });
@@ -918,7 +919,7 @@ function buildHouse(THREE, P) {
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
     winMats.forEach(function(m){
-      m.emissive.set(nightP > .05 ? '#FFB763' : '#F4DCA8');
+      m.emissive.set(nightP > .05 ? '#FFB763' : '#D9A95C');
       m.emissiveIntensity = Math.min(1, (m.userData.lit ? .38 : 0) + nightP*.95);
     });
 
