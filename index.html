@@ -555,8 +555,7 @@ function buildHouse(THREE, P) {
     grp.add(surround);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.06), M(P.frame));
     grp.add(frame);
-    const gl = P.glassLit || P.glassOn;
-    const glassMat = M(lit ? gl : P.glass, lit ? { emissive: gl, emissiveIntensity: 0.4 } : {});
+    const glassMat = M(lit ? P.glassOn : P.glass, lit ? { emissive: P.glassOn, emissiveIntensity: 0.55 } : {});
     glassMat.userData.lit = lit;
     winMats.push(glassMat);
     const glass = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, h - 0.1, 0.04), glassMat);
@@ -585,13 +584,13 @@ function buildHouse(THREE, P) {
   const zF = D / 2 + 0.02;
   // rez : deux grandes fenêtres décorées, porte au centre
   [bays[0], bays[2]].forEach((x, i) => {
-    const win = windowMesh(0.95, 1.35, i === 1, true);
+    const win = windowMesh(0.95, 1.35, false, true);
     win.position.set(x, yRDC, zF);
     g.add(win);
   });
   // étage : deux fenêtres décorées + porte-fenêtre centrale avec balcon
-  [bays[0], bays[2]].forEach((x, i) => {
-    const win = windowMesh(0.9, 1.3, i === 0, true);
+  [bays[0], bays[2]].forEach((x) => {
+    const win = windowMesh(0.9, 1.3, false, true);
     win.position.set(x, yET, zF);
     g.add(win);
   });
@@ -660,7 +659,7 @@ function buildHouse(THREE, P) {
   [-1, 1].forEach(sx => {
     [-D / 4.5, D / 4.5].forEach(z => {
       [[yRDC, 1.25], [yET, 1.2]].forEach((fy, fi) => {
-        const win = windowMesh(0.8, fy[1], sx === 1 ? fi === 0 : (fi === 1 && z > 0), false);
+        const win = windowMesh(0.8, fy[1], sx === 1 && fi === 0, false);
         win.rotation.y = sx * Math.PI / 2;
         win.position.set(sx * (W / 2 + 0.02), fy[0], z);
         g.add(win);
@@ -669,9 +668,9 @@ function buildHouse(THREE, P) {
   });
 
   // façade arrière : 3 travées, 2 niveaux
-  bays.forEach((x, bi) => {
-    [yRDC, yET].forEach((fy, fi) => {
-      const win = windowMesh(0.8, 1.2, bi === 1 && fi === 1, false);
+  bays.forEach((x) => {
+    [yRDC, yET].forEach(fy => {
+      const win = windowMesh(0.8, 1.2, false, false);
       win.rotation.y = Math.PI;
       win.position.set(x, fy, -(D / 2 + 0.02));
       g.add(win);
@@ -758,7 +757,7 @@ function buildHouse(THREE, P) {
 
     const house = buildHouse(THREE, {
       wall:'#FDFBF6', wallShade:'#E4E0D6', roof:'#3E4347', plinth:'#7E8487',
-      frame:'#FFFFFF', glass:'#7C7568', glassOn:'#F4DCA8', glassLit:'#D9A95C', door:'#F7F4EE',
+      frame:'#FFFFFF', glass:'#7C7568', glassOn:'#F4DCA8', door:'#F7F4EE',
       cornice:'#979D9F', chimney:'#3E4347', sill:'#A2A8AA', iron:'#2F2C29',
       bush:'#5B6446', bush2:'#4E573D', bush3:'#666F4D'
     });
@@ -919,7 +918,7 @@ function buildHouse(THREE, P) {
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
     winMats.forEach(function(m){
-      m.emissive.set(nightP > .05 ? '#FFB763' : '#D9A95C');
+      m.emissive.set(nightP > .05 ? '#FFB763' : '#F4DCA8');
       m.emissiveIntensity = Math.min(1, (m.userData.lit ? .38 : 0) + nightP*.95);
     });
 
