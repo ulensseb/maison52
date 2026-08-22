@@ -647,11 +647,6 @@ function buildHouse(THREE, P) {
   });
   doorGrp.position.set(0, 0.14 + doorH / 2, D / 2 + 0.06);
   g.add(doorGrp);
-  // lanterne au-dessus de la porte
-  const lampArm = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.16, 0.03), M(IRON));
-  lampArm.position.set(0, PL + 2.32, D / 2 + 0.16); g.add(lampArm);
-  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 6), M(P.glassOn, { emissive: P.glassOn, emissiveIntensity: .3 }));
-  lamp.position.set(0, PL + 2.22, D / 2 + 0.16); g.add(lamp);
   // perron : 3 marches
   [0, 1, 2].forEach(i => {
     const st = new THREE.Mesh(new THREE.BoxGeometry(1.5 - i * 0.14, 0.055, 0.8 - i * 0.2), M(P.plinth));
@@ -799,7 +794,7 @@ function buildHouse(THREE, P) {
   const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;   // easeInOutCubic
 
   const SEGN = 3;
-  let p = 0, pT = 0, nightP = 0;
+  let p = 0, pT = 0, pv = 0, nightP = 0;
   const heroUI = document.getElementById('hero-ui');
   const statement = document.getElementById('statement');
   const nightStatement = document.getElementById('night-statement');
@@ -896,10 +891,12 @@ function buildHouse(THREE, P) {
     midY += (scrollY - midY) * k;
     smoothY += (midY - smoothY) * k;
     if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
+    /* ressort amorti critique : démarre avec le geste, se pose sans à-coup, pas de traîne */
     pT = targetP();
-    const dpp = pT - p;
-    const prate = 0.9 * (0.5 + Math.min(1, Math.abs(dpp)));
-    p += Math.sign(dpp) * Math.min(Math.abs(dpp), prate * dt);
+    const W0 = 5.5;
+    pv += (W0*W0*(pT - p) - 2*W0*pv) * dt;
+    p += pv * dt;
+    if (Math.abs(pT - p) < .0005 && Math.abs(pv) < .002){ p = pT; pv = 0; }
     applyVisuals();
     let pp = p;
     camAt(pp);
@@ -913,14 +910,13 @@ function buildHouse(THREE, P) {
       three.cam.position.y = tmpPos.y;
     }
     if (!reduced){
-      const swayF = Math.max(0, 1 - p/.35);
-      if (swayF > 0) three.cam.position.x += Math.sin(t*.25)*.4*swayF;
+      const swayF = Math.exp(-(p/.18)*(p/.18));
+      three.cam.position.x += Math.sin(t*.25)*.4*swayF;
     }
     if (three.cam.aspect < .95){
-      const sw = Math.max(0, 1 - Math.abs(p - 1.1)/.8);
-      tmpLook.y += 2.15*sw;
-      const swH = Math.max(0, 1 - p/.5);
-      tmpLook.y += .55*swH;
+      const d = (p - 1.1)/.65;
+      tmpLook.y += 2.15*Math.exp(-d*d);
+      tmpLook.y += .55*Math.exp(-(p/.28)*(p/.28));
     }
     three.cam.position.x += mx*.25;
     three.cam.position.y += my*.18;
@@ -954,7 +950,7 @@ function buildHouse(THREE, P) {
     const y = sCand.getBoundingClientRect().top + scrollY;
     window.scrollTo({top: y, behavior: 'auto'});
     midY = smoothY = y;
-    p = pT = targetP();
+    p = pT = targetP(); pv = 0;
   });
   document.querySelectorAll('nav a[data-target]').forEach(function(a){
     a.addEventListener('click',function(ev){
@@ -964,7 +960,7 @@ function buildHouse(THREE, P) {
       const y = tgt.getBoundingClientRect().top + scrollY;
       window.scrollTo({top: y, behavior: 'auto'});
       midY = smoothY = y;
-      p = pT = targetP();
+      p = pT = targetP(); pv = 0;
     });
   });
 
