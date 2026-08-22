@@ -798,8 +798,9 @@ function buildHouse(THREE, P) {
     const moving = (p > 1.6 && activeIdx < 0) ? Math.sin(Math.PI * Math.min(1, Math.max(0, (frac - .32) / .36))) * .0 : 0;
     veil.style.opacity = moving;
   }
-  /* le snap saute d'une page d'un coup ; la caméra rattrape en douceur */
-  let smoothY = scrollY;
+  /* le snap saute d'une page d'un coup ; la caméra rattrape en douceur.
+     Double lissage = courbe en S (départ doux, arrivée douce), ~2 s de vol. */
+  let smoothY = scrollY, midY = scrollY;
 
   let mx=0,my=0;
   addEventListener('mousemove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
@@ -829,8 +830,10 @@ function buildHouse(THREE, P) {
   (function tick(){
     const dt = Math.min(.06, clock.getDelta());
     const t = clock.elapsedTime;
-    smoothY += (scrollY - smoothY) * (reduced ? 1 : Math.min(1, 1 - Math.exp(-dt*2.6)));
-    if (Math.abs(scrollY - smoothY) < .3) smoothY = scrollY;
+    const k = reduced ? 1 : Math.min(1, 1 - Math.exp(-dt*2.4));
+    midY += (scrollY - midY) * k;
+    smoothY += (midY - smoothY) * k;
+    if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
     applyScroll(smoothY);
     let pp = p;
     camAt(pp);
