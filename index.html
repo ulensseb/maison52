@@ -830,7 +830,7 @@ function buildHouse(THREE, P) {
   (function tick(){
     const dt = Math.min(.06, clock.getDelta());
     const t = clock.elapsedTime;
-    const k = reduced ? 1 : Math.min(1, 1 - Math.exp(-dt*2.4));
+    const k = Math.min(1, 1 - Math.exp(-dt*2.4));
     midY += (scrollY - midY) * k;
     smoothY += (midY - smoothY) * k;
     if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
