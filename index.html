@@ -802,12 +802,16 @@ function buildHouse(THREE, P) {
   const sCand = document.getElementById('s-candidater');
   const outro = document.getElementById('outro');
 
-  function applyScroll(y){
+  function applyScroll(){
     const segH = innerHeight;
     if (!segH) return;
-    /* p : 0 hero -> 1 phrase -> 2 zoom fenêtre (gelé pendant les pages 01-05) -> 3 nuit */
-    if (y <= 2*segH) p = Math.max(0, Math.min(2, y/segH));
-    else p = 2 + Math.max(0, Math.min(1, (y - (outro.offsetTop - segH))/segH));
+    /* p : 0 hero -> 1 phrase -> 2 zoom fenêtre (gelé pendant les pages 01-05) -> 3 nuit.
+       hero<->phrase : scroll lissé (vol cinématique, entièrement visible).
+       Dès qu'une page est impliquée : scroll BRUT — la caméra est physiquement accrochée
+       au glissement de la page, aucun retard, aucun arrêt possible. */
+    if (scrollY <= segH + 1 && smoothY <= segH + 1) p = Math.max(0, Math.min(1, smoothY/segH));
+    else if (scrollY <= 2*segH) p = Math.max(0, Math.min(2, scrollY/segH));
+    else p = 2 + Math.max(0, Math.min(1, (scrollY - (outro.offsetTop - segH))/segH));
 
     /* hero */
     heroUI.style.opacity = Math.max(0, 1 - p*2.4);
@@ -874,7 +878,7 @@ function buildHouse(THREE, P) {
     midY += (scrollY - midY) * k;
     smoothY += (midY - smoothY) * k;
     if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
-    applyScroll(smoothY);
+    applyScroll();
     let pp = p;
     camAt(pp);
     const aspectComp = Math.min(1.6, Math.max(1, 1.2/three.cam.aspect));
@@ -960,7 +964,7 @@ function buildHouse(THREE, P) {
     location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
   });
 
-  applyScroll(scrollY);
+  applyScroll();
 })();
 </script>
 </body>
