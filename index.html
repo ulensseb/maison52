@@ -632,16 +632,17 @@ function buildHouse(THREE, P) {
   doorSurround.position.y = 0.18; doorGrp.add(doorSurround);
   const door = new THREE.Mesh(new THREE.BoxGeometry(0.92, doorH, 0.07), M(P.door));
   door.position.z = 0.02; doorGrp.add(door);
-  [[-0.21, -0.45], [0.21, -0.45], [-0.21, 0.18], [0.21, 0.18]].forEach(c => {
+  [[-0.21, -0.45], [0.21, -0.45]].forEach(c => {
     const mold = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.45, 0.02), M(P.frame));
     mold.position.set(c[0], c[1], 0.06); doorGrp.add(mold);
   });
+  /* carreaux vitrés en haut de porte (même ambre que les fenêtres allumées) */
   const dgMat = M('#000000', { emissive: P.glassOn, emissiveIntensity: .9 });
   dgMat.userData.lit = true; winMats.push(dgMat);
-  const dglass = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.3, 0.02), dgMat);
-  dglass.position.set(0, doorH / 2 + 0.19, 0.045); doorGrp.add(dglass);
-  const dbarV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.3, 0.025), M(P.frame));
-  dbarV.position.set(0, doorH / 2 + 0.19, 0.05); doorGrp.add(dbarV);
+  [[-0.21, 0.18], [0.21, 0.18]].forEach(c => {
+    const pane = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.45, 0.02), dgMat);
+    pane.position.set(c[0], c[1], 0.06); doorGrp.add(pane);
+  });
   doorGrp.position.set(0, 0.14 + doorH / 2, D / 2 + 0.06);
   g.add(doorGrp);
   // lanterne au-dessus de la porte
