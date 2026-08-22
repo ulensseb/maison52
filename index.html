@@ -135,6 +135,8 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 /* ---------- fullpages (les fenêtres) ---------- */
 .fullpage{position:relative;z-index:15;background:var(--fond);height:100vh;overflow-y:auto;
   padding:14vh var(--pad) 10vh;scroll-snap-align:start;scroll-snap-stop:always}
+.snapwrap{height:100vh;scroll-snap-align:start;scroll-snap-stop:always}
+.snapwrap > .fullpage{scroll-snap-align:none;scroll-snap-stop:normal}
 .fullpage .label{color:var(--muted);margin-bottom:4.5vh}
 .fullpage .label .amber{color:var(--ambre)}
 .fullpage h3{font-size:5.6vw;line-height:1.04;letter-spacing:.005em;max-width:13em;margin-bottom:6vh}
@@ -342,6 +344,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
   <div class="panel"></div><div class="panel"></div>
 </div>
 
+<div class="snapwrap">
 <section class="fullpage" id="fp-1">
   <div class="label caps"><span class="amber">01</span> · La maison</div>
   <h3 class="serif">Une maison de maître rénovée</h3>
@@ -360,6 +363,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
     <div class="stat"><div class="n">10<small> min</small></div><div class="l caps">Du campus LLN</div></div>
   </div>
 </section>
+</div>
 
 <section class="fullpage" id="fp-2">
   <div class="label caps"><span class="amber">02</span> · La vie au 52</div>
@@ -404,6 +408,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
   </div>
 </section>
 
+<div class="snapwrap">
 <section class="fullpage" id="fp-5">
   <div class="label caps"><span class="amber">05</span> · Le quartier</div>
   <h3 class="serif">Tout est à deux pas</h3>
@@ -414,6 +419,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
     <li><h4 class="serif">Le reste</h4><p>Boulangerie, pharmacie, poste : tout à moins de 5 minutes.</p></li>
   </ul>
 </section>
+</div>
 
 <!-- final : dézoom + tombée de la nuit en continu jusqu'au stop Rejoindre -->
 <div id="outro">
@@ -635,8 +641,8 @@ function buildHouse(THREE, P) {
   /* 4 carreaux vitrés (même ambre que les fenêtres allumées) */
   const dgMat = M('#000000', { emissive: P.glassOn, emissiveIntensity: .9 });
   dgMat.userData.lit = true; winMats.push(dgMat);
-  [[-0.21, -0.45], [0.21, -0.45], [-0.21, 0.18], [0.21, 0.18]].forEach(c => {
-    const pane = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.45, 0.02), dgMat);
+  [[-0.21, 0.48], [0.21, 0.48], [-0.21, 0], [0.21, 0], [-0.21, -0.48], [0.21, -0.48]].forEach(c => {
+    const pane = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.38, 0.02), dgMat);
     pane.position.set(c[0], c[1], 0.06); doorGrp.add(pane);
   });
   doorGrp.position.set(0, 0.14 + doorH / 2, D / 2 + 0.06);
