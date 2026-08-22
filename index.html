@@ -905,8 +905,11 @@ function buildHouse(THREE, P) {
     camAt(pp);
     const aspectComp = Math.min(1.6, Math.max(1, 1.2/three.cam.aspect));
     three.cam.position.copy(tmpPos);
-    if (p < 1.8){
-      three.cam.position.multiplyScalar(aspectComp);
+    /* recul portrait fondu progressivement (un seuil sec faisait sauter la maison à p=1.8) */
+    const compF = Math.max(0, Math.min(1, (1.9 - p) / .3));
+    const comp = 1 + (aspectComp - 1) * compF;
+    if (comp > 1.001){
+      three.cam.position.multiplyScalar(comp);
       three.cam.position.y = tmpPos.y;
     }
     if (p < .05 && !reduced){
