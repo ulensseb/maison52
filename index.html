@@ -795,6 +795,7 @@ function buildHouse(THREE, P) {
 
   const SEGN = 3;
   let p = 0, pT = 0, pv = 0, nightP = 0;
+  let owTgt = 2, owFrom = 2, owT0 = -1;   // tween du final (durée fixe, symétrique)
   const heroUI = document.getElementById('hero-ui');
   const statement = document.getElementById('statement');
   const nightStatement = document.getElementById('night-statement');
@@ -888,27 +889,29 @@ function buildHouse(THREE, P) {
        dès qu'une page est impliquée, réponse rapide pour rester synchrone avec elle */
     /* lissage SIMPLE (réponse immédiate au geste, pente max à t=0) ; le ressort en aval
        fournit la douceur d'arrivée — un double lissage ajoutait ~0,2 s de latence au départ */
-    const oT = outro.offsetTop;
     const inIntro = scrollY <= 2*innerHeight + 1 && smoothY <= 2*innerHeight + 1;
-    const inOutro = scrollY >= oT - innerHeight - 1 && smoothY >= oT - innerHeight - 1;
-    const lam = (inIntro || inOutro) ? 2.4 : 6.5;
+    const lam = inIntro ? 2.4 : 6.5;
     const k = Math.min(1, 1 - Math.exp(-dt*lam));
-    if (inOutro && scrollY < smoothY - 1){
-      /* montée nuit->05 : dans ce sens c'est le DÉBUT du mouvement qui est visible
-         (en descente on ne voit que la fin douce) -> double lissage = départ en S */
-      midY += (scrollY - midY) * k;
-      smoothY += (midY - smoothY) * k;
-    } else {
-      smoothY += (scrollY - smoothY) * k;
-      midY = smoothY;
-    }
+    smoothY += (scrollY - smoothY) * k;
+    midY = smoothY;
     if (Math.abs(scrollY - smoothY) < .3){ midY = smoothY = scrollY; }
-    /* ressort amorti critique : démarre avec le geste, se pose sans à-coup, pas de traîne */
     pT = targetP();
-    const W0 = 5.5;
-    pv += (W0*W0*(pT - p) - 2*W0*pv) * dt;
-    p += pv * dt;
-    if (Math.abs(pT - p) < .0005 && Math.abs(pv) < .002){ p = pT; pv = 0; }
+    const oZone = scrollY >= outro.offsetTop - innerHeight - 1;
+    if (oZone){
+      /* final : tween à durée FIXE — aller et retour strictement identiques par construction */
+      const tgt = scrollY > outro.offsetTop - innerHeight/2 ? 3 : 2;
+      if (tgt !== owTgt){ owTgt = tgt; owFrom = p; owT0 = t; }
+      const u = owT0 < 0 ? 1 : Math.min(1, (t - owT0) / 1.5);
+      p = owFrom + (owTgt - owFrom) * ease(u);
+      pv = 0;
+    } else {
+      if (owT0 >= 0 || owTgt !== 2){ owT0 = -1; owTgt = 2; owFrom = 2; }
+      /* ressort amorti critique : démarre avec le geste, se pose sans à-coup */
+      const W0 = 5.5;
+      pv += (W0*W0*(pT - p) - 2*W0*pv) * dt;
+      p += pv * dt;
+      if (Math.abs(pT - p) < .0005 && Math.abs(pv) < .002){ p = pT; pv = 0; }
+    }
     applyVisuals();
     let pp = p;
     camAt(pp);
