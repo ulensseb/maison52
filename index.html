@@ -401,7 +401,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
     <li><h4 class="serif">La nature</h4><p>Le parc de Wisterzée à deux pas ; le Bois des Rêves à 8 minutes en vélo.</p></li>
     <li><h4 class="serif">Le reste</h4><p>Boulangerie, pharmacie, poste : tout à moins de 5 minutes.</p></li>
   </ul>
-  <p class="quartier-note">Les photos de la maison arrivent à la fin des travaux de rénovation.</p>
+  <p class="quartier-note">Les photos de la maison arrivent très vite.</p>
 </section>
 
 <div id="night-statement">
@@ -800,7 +800,7 @@ function buildHouse(THREE, P) {
     if (rC.top < innerHeight*.6){
       stage.style.opacity = Math.max(0, rC.top/(innerHeight*.6));
       nightStatement.style.opacity = 0;
-    } else stage.style.opacity = 1;
+    } else { stage.style.opacity = 1; nightStatement.style.opacity = ''; }
 
     /* veil léger pendant les déplacements entre fenêtres (adoucit) */
     const frac = p - Math.floor(p);
