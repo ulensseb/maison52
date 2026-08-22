@@ -886,11 +886,12 @@ function buildHouse(THREE, P) {
     const t = clock.elapsedTime;
     /* vol lent seulement entre hero et phrase (transition entièrement visible) ;
        dès qu'une page est impliquée, réponse rapide pour rester synchrone avec elle */
+    /* lissage SIMPLE (réponse immédiate au geste, pente max à t=0) ; le ressort en aval
+       fournit la douceur d'arrivée — un double lissage ajoutait ~0,2 s de latence au départ */
     const lam = (scrollY <= 2*innerHeight + 1 && smoothY <= 2*innerHeight + 1) ? 2.4 : 6.5;
     const k = Math.min(1, 1 - Math.exp(-dt*lam));
-    midY += (scrollY - midY) * k;
-    smoothY += (midY - smoothY) * k;
-    if (Math.abs(scrollY - smoothY) < .3 && Math.abs(scrollY - midY) < .3){ midY = smoothY = scrollY; }
+    smoothY += (scrollY - smoothY) * k;
+    if (Math.abs(scrollY - smoothY) < .3){ smoothY = scrollY; }
     /* ressort amorti critique : démarre avec le geste, se pose sans à-coup, pas de traîne */
     pT = targetP();
     const W0 = 5.5;
