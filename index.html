@@ -142,6 +142,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2.6vw}
 .body-right{grid-column:8/13;font-size:15.5px;line-height:1.75;color:var(--muted)}
 .body-right strong{color:var(--encre);font-weight:500}
+.body-right em{font-style:italic;color:var(--ambre)}
 
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2.6vw;margin-top:9vh;border-top:1px solid var(--hair);padding-top:5vh}
 .stat .n{font-family:'Newsreader',serif;font-weight:500;font-size:4.6vw;line-height:1}
@@ -341,7 +342,8 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
     <div class="body-right">
       <strong>310 m² en bordure d'Ottignies, sur la commune de Court-Saint-Étienne :</strong> six chambres, un grand bureau,
       deux salles d'eau et un jardin de quatre ares. À dix minutes du campus de Louvain-la-Neuve
-      et de son écosystème startup.
+      et de son écosystème startup. <em>Ici, ton logement n'est plus une charge : c'est un
+      investissement dans ton projet.</em>
     </div>
   </div>
   <div class="stats">
@@ -465,73 +467,93 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 <script>
 /* Maison 52 - builder paramétrique partagé entre prototypes.
    buildHouse(THREE, palette) -> THREE.Group
-   palette: { wall, wallShade, roof, plinth, frame, glass, glassOn, door, cornice, chimney, sill }
-   Maison de maître brabançonne : socle, 2 niveaux, corniche, toit à croupes avec faîtage,
-   2 cheminées, 3 travées en façade, porte + perron, fenêtres avec encadrement, linteau, seuil. */
+   palette: { wall, wallShade, roof, plinth, frame, glass, glassOn, door, cornice, chimney, sill, iron, bush* }
+   Modélisée d'après la vraie maison (avenue des Combattants) : façade blanche symétrique,
+   soubassement et encadrements gris, deux bandeaux, corniche à denticules, fronton central
+   avec fenêtre cintrée, balcon en fer forgé au-dessus de la porte, toit en ardoise,
+   cheminée en brique, haies taillées devant. */
 function buildHouse(THREE, P) {
   const g = new THREE.Group();
   const M = (c, opt) => new THREE.MeshLambertMaterial(Object.assign({ color: c }, opt || {}));
+  const IRON = P.iron || '#2F2C29';
 
   // dimensions
-  const W = 4.8, D = 3.5, H = 2.75;       // corps principal
-  const PL = 0.32;                          // hauteur socle
-  const RH = 1.55;                          // hauteur toit
-  const OV = 0.22;                          // débord de toit
+  const W = 4.8, D = 3.6, H = 3.35;        // corps principal (2 niveaux)
+  const PL = 0.45;                          // soubassement gris
+  const RH = 1.15, OV = 0.12;               // toit
+  const yRDC = PL + 0.95;                   // centre fenêtres rez
+  const yET  = PL + 2.42;                   // centre fenêtres étage
 
-  // socle
-  const plinth = new THREE.Mesh(new THREE.BoxGeometry(W + 0.12, PL, D + 0.12), M(P.plinth));
+  // soubassement
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(W + 0.14, PL, D + 0.14), M(P.plinth));
   plinth.position.y = PL / 2;
   g.add(plinth);
 
-  // murs
+  // murs blancs
   const walls = new THREE.Mesh(new THREE.BoxGeometry(W, H, D), M(P.wall));
   walls.position.y = PL + H / 2;
   g.add(walls);
 
-  // corniche
-  const cornice = new THREE.Mesh(new THREE.BoxGeometry(W + 0.18, 0.14, D + 0.18), M(P.cornice));
-  cornice.position.y = PL + H + 0.07;
+  // deux bandeaux gris (niveau seuils rez et seuils étage, comme sur la façade réelle)
+  [PL + 0.30, PL + 1.72].forEach(function(y, i){
+    const band = new THREE.Mesh(new THREE.BoxGeometry(W + 0.08, i ? 0.1 : 0.08, D + 0.08), M(P.cornice));
+    band.position.y = y;
+    g.add(band);
+  });
+
+  // corniche + denticules
+  const cornice = new THREE.Mesh(new THREE.BoxGeometry(W + 0.22, 0.16, D + 0.22), M(P.cornice));
+  cornice.position.y = PL + H + 0.08;
   g.add(cornice);
+  function dentils(n, axis, fixed) {
+    for (let i = 0; i < n; i++) {
+      const t = -1 + 2 * (i / (n - 1));
+      const d = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), M(P.cornice));
+      if (axis === 'x') d.position.set(t * (W / 2 - 0.22), PL + H - 0.045, fixed);
+      else d.position.set(fixed, PL + H - 0.045, t * (D / 2 - 0.22));
+      g.add(d);
+    }
+  }
+  dentils(13, 'x', D / 2 + 0.05); dentils(13, 'x', -(D / 2 + 0.05));
+  dentils(9, 'z', W / 2 + 0.05); dentils(9, 'z', -(W / 2 + 0.05));
 
-  // bandeau entre niveaux
-  const band = new THREE.Mesh(new THREE.BoxGeometry(W + 0.05, 0.07, D + 0.05), M(P.cornice));
-  band.position.y = PL + H * 0.52;
-  g.add(band);
-
-  // toit à croupes avec faîtage (BufferGeometry custom)
-  const rw = W / 2 + OV, rd = D / 2 + OV, ridge = W * 0.26, ry0 = PL + H + 0.14, ry1 = ry0 + RH;
+  // toit à croupes en ardoise
+  const rw = W / 2 + OV, rd = D / 2 + OV, ridge = W * 0.3, ry0 = PL + H + 0.16, ry1 = ry0 + RH;
   const v = [
-    [-rw, ry0, -rd], [rw, ry0, -rd], [rw, ry0, rd], [-rw, ry0, rd],  // base
-    [-ridge, ry1, 0], [ridge, ry1, 0]                                  // faîtage
+    [-rw, ry0, -rd], [rw, ry0, -rd], [rw, ry0, rd], [-rw, ry0, rd],
+    [-ridge, ry1, 0], [ridge, ry1, 0]
   ];
-  const faces = [
-    [0, 1, 5], [0, 5, 4],       // pan arrière
-    [2, 3, 4], [2, 4, 5],       // pan avant
-    [1, 2, 5],                  // croupe droite
-    [3, 0, 4]                   // croupe gauche
-  ];
+  const faces = [[0, 1, 5], [0, 5, 4], [2, 3, 4], [2, 4, 5], [1, 2, 5], [3, 0, 4]];
   const pos = [];
   faces.forEach(f => f.forEach(i => pos.push(v[i][0], v[i][1], v[i][2])));
   const roofGeo = new THREE.BufferGeometry();
   roofGeo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   roofGeo.computeVertexNormals();
-  const roof = new THREE.Mesh(roofGeo, M(P.roof, { side: THREE.DoubleSide }));
-  g.add(roof);
+  g.add(new THREE.Mesh(roofGeo, M(P.roof, { side: THREE.DoubleSide })));
 
-  // cheminées
-  [-1, 1].forEach(s => {
-    const ch = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.85, 0.34), M(P.chimney));
-    ch.position.set(s * ridge * 0.92, ry1 - 0.05, 0);
-    g.add(ch);
-    const cap = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.42), M(P.cornice));
-    cap.position.set(s * ridge * 0.92, ry1 + 0.34, 0);
-    g.add(cap);
-  });
+  // cheminées : brique à droite, discrète à gauche
+  const chR = new THREE.Mesh(new THREE.BoxGeometry(0.4, 1.2, 0.4), M(P.chimney));
+  chR.position.set(ridge * 0.95, ry1 + 0.15, 0); g.add(chR);
+  const chRcap = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.08, 0.48), M(P.cornice));
+  chRcap.position.set(ridge * 0.95, ry1 + 0.78, 0); g.add(chRcap);
+  const chL = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.7, 0.28), M(P.roof));
+  chL.position.set(-ridge * 0.95, ry1 + 0.05, 0); g.add(chL);
 
-  // fenêtre avec encadrement + seuil + croisillon
+  // fronton central au-dessus de la corniche, avec fenêtre cintrée
+  const fronton = new THREE.Mesh(new THREE.BoxGeometry(1.35, 1.05, 0.3), M(P.wall));
+  fronton.position.set(0, PL + H + 0.5, D / 2 - 0.13);
+  g.add(fronton);
+  const frCap = new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.1, 0.4), M(P.cornice));
+  frCap.position.set(0, PL + H + 1.06, D / 2 - 0.13);
+  g.add(frCap);
+
+  // fenêtre : encadrement gris, châssis blanc, vitrage, croisillons, seuil, crête décorative
   const winMats = [];
-  function windowMesh(w, h, lit) {
+  function windowMesh(w, h, lit, deco) {
     const grp = new THREE.Group();
+    const surround = new THREE.Mesh(new THREE.BoxGeometry(w + 0.2, h + 0.22, 0.05), M(P.sill));
+    surround.position.z = -0.015;
+    grp.add(surround);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.06), M(P.frame));
     grp.add(frame);
     const glassMat = M(lit ? P.glassOn : P.glass, lit ? { emissive: P.glassOn, emissiveIntensity: 0.55 } : {});
@@ -544,81 +566,131 @@ function buildHouse(THREE, P) {
     mid.position.z = 0.02; grp.add(mid);
     const trav = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, 0.035, 0.05), M(P.frame));
     trav.position.set(0, h * 0.18, 0.02); grp.add(trav);
-    const sill = new THREE.Mesh(new THREE.BoxGeometry(w + 0.12, 0.06, 0.14), M(P.sill));
-    sill.position.set(0, -h / 2 - 0.03, 0.04);
+    const sill = new THREE.Mesh(new THREE.BoxGeometry(w + 0.28, 0.07, 0.16), M(P.sill));
+    sill.position.set(0, -h / 2 - 0.045, 0.05);
     grp.add(sill);
-    const lintel = new THREE.Mesh(new THREE.BoxGeometry(w + 0.1, 0.09, 0.1), M(P.sill));
-    lintel.position.set(0, h / 2 + 0.045, 0.02);
-    grp.add(lintel);
+    if (deco) {
+      const crest = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.07, 0.07), M(P.sill));
+      crest.position.set(0, h / 2 + 0.14, 0.01); grp.add(crest);
+      const key = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.08), M(P.sill));
+      key.position.set(0, h / 2 + 0.2, 0.005); grp.add(key);
+      const apron = new THREE.Mesh(new THREE.BoxGeometry(w * 0.66, 0.16, 0.04), M(P.sill));
+      apron.position.set(0, -h / 2 - 0.17, 0.01); grp.add(apron);
+    }
     return grp;
   }
 
-  // façade avant (z+) : 3 travées, porte travée centrale RDC
+  // façade avant (z+) : 3 travées symétriques
   const bays = [-W / 3, 0, W / 3];
   const zF = D / 2 + 0.02;
-  // étage : 3 fenêtres hautes
-  bays.forEach((x, i) => {
-    const win = windowMesh(0.72, 1.15, i !== 1);
-    win.position.set(x, PL + H * 0.75, zF);
-    g.add(win);
-  });
-  // RDC : fenêtres gauche/droite, porte au centre
+  // rez : deux grandes fenêtres décorées, porte au centre
   [bays[0], bays[2]].forEach((x, i) => {
-    const win = windowMesh(0.78, 1.25, i === 0);
-    win.position.set(x, PL + H * 0.27, zF);
+    const win = windowMesh(0.95, 1.35, i === 0, true);
+    win.position.set(x, yRDC, zF);
     g.add(win);
   });
-  // porte : taille réelle de porte, alignée sur les fenêtres du rez
-  const doorH = 1.5, doorY0 = 0.12;            // du ras du sol au linteau des fenêtres RDC
+  // étage : deux fenêtres décorées + porte-fenêtre centrale avec balcon
+  [bays[0], bays[2]].forEach((x) => {
+    const win = windowMesh(0.9, 1.3, true, true);
+    win.position.set(x, yET, zF);
+    g.add(win);
+  });
+  const french = windowMesh(0.85, 1.5, false, true);
+  french.position.set(0, yET - 0.1, zF);
+  g.add(french);
+
+  // balcon en fer forgé sur socle de pierre
+  const balcSlab = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.08, 0.34), M(P.cornice));
+  balcSlab.position.set(0, yET - 0.94, D / 2 + 0.18);
+  g.add(balcSlab);
+  const railMat = M(IRON);
+  for (let i = 0; i < 9; i++) {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.022, 0.42, 0.022), railMat);
+    b.position.set(-0.52 + i * 0.13, yET - 0.69, D / 2 + 0.33);
+    g.add(b);
+  }
+  const railTop = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.035, 0.035), railMat);
+  railTop.position.set(0, yET - 0.47, D / 2 + 0.33);
+  g.add(railTop);
+  [-1, 1].forEach(s => {
+    const side = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.035, 0.3), railMat);
+    side.position.set(s * 0.55, yET - 0.47, D / 2 + 0.185);
+    g.add(side);
+  });
+
+  // fenêtre cintrée du fronton
+  const attic = windowMesh(0.42, 0.6, false, false);
+  attic.position.set(0, PL + H + 0.45, D / 2 + 0.03);
+  g.add(attic);
+  const arch = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.3, 0.3, 0.07, 14, 1, false, -Math.PI / 2, Math.PI),
+    M(P.sill)
+  );
+  arch.rotation.x = Math.PI / 2;
+  arch.position.set(0, PL + H + 0.76, D / 2 + 0.03);
+  g.add(arch);
+
+  // porte : haute, blanche, imposte vitrée, encadrement gris, lanterne
+  const doorH = 1.7;
   const doorGrp = new THREE.Group();
-  const doorFrame = new THREE.Mesh(new THREE.BoxGeometry(0.94, doorH + 0.1, 0.08), M(P.sill));
-  doorGrp.add(doorFrame);
-  const door = new THREE.Mesh(new THREE.BoxGeometry(0.78, doorH, 0.07), M(P.door));
+  const doorSurround = new THREE.Mesh(new THREE.BoxGeometry(1.18, doorH + 0.5, 0.07), M(P.sill));
+  doorSurround.position.y = 0.18; doorGrp.add(doorSurround);
+  const door = new THREE.Mesh(new THREE.BoxGeometry(0.92, doorH, 0.07), M(P.door));
   door.position.z = 0.02; doorGrp.add(door);
-  // deux panneaux bas + vitrage haut
-  [[-0.17, -0.42], [0.17, -0.42]].forEach(c => {
-    const mold = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.5, 0.02), M(P.sill));
+  [[-0.21, -0.45], [0.21, -0.45], [-0.21, 0.18], [0.21, 0.18]].forEach(c => {
+    const mold = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.45, 0.02), M(P.frame));
     mold.position.set(c[0], c[1], 0.06); doorGrp.add(mold);
   });
-  const dglass = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.46, 0.02), M(P.glassOn, { emissive: P.glassOn, emissiveIntensity: .35 }));
-  dglass.position.set(0, 0.32, 0.055); doorGrp.add(dglass);
-  const dbarV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.46, 0.025), M(P.frame));
-  dbarV.position.set(0, 0.32, 0.06); doorGrp.add(dbarV);
-  const dbarH = new THREE.Mesh(new THREE.BoxGeometry(0.56, 0.035, 0.025), M(P.frame));
-  dbarH.position.set(0, 0.32, 0.06); doorGrp.add(dbarH);
-  doorGrp.position.set(0, doorY0 + doorH / 2, D / 2 + 0.09);
+  const dglass = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.3, 0.02), M(P.glassOn, { emissive: P.glassOn, emissiveIntensity: .35 }));
+  dglass.position.set(0, doorH / 2 + 0.19, 0.045); doorGrp.add(dglass);
+  const dbarV = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.3, 0.025), M(P.frame));
+  dbarV.position.set(0, doorH / 2 + 0.19, 0.05); doorGrp.add(dbarV);
+  doorGrp.position.set(0, 0.14 + doorH / 2, D / 2 + 0.06);
   g.add(doorGrp);
-  // perron : 2 marches basses vers le seuil
-  [0, 1].forEach(i => {
-    const st = new THREE.Mesh(new THREE.BoxGeometry(1.5 - i * 0.16, 0.065, 0.66 - i * 0.2), M(P.plinth));
-    st.position.set(0, 0.032 + i * 0.062, D / 2 + 0.42 - i * 0.13);
+  // lanterne au-dessus de la porte
+  const lampArm = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.16, 0.03), M(IRON));
+  lampArm.position.set(0, PL + 2.32, D / 2 + 0.16); g.add(lampArm);
+  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 6), M(P.glassOn, { emissive: P.glassOn, emissiveIntensity: .3 }));
+  lamp.position.set(0, PL + 2.22, D / 2 + 0.16); g.add(lamp);
+  // perron : 3 marches
+  [0, 1, 2].forEach(i => {
+    const st = new THREE.Mesh(new THREE.BoxGeometry(1.5 - i * 0.14, 0.055, 0.8 - i * 0.2), M(P.plinth));
+    st.position.set(0, 0.028 + i * 0.052, D / 2 + 0.5 - i * 0.12);
     g.add(st);
   });
 
-  // pignons (x+/-) : 2 fenêtres par niveau
+  // pignons (x+/-) : 2 fenêtres par niveau, encadrement simple
   [-1, 1].forEach(sx => {
     [-D / 4.5, D / 4.5].forEach(z => {
-      [0.27, 0.75].forEach((fy, fi) => {
-        const win = windowMesh(0.66, fi ? 1.05 : 1.1, sx === 1 && fi === 0);
+      [[yRDC, 1.25], [yET, 1.2]].forEach((fy, fi) => {
+        const win = windowMesh(0.8, fy[1], sx === 1 && fi === 0, false);
         win.rotation.y = sx * Math.PI / 2;
-        win.position.set(sx * (W / 2 + 0.02), PL + H * fy, z);
+        win.position.set(sx * (W / 2 + 0.02), fy[0], z);
         g.add(win);
       });
     });
   });
 
-  // façade arrière : 3 fenêtres par niveau
-  bays.forEach((x, i) => {
-    [0.27, 0.75].forEach(fy => {
-      const win = windowMesh(0.72, 1.12, false);
+  // façade arrière : 3 travées, 2 niveaux
+  bays.forEach((x) => {
+    [yRDC, yET].forEach(fy => {
+      const win = windowMesh(0.8, 1.2, false, false);
       win.rotation.y = Math.PI;
-      win.position.set(x, PL + H * fy, -(D / 2 + 0.02));
+      win.position.set(x, fy, -(D / 2 + 0.02));
       g.add(win);
     });
   });
 
-  // buissons : amas de sphères écrasées le long des façades
+  // haies taillées + buissons (comme le jardinet de la vraie maison)
   const bushCols = [P.bush || '#5F6B3F', P.bush2 || '#515F38', P.bush3 || '#6B7847'];
+  [-1, 1].forEach(s => {
+    const hedge = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.55, 0.55), M(bushCols[0]));
+    hedge.position.set(s * 1.45, 0.27, D / 2 + 0.85);
+    g.add(hedge);
+    const hedge2 = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 1.0), M(bushCols[1]));
+    hedge2.position.set(s * (W / 2 - 0.25), 0.25, D / 2 + 0.5);
+    g.add(hedge2);
+  });
   function bush(x, z, sc) {
     const grp = new THREE.Group();
     const n = 3 + Math.floor(sc * 2);
@@ -631,19 +703,18 @@ function buildHouse(THREE, P) {
     }
     return grp;
   }
-  const bz = D / 2 + 0.55, bx = W / 2 + 0.45;
-  [[-W / 2 + 0.35, bz, 1.15], [-W / 6 - 0.72, bz, 0.85], [W / 6 + 0.72, bz, 0.9], [W / 2 - 0.3, bz, 1.2],
-   [bx, D / 4, 1.0], [bx, -D / 4, 1.1], [-bx, D / 4, 1.05], [-bx, -D / 4, 0.9],
+  const bx = W / 2 + 0.45, bz = D / 2 + 0.55;
+  [[bx, D / 4, 1.0], [bx, -D / 4, 1.1], [-bx, D / 4, 1.05], [-bx, -D / 4, 0.9],
    [-W / 2 + 0.4, -bz, 1.1], [W / 2 - 0.4, -bz, 1.0]].forEach(c => g.add(bush(c[0], c[1], c[2])));
 
-  // cibles caméra pour le zoom-fenêtres (positions monde locales au groupe)
+  // cibles caméra pour le zoom-fenêtres (positions locales au groupe)
   g.userData.targets = {
-    frontTopCenter: { pos: [0, PL + H * 0.75, D / 2], n: [0, 0, 1] },
-    frontTopLeft:   { pos: [-W / 3, PL + H * 0.75, D / 2], n: [0, 0, 1] },
-    sideRight:      { pos: [W / 2, PL + H * 0.75, D / 4.5], n: [1, 0, 0] },
-    sideLeft:       { pos: [-W / 2, PL + H * 0.75, -D / 4.5], n: [-1, 0, 0] },
-    backCenter:     { pos: [0, PL + H * 0.75, -D / 2], n: [0, 0, -1] },
-    door:           { pos: [0, PL + 1.1, D / 2], n: [0, 0, 1] }
+    frontTopCenter: { pos: [0, yET - 0.1, D / 2], n: [0, 0, 1] },
+    frontTopLeft:   { pos: [-W / 3, yET, D / 2], n: [0, 0, 1] },
+    sideRight:      { pos: [W / 2, yET, D / 4.5], n: [1, 0, 0] },
+    sideLeft:       { pos: [-W / 2, yET, -D / 4.5], n: [-1, 0, 0] },
+    backCenter:     { pos: [0, yET, -D / 2], n: [0, 0, -1] },
+    door:           { pos: [0, PL + 1.0, D / 2], n: [0, 0, 1] }
   };
 
   // ombre de contact : ellipse douce sous la maison
@@ -689,9 +760,9 @@ function buildHouse(THREE, P) {
     const cam = new THREE.PerspectiveCamera(36, innerWidth/innerHeight, .05, 100);
 
     const house = buildHouse(THREE, {
-      wall:'#F2EADA', wallShade:'#DCCDB4', roof:'#43312A', plinth:'#332420',
-      frame:'#38281F', glass:'#8C7B65', glassOn:'#F4DCA8', door:'#68694A',
-      cornice:'#EBE2CE', chimney:'#43312A', sill:'#E7DCC5',
+      wall:'#FDFBF6', wallShade:'#E4E0D6', roof:'#3E4347', plinth:'#7E8487',
+      frame:'#FFFFFF', glass:'#7C7568', glassOn:'#F4DCA8', door:'#F7F4EE',
+      cornice:'#979D9F', chimney:'#9C5B41', sill:'#A2A8AA', iron:'#2F2C29',
       bush:'#5B6446', bush2:'#4E573D', bush3:'#666F4D'
     });
     scene.add(house);
