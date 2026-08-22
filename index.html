@@ -887,7 +887,11 @@ function buildHouse(THREE, P) {
   /* nav -> stops */
   const candLink = document.querySelector('nav a[href="#s-candidater"]');
   if (candLink) candLink.addEventListener('click', function(ev){
-    ev.preventDefault(); sCand.scrollIntoView({behavior: reduced ? 'auto' : 'smooth'});
+    ev.preventDefault();
+    /* saut direct : le snap et la caméra différée rendent le scroll fluide illisible */
+    const y = sCand.getBoundingClientRect().top + scrollY;
+    window.scrollTo({top: y, behavior: 'auto'});
+    midY = smoothY = y;
   });
   document.querySelectorAll('nav a[data-stop]').forEach(function(a){
     a.addEventListener('click',function(ev){
