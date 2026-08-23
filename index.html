@@ -98,6 +98,9 @@ body{font-family:'Hanken Grotesk',sans-serif;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
 /* ---------- scène ---------- */
+#bartint-top,#bartint-bot{position:fixed;left:0;width:100%;height:6px;z-index:60;pointer-events:none;background:var(--fond)}
+#bartint-top{top:0}
+#bartint-bot{bottom:0}
 #stage{position:fixed;top:0;left:0;width:100%;height:calc(100vh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px));z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
 #veil{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;background:var(--fond);will-change:opacity}
@@ -306,6 +309,8 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 </head>
 <body>
 
+<div id="bartint-top"></div>
+<div id="bartint-bot"></div>
 <div id="stage"></div>
 <div id="veil"></div>
 <div id="grain"></div>
@@ -900,6 +905,8 @@ function buildHouse(THREE, P) {
       document.documentElement.style.backgroundColor = bgHex;
       document.body.style.backgroundColor = bgHex;
       if (themeMeta) themeMeta.setAttribute('content', bgHex);
+      barTop.style.backgroundColor = bgHex;
+      barBot.style.backgroundColor = bgHex;
     }
     setStyle(navEl, 'opacity', (1 - nightP*.7).toFixed(3));
     nightStatement.classList.toggle('on', prog > 2.9 && rCTop > segH*.55);
@@ -936,6 +943,8 @@ function buildHouse(THREE, P) {
   const FOND_CLAIR = new THREE.Color('#F5F0E8');
   const _bodyCol = new THREE.Color();
   const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const barTop = document.getElementById('bartint-top');
+  const barBot = document.getElementById('bartint-bot');
   /* diagnostic : ajouter ?fps à l'URL pour afficher le framerate réel de l'appareil */
   let fpsBox = null, fpsN = 0, fpsT0 = 0;
   if (/[?&]fps/.test(location.search)){
