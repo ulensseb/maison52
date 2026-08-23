@@ -115,7 +115,7 @@ nav .links a.cta{background:var(--encre);color:var(--fond);line-height:1;padding
 nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 
 /* ---------- hero : titre au-dessus, cadre en dessous, rien de caché ---------- */
-#hero-ui{position:fixed;inset:0;z-index:10;pointer-events:none}
+#hero-ui{position:fixed;inset:0;z-index:10;pointer-events:none;will-change:opacity}
 #hero-ui h1{position:absolute;top:11vh;left:0;width:100%;text-align:center;
   font-size:9vw;line-height:1;letter-spacing:.01em}
 #hero-ui .kicker{position:absolute;top:calc(11vh + 10.5vw);left:0;width:100%;text-align:center;color:var(--muted)}
@@ -851,7 +851,6 @@ function buildHouse(THREE, P) {
     if (!segH) return;
 
     setStyle(heroUI, 'opacity', String(Math.max(0, Math.min(1, 1 - prog*2.4)).toFixed(3)));
-    setStyle(heroUI, 'visibility', prog > .45 ? 'hidden' : 'visible');
 
     /* cadre : une fois complètement ouvert, on retire le clip (canvas composité librement) */
     const g = clamp01((prog - .1)/.55), gt = 1 - Math.pow(1-g, 3);
