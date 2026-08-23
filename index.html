@@ -1020,6 +1020,14 @@ function buildHouse(THREE, P) {
     location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
   });
 
+  /* TEST (uniquement avec ?nosnap) : desactive le blocage page par page, seule difference
+     structurelle restante avec butter.video. Le vrai site n'est pas affecte. */
+  if (/[?&]nosnap/.test(location.search)){
+    document.documentElement.style.scrollSnapType = 'none';
+    document.querySelectorAll('.snapwrap, #experience .panel, #outro .panel, .fullpage')
+      .forEach(function(e){ e.style.scrollSnapAlign = 'none'; e.style.scrollSnapStop = 'normal'; });
+  }
+
   jumpTo(rawTarget()); applyVisuals();
 })();
 </script>
