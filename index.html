@@ -97,7 +97,7 @@ body{font-family:'Hanken Grotesk',sans-serif;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
 /* ---------- scène ---------- */
-#stage{position:fixed;inset:0;z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
+#stage{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
 #veil{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;background:var(--fond);will-change:opacity}
 #grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
@@ -809,7 +809,17 @@ function buildHouse(THREE, P) {
       { pos: new THREE.Vector3(8.2, 3.6, 13.2),       look: new THREE.Vector3(0, 2.1, 0) }
     ];
   }
-  makeKeyframes();
+  let _rw = 0, _rh = 0;
+  function fitRenderer(){
+    const w = stage.clientWidth || innerWidth;
+    const h = stage.clientHeight || innerHeight;
+    if (w === _rw && h === _rh) return;
+    _rw = w; _rh = h;
+    three.cam.aspect = w/h; three.cam.updateProjectionMatrix();
+    three.renderer.setSize(w, h);
+    makeKeyframes();
+  }
+  fitRenderer();
 
   let prog = 0, flt = 0, vel = 0, nightP = 0;
   const LAM = 2.4;   // tempo du vol (identique partout)
@@ -952,12 +962,7 @@ function buildHouse(THREE, P) {
     requestAnimationFrame(tick);
   })();
 
-  addEventListener('resize', () => {
-    three.cam.aspect = innerWidth/innerHeight; three.cam.updateProjectionMatrix();
-    three.renderer.setSize(innerWidth, innerHeight);
-    makeKeyframes();
-    measure();
-  });
+  addEventListener('resize', () => { fitRenderer(); measure(); });
 
   /* nav : sauts directs, moteur resynchronisé */
   const candLink = document.querySelector('nav a[href="#s-candidater"]');
