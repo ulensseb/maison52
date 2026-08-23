@@ -889,6 +889,18 @@ function buildHouse(THREE, P) {
     const rCTop = sCandTop - scrollY;
     const candCover = clamp01(1 - rCTop/(segH*.6));
     nightP = clamp01(prog - 2) * (1 - candCover);
+
+    /* barres Safari : la teinte reflète EXACTEMENT ce qui occupe l'écran —
+       crème quand le cadre/les pages/le contact couvrent, couleur de scène sinon */
+    const creamCover = Math.max(1 - gt, Math.min(op1, op5), candCover);
+    _bodyCol.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP).lerp(FOND_CLAIR, creamCover);
+    const bgHex = '#' + _bodyCol.getHexString();
+    if (bgHex !== _docBg){
+      _docBg = bgHex;
+      document.documentElement.style.backgroundColor = bgHex;
+      document.body.style.backgroundColor = bgHex;
+      if (themeMeta) themeMeta.setAttribute('content', bgHex);
+    }
     setStyle(navEl, 'opacity', (1 - nightP*.7).toFixed(3));
     nightStatement.classList.toggle('on', prog > 2.9 && rCTop > segH*.55);
     if (rCTop < segH*.6){
@@ -957,14 +969,6 @@ function buildHouse(THREE, P) {
     three.scene.background.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP);
     three.ground.material.color.set('#EDE6D7'); three.ground.material.color.lerp(NIGHT_GROUND, nightP);
     three.scene.fog.color.copy(three.scene.background);
-    _bodyCol.copy(FOND_CLAIR).lerp(three.NIGHT_BG, nightP);
-    const bgHex = '#' + _bodyCol.getHexString();
-    if (bgHex !== _docBg){
-      _docBg = bgHex;
-      document.documentElement.style.backgroundColor = bgHex;
-      document.body.style.backgroundColor = bgHex;
-      if (themeMeta) themeMeta.setAttribute('content', bgHex);
-    }
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
     winMats.forEach(m => {
