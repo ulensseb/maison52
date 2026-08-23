@@ -87,7 +87,8 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-snap-type:y mandatory}
-html,body{background:var(--fond);color:var(--encre);overflow-x:clip}
+html{color:var(--encre)}
+body{background:var(--fond);color:var(--encre);overflow-x:clip}
 body{font-family:'Hanken Grotesk',sans-serif;overflow-x:clip}
 ::selection{background:var(--encre);color:var(--fond)}
 .serif{font-family:'Newsreader',serif;font-weight:500;font-optical-sizing:auto}
@@ -907,7 +908,6 @@ function buildHouse(THREE, P) {
     const mirHex = '#' + _mir.getHexString();
     if (mirHex !== _mirHex){
       _mirHex = mirHex;
-      document.documentElement.style.backgroundColor = mirHex;
       document.body.style.backgroundColor = mirHex;
       ghostPanels.forEach(p => { p.style.backgroundColor = mirHex; });
     }
