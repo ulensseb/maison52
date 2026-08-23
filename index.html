@@ -826,8 +826,11 @@ function buildHouse(THREE, P) {
   const clamp01 = v => Math.max(0, Math.min(1, v));
   /* position doc de la section contact, précalculée (getBoundingClientRect par frame
      forçait un recalcul de layout 60x/s = saccades) */
-  let sCandTop = 0;
-  function measure(){ sCandTop = sCand.getBoundingClientRect().top + scrollY; }
+  let sCandTop = 0, panelH = 0;
+  function measure(){
+    sCandTop = sCand.getBoundingClientRect().top + scrollY;
+    panelH = document.querySelector('#experience .panel').offsetHeight || innerHeight;
+  }
   measure();
   /* écrire un style uniquement s'il change (les réécritures identiques coûtent cher sur iOS) */
   const _last = {};
@@ -839,7 +842,7 @@ function buildHouse(THREE, P) {
   }
 
   function rawTarget(){
-    const segH = innerHeight;
+    const segH = panelH;
     if (!segH) return prog;
     if (scrollY <= 2*segH) return Math.max(0, scrollY/segH);
     return 2 + clamp01((scrollY - (outro.offsetTop - segH))/segH);
@@ -847,19 +850,18 @@ function buildHouse(THREE, P) {
   function jumpTo(v){ prog = flt = v; vel = 0; }
 
   function applyVisuals(){
-    const segH = innerHeight;
+    const segH = panelH;
     if (!segH) return;
 
     setStyle(heroUI, 'opacity', String(Math.max(0, Math.min(1, 1 - prog*2.4)).toFixed(3)));
 
     /* cadre : une fois complètement ouvert, on retire le clip (canvas composité librement) */
     const g = clamp01((prog - .1)/.55), gt = 1 - Math.pow(1-g, 3);
-    if (gt >= .999){
-      setStyle(stage, 'clipPath', 'inset(0% 0% 0% 0%)');
-    } else {
+    {
       const mob = innerWidth < 641;
       const cT = mob ? 30 : 26, cS = mob ? 2 : 30, cB = mob ? 18 : 12;
-      setStyle(stage, 'clipPath', 'inset(' + (cT*(1-gt)).toFixed(2) + '% ' + (cS*(1-gt)).toFixed(2) + '% ' + (cB*(1-gt)).toFixed(2) + '% ' + (cS*(1-gt)).toFixed(2) + '%)');
+      const m = .02;   // le clip ne touche jamais 0 : l'état du layer ne change jamais
+      setStyle(stage, 'clipPath', 'inset(' + Math.max(m, cT*(1-gt)).toFixed(2) + '% ' + Math.max(m, cS*(1-gt)).toFixed(2) + '% ' + Math.max(m, cB*(1-gt)).toFixed(2) + '% ' + Math.max(m, cS*(1-gt)).toFixed(2) + '%)');
     }
 
     statement.classList.toggle('on', prog > .7 && prog < 1.55);
