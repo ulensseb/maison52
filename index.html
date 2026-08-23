@@ -748,9 +748,9 @@ function buildHouse(THREE, P) {
     stage.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const DAY_BG = new THREE.Color('#EDE6D7'), NIGHT_BG = new THREE.Color('#211410');
+    const DAY_BG = new THREE.Color('#F5F0E8'), NIGHT_BG = new THREE.Color('#211410');
     scene.background = DAY_BG.clone();
-    scene.fog = new THREE.Fog('#EDE6D7', 24, 46);
+    scene.fog = new THREE.Fog('#F5F0E8', 24, 46);
 
     const cam = new THREE.PerspectiveCamera(36, innerWidth/innerHeight, .05, 100);
 
@@ -762,7 +762,7 @@ function buildHouse(THREE, P) {
     });
     scene.add(house);
 
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(90,90), new THREE.MeshBasicMaterial({color:'#EDE6D7'}));
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(90,90), new THREE.MeshBasicMaterial({color:'#F5F0E8'}));
     ground.rotation.x = -Math.PI/2;
     scene.add(ground);
 
@@ -965,7 +965,7 @@ function buildHouse(THREE, P) {
     three.cam.lookAt(look);
 
     three.scene.background.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP);
-    three.ground.material.color.set('#EDE6D7'); three.ground.material.color.lerp(NIGHT_GROUND, nightP);
+    three.ground.material.color.set('#F5F0E8'); three.ground.material.color.lerp(NIGHT_GROUND, nightP);
     three.scene.fog.color.copy(three.scene.background);
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
