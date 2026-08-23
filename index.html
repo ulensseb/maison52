@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none}
 /* ---------- scène ---------- */
 #stage{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
-#grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
+#grain{position:fixed;inset:6px;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
 /* ---------- nav ---------- */
@@ -115,7 +115,7 @@ nav .links a.cta{background:var(--encre);color:var(--fond);line-height:1;padding
 nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 
 /* ---------- hero : titre au-dessus, cadre en dessous, rien de caché ---------- */
-#hero-ui{position:fixed;inset:0;z-index:10;pointer-events:none;will-change:opacity}
+#hero-ui{position:fixed;inset:6px;z-index:10;pointer-events:none;will-change:opacity}
 #hero-ui h1{position:absolute;top:11vh;left:0;width:100%;text-align:center;
   font-size:9vw;line-height:1;letter-spacing:.01em}
 #hero-ui .kicker{position:absolute;top:calc(11vh + 10.5vw);left:0;width:100%;text-align:center;color:var(--muted)}
@@ -126,7 +126,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 #hero-ui .count{position:absolute;right:var(--pad);bottom:5vh;color:var(--muted)}
 
 /* ---------- statement ---------- */
-#statement{position:fixed;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;align-items:center;will-change:opacity,transform;
+#statement{position:fixed;inset:6px;z-index:10;pointer-events:none;display:flex;flex-direction:column;align-items:center;will-change:opacity,transform;
   justify-content:flex-start;padding-top:13vh;opacity:0;transform:translateY(3vh);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 #statement.on{opacity:1;transform:none}
 #statement h2{font-size:5.2vw;line-height:1.15;text-align:center;max-width:84vw}
@@ -189,7 +189,7 @@ nav .links a.cta:hover{background:var(--ambre);color:var(--fond)}
 .photos-note{margin-top:3vh;color:var(--muted);font-size:13px}
 
 /* statement nuit : texte seul sur la maison illuminée */
-#night-statement{position:fixed;inset:0;z-index:10;pointer-events:none;will-change:opacity;display:flex;flex-direction:column;
+#night-statement{position:fixed;inset:6px;z-index:10;pointer-events:none;will-change:opacity;display:flex;flex-direction:column;
   align-items:center;justify-content:flex-start;padding-top:15vh;text-align:center;color:#F2E6D6;
   opacity:0;transform:translateY(3vh);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 #night-statement.on{opacity:1;transform:none}
@@ -906,6 +906,7 @@ function buildHouse(THREE, P) {
     if (mirHex !== _mirHex){
       _mirHex = mirHex;
       document.body.style.backgroundColor = mirHex;
+      stage.style.backgroundColor = mirHex;
       ghostPanels.forEach(p => { p.style.backgroundColor = mirHex; });
     }
   }
