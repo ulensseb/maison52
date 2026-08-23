@@ -97,6 +97,7 @@ body{font-family:'Hanken Grotesk',sans-serif;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 
 /* ---------- scène ---------- */
+#toptint{position:fixed;top:0;left:0;width:100%;height:8px;z-index:55;pointer-events:none;background:var(--fond)}
 #stage{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:5;pointer-events:none;clip-path:inset(26% 30% 12% 30%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
 #veil{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;background:var(--fond);will-change:opacity}
@@ -305,6 +306,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 </head>
 <body>
 
+<div id="toptint"></div>
 <div id="stage"></div>
 <div id="veil"></div>
 <div id="grain"></div>
@@ -837,6 +839,7 @@ function buildHouse(THREE, P) {
   const FOND_CLAIR = new THREE.Color('#F5F0E8');
   const _mir = new THREE.Color();
   const ghostPanels = Array.from(document.querySelectorAll('#experience .panel, #outro .panel'));
+  const topTint = document.getElementById('toptint');
   let _mirHex = '';
   const clamp01 = v => Math.max(0, Math.min(1, v));
   /* position doc de la section contact, précalculée (getBoundingClientRect par frame
@@ -910,6 +913,7 @@ function buildHouse(THREE, P) {
       document.documentElement.style.backgroundColor = mirHex;
       document.body.style.backgroundColor = mirHex;
       ghostPanels.forEach(p => { p.style.backgroundColor = mirHex; });
+      topTint.style.backgroundColor = mirHex;
     }
   }
 
