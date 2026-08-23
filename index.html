@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#F5F0E8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Maison 52 · Résidence d'entrepreneurs à Court-Saint-Étienne</title>
 <meta name="description" content="Six chambres pour jeunes entrepreneurs dans une maison de maître rénovée à Court-Saint-Étienne, à dix minutes de Louvain-la-Neuve. Colocation, coworking et entraide.">
@@ -922,6 +923,7 @@ function buildHouse(THREE, P) {
   let _docBg = '';
   const FOND_CLAIR = new THREE.Color('#F5F0E8');
   const _bodyCol = new THREE.Color();
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
   /* diagnostic : ajouter ?fps à l'URL pour afficher le framerate réel de l'appareil */
   let fpsBox = null, fpsN = 0, fpsT0 = 0;
   if (/[?&]fps/.test(location.search)){
@@ -961,6 +963,7 @@ function buildHouse(THREE, P) {
       _docBg = bgHex;
       document.documentElement.style.backgroundColor = bgHex;
       document.body.style.backgroundColor = bgHex;
+      if (themeMeta) themeMeta.setAttribute('content', bgHex);
     }
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
