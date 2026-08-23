@@ -779,162 +779,143 @@ function buildHouse(THREE, P) {
 
   if (!three) return;
 
-  /* ---------- keyframes caméra ----------
-     p: 0 hero · 1 statement · 2..6 fenêtres · 7 porte (nuit) */
+  /* ============================================================
+     MOTEUR DE TRANSITIONS v2 — réécrit de zéro (2026-08-23).
+     UN SEUL pipeline pour tout le site :
+       cible brute (scroll) -> filtre 1er ordre (LAM) -> ressort critique (W0) -> prog
+     prog : 0 hero · 1 phrase · 2 fenêtre/pages (gelé) · 3 nuit.
+     Symétrie garantie : pipeline linéaire invariant (réponse miroir
+     exacte dans les deux sens) + caméra en DOLLY EXPONENTIEL
+     (vitesse écran uniforme — le lerp linéaire explosait près de la
+     façade, c'était la cause du "retour plus rapide").
+     Cadrage portrait CUIT dans les keyframes au chargement :
+     aucune compensation à l'exécution, aucun saut de taille possible.
+     ============================================================ */
   const T = three.house.userData.targets;
-  const V3 = (a)=>new THREE.Vector3(a[0],a[1],a[2]);
-  function approach(t, dist){ return V3(t.pos).add(V3(t.n).multiplyScalar(dist)); }
-  const K = [
-    { pos:new THREE.Vector3(8.5,5.0,17.0), look:new THREE.Vector3(0,2.0,0) },   // 0 hero 3/4
-    { pos:new THREE.Vector3(-7.5,3.2,13.5), look:new THREE.Vector3(0,2.6,0) },  // 1 statement
-    { pos:approach(T.frontTopCenter,2.1), look:V3(T.frontTopCenter.pos) },      // 2 zoom fenêtre
-    { pos:new THREE.Vector3(8.2,3.6,13.2), look:new THREE.Vector3(0,2.1,0) }    // 3 plan large nuit
-  ];
-  function segMid(i){ return null; }   // trajet uniquement côté avant : pas de contournement
-  const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;   // easeInOutCubic
+  const V3 = a => new THREE.Vector3(a[0], a[1], a[2]);
 
-  const SEGN = 3;
-  let p = 0, pT = 0, pv = 0, nightP = 0;
+  let K = [];
+  function makeKeyframes(){
+    const portrait = three.cam.aspect < .95;
+    const w = portrait ? 1.5 : 1;
+    const lyA = portrait ? 2.55 : 2.0;
+    const lyB = portrait ? 4.7 : 2.6;
+    const win = V3(T.frontTopCenter.pos);
+    const winPos = win.clone().add(V3(T.frontTopCenter.n).multiplyScalar(2.1));
+    K = [
+      { pos: new THREE.Vector3(8.5*w, 5.0, 17.0*w),  look: new THREE.Vector3(0, lyA, 0) },
+      { pos: new THREE.Vector3(-7.5*w, 3.2, 13.5*w), look: new THREE.Vector3(0, lyB, 0) },
+      { pos: winPos,                                  look: win },
+      { pos: new THREE.Vector3(8.2, 3.6, 13.2),       look: new THREE.Vector3(0, 2.1, 0) }
+    ];
+  }
+  makeKeyframes();
+
+  let prog = 0, flt = 0, vel = 0, nightP = 0;
+  const LAM = 2.4;   // tempo du vol (identique partout)
+  const W0  = 5.5;   // douceur d'arrivée (identique partout)
+
   const heroUI = document.getElementById('hero-ui');
   const statement = document.getElementById('statement');
   const nightStatement = document.getElementById('night-statement');
   const sCand = document.getElementById('s-candidater');
+  const outro = document.getElementById('outro');
   const fp1 = document.getElementById('fp-1');
   const fp5 = document.getElementById('fp-5');
-  const fp1w = fp1.parentElement, fp5w = fp5.parentElement;
-  const outro = document.getElementById('outro');
+  const clamp01 = v => Math.max(0, Math.min(1, v));
 
-  function targetP(){
+  function rawTarget(){
     const segH = innerHeight;
-    if (!segH) return pT;
-    /* cible : 0 hero -> 1 phrase -> 2 fenêtre (gelé pendant les pages 01-05) -> 3 nuit */
-    if (scrollY <= 2*segH + 1 && smoothY <= 2*segH + 1) return Math.max(0, Math.min(2, smoothY/segH));
-    if (scrollY <= 2*segH) return Math.max(0, Math.min(2, scrollY/segH));
-    return 2 + Math.max(0, Math.min(1, (smoothY - (outro.offsetTop - segH))/segH));
+    if (!segH) return prog;
+    if (scrollY <= 2*segH) return Math.max(0, scrollY/segH);
+    return 2 + clamp01((scrollY - (outro.offsetTop - segH))/segH);
   }
+  function jumpTo(v){ prog = flt = v; vel = 0; }
+
   function applyVisuals(){
     const segH = innerHeight;
     if (!segH) return;
 
-    /* hero */
-    heroUI.style.opacity = Math.max(0, 1 - p*2.4);
-    heroUI.style.visibility = p > .45 ? 'hidden' : 'visible';
+    heroUI.style.opacity = Math.max(0, 1 - prog*2.4);
+    heroUI.style.visibility = prog > .45 ? 'hidden' : 'visible';
 
-    /* clip du cadre : ouvert dès p>0.15 */
-    const g = Math.max(0, Math.min(1, (p - .1) / .55));
-    const gt = 1 - Math.pow(1-g, 3);
+    const g = clamp01((prog - .1)/.55), gt = 1 - Math.pow(1-g, 3);
     const mob = innerWidth < 641;
     const cT = mob ? 30 : 26, cS = mob ? 2 : 30, cB = mob ? 18 : 12;
-    stage.style.clipPath = 'inset(' + (cT*(1-gt)) + '% ' + (cS*(1-gt)) + '% ' + (cB*(1-gt)) + '% ' + (cS*(1-gt)) + '%)';
+    stage.style.clipPath = 'inset(' + cT*(1-gt) + '% ' + cS*(1-gt) + '% ' + cB*(1-gt) + '% ' + cS*(1-gt) + '%)';
 
-    /* statement visible autour de p=1 */
-    statement.classList.toggle('on', p > .7 && p < 1.6);
+    statement.classList.toggle('on', prog > .7 && prog < 1.55);
 
-    /* nuit sur le segment final */
-    nightP = Math.max(0, Math.min(1, (p - 2.15) / .7));
-    const rC = sCand.getBoundingClientRect();
-    const candCover = Math.max(0, Math.min(1, 1 - rC.top / (innerHeight*.6)));
-    nightP *= (1 - candCover);
-    document.getElementById('nav').style.opacity = 1 - nightP*.7;
-    nightStatement.classList.toggle('on', p > 2.9 && rC.top > innerHeight*.55);
-    if (rC.top < innerHeight*.6){
-      stage.style.opacity = Math.max(0, rC.top/(innerHeight*.6));
-      nightStatement.style.opacity = 0;
-    } else { stage.style.opacity = 1; nightStatement.style.opacity = ''; }
-
-    /* on entre / on sort par la fenêtre : fondu des pages de bord, dans les DEUX sens.
-       Pendant la zone de transition, la page est épinglée à l'écran (le transform compense
-       le scroll) : le seul mouvement visible est le fondu, jamais un glissement. */
-    const op1 = Math.max(0, Math.min(1, (p - 1.35) / .5));
-    const op5 = Math.max(0, Math.min(1, 1 - (p - 2.15) / .5));
+    /* fondus par la fenêtre : bandes de même largeur, symétriques autour de prog=2 */
+    const op1 = clamp01((prog - 1.62)/.35);
+    const op5 = clamp01(1 - (prog - 2.03)/.35);
     fp1.style.opacity = op1;
     fp5.style.opacity = op5;
     fp1.style.pointerEvents = op1 > .1 ? '' : 'none';
     fp5.style.pointerEvents = op5 > .1 ? '' : 'none';
-  }
-  /* le snap saute d'une page d'un coup ; la caméra rattrape en douceur.
-     Double lissage = courbe en S (départ doux, arrivée douce), ~2 s de vol. */
-  let smoothY = scrollY, midY = scrollY;
 
-  let mx=0,my=0;
-  addEventListener('mousemove',function(e){mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5;});
+    /* nuit : étalée uniformément sur tout le vol final */
+    const rC = sCand.getBoundingClientRect();
+    const candCover = clamp01(1 - rC.top/(segH*.6));
+    nightP = clamp01(prog - 2) * (1 - candCover);
+    document.getElementById('nav').style.opacity = 1 - nightP*.7;
+    nightStatement.classList.toggle('on', prog > 2.9 && rC.top > segH*.55);
+    if (rC.top < segH*.6){
+      stage.style.opacity = Math.max(0, rC.top/(segH*.6));
+      nightStatement.style.opacity = 0;
+    } else { stage.style.opacity = 1; nightStatement.style.opacity = ''; }
+  }
+
+  /* caméra : look en lerp, position en (direction lerp, distance EXPONENTIELLE) */
+  const _look = new THREE.Vector3(), _da = new THREE.Vector3(), _db = new THREE.Vector3(), _dir = new THREE.Vector3();
+  function placeCamera(){
+    const i = Math.max(0, Math.min(2, Math.floor(prog)));
+    const f = clamp01(prog - i);
+    const A = K[i], B = K[i+1];
+    _look.lerpVectors(A.look, B.look, f);
+    _da.subVectors(A.pos, A.look); _db.subVectors(B.pos, B.look);
+    const da = _da.length(), db = _db.length();
+    _da.divideScalar(da); _db.divideScalar(db);
+    _dir.lerpVectors(_da, _db, f).normalize();
+    three.cam.position.copy(_look).addScaledVector(_dir, da * Math.pow(db/da, f));
+    return _look;
+  }
+
+  let mx = 0, my = 0;
+  addEventListener('mousemove', e => { mx = e.clientX/innerWidth - .5; my = e.clientY/innerHeight - .5; });
 
   const clock = new THREE.Clock();
   const winMats = three.house.userData.winMats;
   const NIGHT_GROUND = new THREE.Color('#251710');
-  const tmpPos = new THREE.Vector3(), tmpLook = new THREE.Vector3();
-
-  function camAt(pp){
-    const i = Math.min(SEGN-1, Math.floor(pp));
-    const f = ease(Math.min(1, pp - i));
-    const a = K[i], b = K[i+1];
-    const mid = segMid(i);
-    if (mid && f > 0 && f < 1){
-      const t = f;
-      tmpPos.set(0,0,0)
-        .addScaledVector(a.pos, (1-t)*(1-t))
-        .addScaledVector(mid, 2*(1-t)*t)
-        .addScaledVector(b.pos, t*t);
-    } else {
-      tmpPos.lerpVectors(a.pos, b.pos, f);
-    }
-    tmpLook.lerpVectors(a.look, b.look, f);
-  }
 
   (function tick(){
-    const dt = Math.min(.06, clock.getDelta());
+    const dt = Math.min(.05, clock.getDelta());
     const t = clock.elapsedTime;
-    /* vol lent seulement entre hero et phrase (transition entièrement visible) ;
-       dès qu'une page est impliquée, réponse rapide pour rester synchrone avec elle */
-    /* lissage SIMPLE (réponse immédiate au geste, pente max à t=0) ; le ressort en aval
-       fournit la douceur d'arrivée — un double lissage ajoutait ~0,2 s de latence au départ */
-    const oT = outro.offsetTop;
-    const inIntro = scrollY <= 2*innerHeight + 1 && smoothY <= 2*innerHeight + 1;
-    const inOutro = scrollY >= oT - innerHeight - 1 && smoothY >= oT - innerHeight - 1;
-    const lam = (inIntro || inOutro) ? 2.4 : 6.5;
-    const k = Math.min(1, 1 - Math.exp(-dt*lam));
-    smoothY += (scrollY - smoothY) * k;
-    midY = smoothY;
-    if (Math.abs(scrollY - smoothY) < .3){ midY = smoothY = scrollY; }
-    /* UN SEUL mécanisme partout : scroll lissé + ressort amorti critique,
-       le final utilise exactement les mêmes équations que l'intro validée */
-    pT = targetP();
-    const W0 = 5.5;
-    pv += (W0*W0*(pT - p) - 2*W0*pv) * dt;
-    p += pv * dt;
-    if (Math.abs(pT - p) < .0005 && Math.abs(pv) < .002){ p = pT; pv = 0; }
+
+    const k = 1 - Math.exp(-dt*LAM);
+    flt += (rawTarget() - flt) * k;
+    vel += (W0*W0*(flt - prog) - 2*W0*vel) * dt;
+    prog += vel * dt;
+    if (Math.abs(flt - prog) < .0004 && Math.abs(vel) < .002 && Math.abs(rawTarget() - flt) < .001){
+      flt = rawTarget(); prog = flt; vel = 0;
+    }
+
     applyVisuals();
-    let pp = p;
-    camAt(pp);
-    const aspectComp = Math.min(1.6, Math.max(1, 1.2/three.cam.aspect));
-    three.cam.position.copy(tmpPos);
-    /* recul portrait fondu progressivement (un seuil sec faisait sauter la maison à p=1.8) */
-    const compF = Math.max(0, Math.min(1, (1.98 - p) / .12));
-    const comp = 1 + (aspectComp - 1) * compF;
-    if (comp > 1.001){
-      three.cam.position.multiplyScalar(comp);
-      three.cam.position.y = tmpPos.y;
-    }
+    const look = placeCamera();
+
     if (!reduced){
-      const swayF = Math.exp(-(p/.18)*(p/.18));
-      three.cam.position.x += Math.sin(t*.25)*.4*swayF;
-    }
-    if (three.cam.aspect < .95){
-      const d = (p - 1.1)/.65;
-      tmpLook.y += 2.15*Math.exp(-d*d);
-      tmpLook.y += .55*Math.exp(-(p/.28)*(p/.28));
+      three.cam.position.x += Math.sin(t*.25)*.4*Math.exp(-(prog/.18)*(prog/.18));
     }
     three.cam.position.x += mx*.25;
     three.cam.position.y += my*.18;
-    three.cam.lookAt(tmpLook);
+    three.cam.lookAt(look);
 
-    /* jour -> nuit */
     three.scene.background.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP);
     three.ground.material.color.set('#EDE6D7'); three.ground.material.color.lerp(NIGHT_GROUND, nightP);
     three.scene.fog.color.copy(three.scene.background);
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
-    winMats.forEach(function(m){
+    winMats.forEach(m => {
       m.emissive.set(nightP > .05 ? '#FFB763' : '#E8C083');
       m.emissiveIntensity = Math.min(1, (m.userData.lit ? .9 : 0) + nightP*.95);
     });
@@ -943,30 +924,26 @@ function buildHouse(THREE, P) {
     requestAnimationFrame(tick);
   })();
 
-  addEventListener('resize',function(){
+  addEventListener('resize', () => {
     three.cam.aspect = innerWidth/innerHeight; three.cam.updateProjectionMatrix();
-    three.renderer.setSize(innerWidth,innerHeight);
+    three.renderer.setSize(innerWidth, innerHeight);
+    makeKeyframes();
   });
 
-  /* nav -> stops */
+  /* nav : sauts directs, moteur resynchronisé */
   const candLink = document.querySelector('nav a[href="#s-candidater"]');
-  if (candLink) candLink.addEventListener('click', function(ev){
+  if (candLink) candLink.addEventListener('click', ev => {
     ev.preventDefault();
-    /* saut direct : le snap et la caméra différée rendent le scroll fluide illisible */
-    const y = sCand.getBoundingClientRect().top + scrollY;
-    window.scrollTo({top: y, behavior: 'auto'});
-    midY = smoothY = y;
-    p = pT = targetP(); pv = 0;
+    window.scrollTo({top: sCand.getBoundingClientRect().top + scrollY, behavior: 'auto'});
+    jumpTo(rawTarget());
   });
-  document.querySelectorAll('nav a[data-target]').forEach(function(a){
-    a.addEventListener('click',function(ev){
+  document.querySelectorAll('nav a[data-target]').forEach(a => {
+    a.addEventListener('click', ev => {
       ev.preventDefault();
       const el = document.getElementById(a.getAttribute('data-target'));
       const tgt = el.parentElement.classList.contains('snapwrap') ? el.parentElement : el;
-      const y = tgt.getBoundingClientRect().top + scrollY;
-      window.scrollTo({top: y, behavior: 'auto'});
-      midY = smoothY = y;
-      p = pT = targetP(); pv = 0;
+      window.scrollTo({top: tgt.getBoundingClientRect().top + scrollY, behavior: 'auto'});
+      jumpTo(rawTarget());
     });
   });
 
@@ -995,7 +972,7 @@ function buildHouse(THREE, P) {
     location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n) + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
   });
 
-  p = pT = targetP(); applyVisuals();
+  jumpTo(rawTarget()); applyVisuals();
 })();
 </script>
 </body>
