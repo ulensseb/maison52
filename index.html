@@ -822,7 +822,21 @@ function buildHouse(THREE, P) {
   const outro = document.getElementById('outro');
   const fp1 = document.getElementById('fp-1');
   const fp5 = document.getElementById('fp-5');
+  const navEl = document.getElementById('nav');
   const clamp01 = v => Math.max(0, Math.min(1, v));
+  /* position doc de la section contact, précalculée (getBoundingClientRect par frame
+     forçait un recalcul de layout 60x/s = saccades) */
+  let sCandTop = 0;
+  function measure(){ sCandTop = sCand.getBoundingClientRect().top + scrollY; }
+  measure();
+  /* écrire un style uniquement s'il change (les réécritures identiques coûtent cher sur iOS) */
+  const _last = {};
+  function setStyle(el, propr, v){
+    const key = (el.id || el.className) + propr;
+    if (_last[key] === v) return;
+    _last[key] = v;
+    el.style[propr] = v;
+  }
 
   function rawTarget(){
     const segH = innerHeight;
@@ -836,34 +850,39 @@ function buildHouse(THREE, P) {
     const segH = innerHeight;
     if (!segH) return;
 
-    heroUI.style.opacity = Math.max(0, 1 - prog*2.4);
-    heroUI.style.visibility = prog > .45 ? 'hidden' : 'visible';
+    setStyle(heroUI, 'opacity', String(Math.max(0, Math.min(1, 1 - prog*2.4)).toFixed(3)));
+    setStyle(heroUI, 'visibility', prog > .45 ? 'hidden' : 'visible');
 
+    /* cadre : une fois complètement ouvert, on retire le clip (canvas composité librement) */
     const g = clamp01((prog - .1)/.55), gt = 1 - Math.pow(1-g, 3);
-    const mob = innerWidth < 641;
-    const cT = mob ? 30 : 26, cS = mob ? 2 : 30, cB = mob ? 18 : 12;
-    stage.style.clipPath = 'inset(' + cT*(1-gt) + '% ' + cS*(1-gt) + '% ' + cB*(1-gt) + '% ' + cS*(1-gt) + '%)';
+    if (gt >= .999){
+      setStyle(stage, 'clipPath', 'none');
+    } else {
+      const mob = innerWidth < 641;
+      const cT = mob ? 30 : 26, cS = mob ? 2 : 30, cB = mob ? 18 : 12;
+      setStyle(stage, 'clipPath', 'inset(' + (cT*(1-gt)).toFixed(2) + '% ' + (cS*(1-gt)).toFixed(2) + '% ' + (cB*(1-gt)).toFixed(2) + '% ' + (cS*(1-gt)).toFixed(2) + '%)');
+    }
 
     statement.classList.toggle('on', prog > .7 && prog < 1.55);
 
     /* fondus par la fenêtre : bandes de même largeur, symétriques autour de prog=2 */
     const op1 = clamp01((prog - 1.62)/.35);
     const op5 = clamp01(1 - (prog - 2.03)/.35);
-    fp1.style.opacity = op1;
-    fp5.style.opacity = op5;
-    fp1.style.pointerEvents = op1 > .1 ? '' : 'none';
-    fp5.style.pointerEvents = op5 > .1 ? '' : 'none';
+    setStyle(fp1, 'opacity', op1.toFixed(3));
+    setStyle(fp5, 'opacity', op5.toFixed(3));
+    setStyle(fp1, 'pointerEvents', op1 > .1 ? '' : 'none');
+    setStyle(fp5, 'pointerEvents', op5 > .1 ? '' : 'none');
 
-    /* nuit : étalée uniformément sur tout le vol final */
-    const rC = sCand.getBoundingClientRect();
-    const candCover = clamp01(1 - rC.top/(segH*.6));
+    /* nuit : étalée uniformément sur tout le vol final (rCTop = arithmétique pure) */
+    const rCTop = sCandTop - scrollY;
+    const candCover = clamp01(1 - rCTop/(segH*.6));
     nightP = clamp01(prog - 2) * (1 - candCover);
-    document.getElementById('nav').style.opacity = 1 - nightP*.7;
-    nightStatement.classList.toggle('on', prog > 2.9 && rC.top > segH*.55);
-    if (rC.top < segH*.6){
-      stage.style.opacity = Math.max(0, rC.top/(segH*.6));
-      nightStatement.style.opacity = 0;
-    } else { stage.style.opacity = 1; nightStatement.style.opacity = ''; }
+    setStyle(navEl, 'opacity', (1 - nightP*.7).toFixed(3));
+    nightStatement.classList.toggle('on', prog > 2.9 && rCTop > segH*.55);
+    if (rCTop < segH*.6){
+      setStyle(stage, 'opacity', Math.max(0, rCTop/(segH*.6)).toFixed(3));
+      setStyle(nightStatement, 'opacity', '0');
+    } else { setStyle(stage, 'opacity', '1'); setStyle(nightStatement, 'opacity', ''); }
   }
 
   /* caméra : look en lerp, position en (direction lerp, distance EXPONENTIELLE) */
@@ -887,6 +906,13 @@ function buildHouse(THREE, P) {
   const clock = new THREE.Clock();
   const winMats = three.house.userData.winMats;
   const NIGHT_GROUND = new THREE.Color('#251710');
+  /* diagnostic : ajouter ?fps à l'URL pour afficher le framerate réel de l'appareil */
+  let fpsBox = null, fpsN = 0, fpsT0 = 0;
+  if (/[?&]fps/.test(location.search)){
+    fpsBox = document.createElement('div');
+    fpsBox.style.cssText = 'position:fixed;top:70px;left:10px;z-index:99;background:#000;color:#0f0;font:12px monospace;padding:4px 8px;border-radius:4px';
+    document.body.appendChild(fpsBox);
+  }
 
   (function tick(){
     const dt = Math.min(.05, clock.getDelta());
@@ -921,6 +947,7 @@ function buildHouse(THREE, P) {
     });
 
     three.renderer.render(three.scene, three.cam);
+    if (fpsBox){ fpsN++; if (t - fpsT0 >= 1){ fpsBox.textContent = Math.round(fpsN/(t - fpsT0)) + ' fps'; fpsN = 0; fpsT0 = t; } }
     requestAnimationFrame(tick);
   })();
 
@@ -928,6 +955,7 @@ function buildHouse(THREE, P) {
     three.cam.aspect = innerWidth/innerHeight; three.cam.updateProjectionMatrix();
     three.renderer.setSize(innerWidth, innerHeight);
     makeKeyframes();
+    measure();
   });
 
   /* nav : sauts directs, moteur resynchronisé */
