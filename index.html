@@ -833,6 +833,11 @@ function buildHouse(THREE, P) {
   const fp1 = document.getElementById('fp-1');
   const fp5 = document.getElementById('fp-5');
   const navEl = document.getElementById('nav');
+  /* couleur miroir : ce que Safari doit lire au bord haut (nav) et au bord bas (racine) */
+  const FOND_CLAIR = new THREE.Color('#F5F0E8');
+  const _mir = new THREE.Color();
+  const ghostPanels = Array.from(document.querySelectorAll('#experience .panel, #outro .panel'));
+  let _mirHex = '';
   const clamp01 = v => Math.max(0, Math.min(1, v));
   /* position doc de la section contact, précalculée (getBoundingClientRect par frame
      forçait un recalcul de layout 60x/s = saccades) */
@@ -894,6 +899,18 @@ function buildHouse(THREE, P) {
       setStyle(stage, 'opacity', Math.max(0, rCTop/(segH*.6)).toFixed(3));
       setStyle(nightStatement, 'opacity', '0');
     } else { setStyle(stage, 'opacity', '1'); setStyle(nightStatement, 'opacity', ''); }
+
+    /* Safari peint ses bords avec : l'élément fixe du bord (nav en haut) sinon le fond
+       racine. On leur donne la couleur de ce qui occupe réellement l'écran. */
+    const creamCover = Math.max(1 - gt, Math.min(op1, op5), candCover);
+    _mir.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP).lerp(FOND_CLAIR, creamCover);
+    const mirHex = '#' + _mir.getHexString();
+    if (mirHex !== _mirHex){
+      _mirHex = mirHex;
+      document.documentElement.style.backgroundColor = mirHex;
+      document.body.style.backgroundColor = mirHex;
+      ghostPanels.forEach(p => { p.style.backgroundColor = mirHex; });
+    }
   }
 
   /* caméra : look en lerp, position en (direction lerp, distance EXPONENTIELLE) */
