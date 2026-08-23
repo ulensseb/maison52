@@ -917,9 +917,11 @@ function buildHouse(THREE, P) {
   const clock = new THREE.Clock();
   const winMats = three.house.userData.winMats;
   const NIGHT_GROUND = new THREE.Color('#251710');
-  /* les barres Safari (statut / bas d'écran) sont peintes avec le fond du document :
-     on le fait suivre la couleur de la scène pour que les bandes se fondent dans le décor */
+  /* les barres Safari (statut / bas d'écran) sont peintes avec le fond du BODY :
+     crème le jour (cadre du hero), fondu vers le brun en même temps que la nuit */
   let _docBg = '';
+  const FOND_CLAIR = new THREE.Color('#F5F0E8');
+  const _bodyCol = new THREE.Color();
   /* diagnostic : ajouter ?fps à l'URL pour afficher le framerate réel de l'appareil */
   let fpsBox = null, fpsN = 0, fpsT0 = 0;
   if (/[?&]fps/.test(location.search)){
@@ -953,8 +955,13 @@ function buildHouse(THREE, P) {
     three.scene.background.copy(three.DAY_BG).lerp(three.NIGHT_BG, nightP);
     three.ground.material.color.set('#EDE6D7'); three.ground.material.color.lerp(NIGHT_GROUND, nightP);
     three.scene.fog.color.copy(three.scene.background);
-    const bgHex = '#' + three.scene.background.getHexString();
-    if (bgHex !== _docBg){ _docBg = bgHex; document.documentElement.style.backgroundColor = bgHex; }
+    _bodyCol.copy(FOND_CLAIR).lerp(three.NIGHT_BG, nightP);
+    const bgHex = '#' + _bodyCol.getHexString();
+    if (bgHex !== _docBg){
+      _docBg = bgHex;
+      document.documentElement.style.backgroundColor = bgHex;
+      document.body.style.backgroundColor = bgHex;
+    }
     three.hemi.intensity = .85 - nightP*.55;
     three.sun.intensity = .8 - nightP*.65;
     winMats.forEach(m => {
