@@ -1024,20 +1024,6 @@ function buildHouse(THREE, P) {
   });
 
   jumpTo(rawTarget()); applyVisuals();
-
-  /* DIAGNOSTIC (uniquement avec ?diag) : passe le fond en rouge vif 3 s après le chargement.
-     Si la bande du haut devient rouge => Safari relit la couleur en direct (donc réparable).
-     Si elle reste crème => la couleur est figée au chargement (donc non réparable). */
-  if (/[?&]diag/.test(location.search)){
-    setTimeout(function(){
-      document.documentElement.style.setProperty('background-color', '#E01B24', 'important');
-      document.body.style.setProperty('background-color', '#E01B24', 'important');
-      const t = document.createElement('div');
-      t.textContent = 'DIAG : fond passé en rouge';
-      t.style.cssText = 'position:fixed;top:40%;left:0;width:100%;text-align:center;z-index:99;font:14px monospace;color:#fff;background:#000;padding:8px';
-      document.body.appendChild(t);
-    }, 3000);
-  }
 })();
 </script>
 </body>
