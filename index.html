@@ -229,7 +229,7 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 #loader .word.compact span{opacity:1;transform:none;animation:none}
 #loader .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);animation:loadBar 2.8s var(--ease) forwards}
 /* morph : le titre monte et grossit jusqu'à la place du titre du hero */
-#loader.morph .word{transform:var(--morph,none);transition:transform 2.05s var(--ease)}
+#loader.morph .word{transform:var(--morph,none);transition:transform 1.3s var(--ease)}
 #loader.morph .lbg{opacity:0}
 #loader.morph .bar{opacity:0;transition:opacity .6s var(--ease)}
 @keyframes loadIn{to{opacity:1;transform:none}}
@@ -596,7 +596,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
     setTimeout(function(){
       document.body.classList.add('m52-ready');
       if (loader) loader.classList.add('done');
-    }, 2050);
+    }, 1300);
   }, 2100);
 
   /* titres : révélation mot par mot, déclenchée seulement quand la section est visible */
