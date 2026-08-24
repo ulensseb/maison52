@@ -45,7 +45,7 @@ body{font-family:'Manrope',sans-serif;font-weight:400;font-size:16px;line-height
 a{color:inherit;text-decoration:none}
 
 /* ---------- stage 3D ---------- */
-#stage{position:fixed;top:0;left:0;width:100%;height:100vh;z-index:5;pointer-events:none;clip-path:inset(.02% .02% .02% .02%);will-change:clip-path,opacity}
+#stage{position:fixed;top:0;left:0;width:100%;height:100vh;height:100lvh;z-index:5;pointer-events:none;clip-path:inset(.02% .02% .02% .02%);will-change:clip-path,opacity}
 #stage canvas{width:100%;height:100%;display:block}
 
 /* ---------- nav ---------- */
@@ -259,7 +259,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 @media(max-width:860px){
   :root{--pad:6vw}
   /* la maison descend dans le bas de l'écran, le texte occupe le haut : plus aucun chevauchement */
-  #stage{clip-path:inset(34% 4% 3% 4%)}
+  #stage{clip-path:inset(.02% .02% .02% .02%)}
   #hero-ui h1{font-size:clamp(44px,12.5vw,88px);top:20vh;transform:translate(-50%,0)}
   #hero-ui .kicker{top:calc(20vh + 12.5vw)}
   #statement{justify-content:flex-start;padding-top:20vh}
