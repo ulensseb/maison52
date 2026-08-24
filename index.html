@@ -621,6 +621,18 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   check();
   setInterval(check, 120);
   window.addEventListener('scroll', check, {passive:true});
+
+  /* DIAGNOSTIC (uniquement avec ?diag) : chaque calque recoit une couleur criarde.
+     La couleur de la bande identifie l'element : ROSE = panneaux du haut,
+     CYAN = panneau de nuit, ORANGE = fond de page, VERT = page 07. */
+  if (/[?&]diag/.test(location.search)){
+    setInterval(function(){
+      document.querySelectorAll('#experience .panel').forEach(function(p){ p.style.backgroundColor = '#FF00AA'; });
+      document.querySelectorAll('#outro .panel').forEach(function(p){ p.style.backgroundColor = '#00C8FF'; });
+      document.body.style.backgroundColor = '#FF8800';
+      document.getElementById('s-candidater').style.backgroundColor = '#00CC44';
+    }, 150);
+  }
 })();
 
 </script>
