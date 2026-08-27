@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Démo · Photos vivantes &amp; visite</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Manrope:wght@300;400;500&display=swap">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:#fff;color:#0A0A0A}
+body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;background:#fff;-webkit-font-smoothing:antialiased}
+.caps{font-family:'Sora',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+h2{font-family:'Sora',sans-serif;font-weight:600;letter-spacing:-.03em;font-size:clamp(26px,5vw,44px);line-height:1.1}
+.accent{color:#FF5722}
+.intro{padding:14vh 6vw 8vh;max-width:640px}
+.intro p{color:#6B6B6B;margin-top:1em}
+
+/* ============ 1 · PHOTOS VIVANTES ============ */
+.kb-grid{display:grid;gap:6vh;padding:0 6vw 14vh}
+.kb{position:relative;overflow:hidden;aspect-ratio:4/3;background:#F5F5F5}
+.kb img{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;
+  will-change:transform;transition:transform .2s linear}
+.kb figcaption{position:absolute;left:0;bottom:0;padding:14px 18px;color:#fff;z-index:2;
+  background:linear-gradient(to top,rgba(0,0,0,.45),transparent);width:100%}
+
+/* ============ 2 · ENTRER DANS LA MAISON ============ */
+#walk{position:relative}
+#walk .stage{position:sticky;top:0;height:100svh;overflow:hidden;background:#0A0A0A}
+#walk .shot{position:absolute;inset:0;opacity:0;will-change:transform,opacity}
+#walk .shot img{width:100%;height:100%;object-fit:cover;display:block;will-change:transform}
+#walk .cap{position:fixed;left:0;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:100%;
+  text-align:center;color:#fff;z-index:5;opacity:0;transition:opacity .4s;pointer-events:none;
+  text-shadow:0 1px 12px rgba(0,0,0,.5)}
+.spacer{height:60vh;display:flex;align-items:center;justify-content:center}
+.spacer .caps{color:#6B6B6B}
+.fin{padding:10vh 6vw 16vh;max-width:640px}
+.fin p{color:#6B6B6B;margin-top:1em}
+</style>
+</head>
+<body>
+
+<section class="intro">
+  <span class="caps accent">Démo 1 — Photos vivantes</span>
+  <h2>Les photos respirent pendant que tu défiles.</h2>
+  <p>Zoom lent + parallaxe liée au scroll. Discret, fluide, aucun poids technique. Fais défiler doucement.</p>
+</section>
+
+<div class="kb-grid">
+  <figure class="kb" data-kb="1.0"><img src="./demo-chambre.jpg" alt=""><figcaption class="caps">La chambre</figcaption></figure>
+  <figure class="kb" data-kb="-1.0"><img src="./demo-sdb.jpg" alt=""><figcaption class="caps">La salle de bain</figcaption></figure>
+  <figure class="kb" data-kb="0.7"><img src="./demo-combles.jpg" alt=""><figcaption class="caps">Les combles</figcaption></figure>
+</div>
+
+<section class="intro">
+  <span class="caps accent">Démo 2 — Entrer dans la maison</span>
+  <h2>Le scroll te fait passer la porte.</h2>
+  <p>La façade, puis le zoom vers la porte d'entrée, et te voilà dans le hall, le salon, la salle à manger, la cuisine, le jardin. Défile lentement pour sentir le mouvement.</p>
+</section>
+
+<div id="walk">
+  <div class="stage">
+    <div class="shot" data-name="La façade"><img src="./demo-facade.jpg" style="transform-origin:46% 66%" alt=""></div>
+    <div class="shot" data-name="Le hall"><img src="./demo-hall.jpg" style="transform-origin:50% 45%" alt=""></div>
+    <div class="shot" data-name="Le salon"><img src="./demo-salon.jpg" style="transform-origin:38% 52%" alt=""></div>
+    <div class="shot" data-name="La salle à manger"><img src="./demo-sam.jpg" style="transform-origin:50% 48%" alt=""></div>
+    <div class="shot" data-name="La cuisine"><img src="./demo-cuisine.jpg" style="transform-origin:22% 55%" alt=""></div>
+    <div class="shot" data-name="Le jardin"><img src="./demo-jardin.jpg" style="transform-origin:50% 50%" alt=""></div>
+    <div class="cap caps" id="walkcap"></div>
+  </div>
+</div>
+
+<section class="fin">
+  <span class="caps accent">Fin de la démo</span>
+  <p>Rien de tout ceci n'est sur le vrai site : c'est une maquette pour juger l'effet. Les points de zoom, la vitesse et l'ordre des pièces se règlent librement.</p>
+</section>
+
+<script>
+(function(){
+  /* ---- 1 · Ken Burns + parallaxe au scroll ---- */
+  var kbs = [].slice.call(document.querySelectorAll('.kb'));
+  function kbTick(){
+    var vh = innerHeight;
+    kbs.forEach(function(f){
+      var r = f.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var p = 1 - (r.top + r.height/2) / vh * 1.0;     /* -~0.5 -> ~1 en traversant l'ecran */
+      var dir = parseFloat(f.dataset.kb);
+      var img = f.querySelector('img');
+      var scale = 1.06 + p * 0.06;                      /* zoom lent */
+      var tx = dir * p * 22;                            /* glissement lateral */
+      var ty = p * -18;                                 /* parallaxe verticale */
+      img.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+    });
+  }
+
+  /* ---- 2 · La visite : zoom a travers chaque photo ---- */
+  var walk = document.getElementById('walk');
+  var shots = [].slice.call(walk.querySelectorAll('.shot'));
+  var cap = document.getElementById('walkcap');
+  var SEG = 1.35;                                       /* hauteurs d'ecran par piece */
+  walk.style.height = (shots.length * SEG * 100 + 100) + 'svh';
+  var lastName = '';
+
+  function walkTick(){
+    var vh = innerHeight;
+    var r = walk.getBoundingClientRect();
+    var total = r.height - vh;
+    var t = Math.max(0, Math.min(1, -r.top / total)) * shots.length;
+    var inWalk = r.top < vh*0.5 && r.bottom > vh*0.5;
+    cap.style.opacity = inWalk ? 1 : 0;
+    shots.forEach(function(s, i){
+      var img = s.querySelector('img');
+      var p = t - i;                                    /* -inf..0 : avant · 0..1 : active · >1 : passee */
+      if (p < -0.15 || p > 1.15){ s.style.opacity = 0; return; }
+      var ease = function(x){ return x*x*(3-2*x); };
+      if (p < 0){                                       /* arrivee : legere descente de zoom */
+        s.style.opacity = 1;
+        img.style.transform = 'scale(' + (1.14 + p*0.14) + ')';
+        s.style.zIndex = 10 - i;
+      } else {                                          /* traversee : on s'enfonce vers le point d'origine */
+        var z = 1 + ease(Math.min(1,p)) * 1.9;          /* 1 -> 2.9 */
+        img.style.transform = 'scale(' + z.toFixed(3) + ')';
+        var fade = p < 0.62 ? 1 : Math.max(0, 1 - (p - 0.62) / 0.33);
+        s.style.opacity = fade.toFixed(3);
+        s.style.zIndex = 10 - i;
+        if (p < 0.9 && s.dataset.name !== lastName){ lastName = s.dataset.name; cap.textContent = lastName; }
+      }
+    });
+  }
+
+  var raf = null;
+  function onScroll(){ if (!raf) raf = requestAnimationFrame(function(){ raf = null; kbTick(); walkTick(); }); }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+  kbTick(); walkTick();
+})();
+</script>
+</body>
+</html>
