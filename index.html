@@ -627,7 +627,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
     });
   }
   check();
-  setInterval(check, 120);
+  setInterval(function(){ check(); kbTick(); }, 120);
   window.addEventListener('scroll', check, {passive:true});
 
   /* photos vivantes : zoom lent + parallaxe liee au scroll (aucun effet si l'utilisateur
@@ -642,7 +642,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
       if (r.bottom < 0 || r.top > vh) return;
       var p = Math.max(-0.5, Math.min(1, 1 - (r.top + r.height/2) / vh));
       var dir = (i % 2 ? -1 : 1);
-      img.style.transform = 'translate(' + (dir * p * 18).toFixed(1) + 'px,' + (p * -14).toFixed(1) + 'px) scale(' + (1.07 + p * 0.05).toFixed(3) + ')';
+      img.style.transform = 'translate(' + (dir * p * 26).toFixed(1) + 'px,' + (p * -20).toFixed(1) + 'px) scale(' + (1.09 + p * 0.07).toFixed(3) + ')';
     });
   }
   var kbRaf = null;
