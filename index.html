@@ -90,7 +90,8 @@ nav .links a.cta:hover{background:var(--accent)}
 
 /* ---------- 01 la maison ---------- */
 #fp-1 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:center}
-#fp-1 .split-media img{width:100%;height:clamp(280px,55vh,560px);object-fit:cover;display:block}
+#fp-1 .split-media{overflow:hidden}
+#fp-1 .split-media img{width:100%;height:clamp(280px,55vh,560px);object-fit:cover;display:block;transition:transform .25s linear;will-change:transform}
 #fp-1 h3{margin-bottom:4.5vh}
 #fp-1 h3 em,#fp-1 .lead em{font-style:normal;color:var(--accent)}
 #fp-1 .stat .n small{color:inherit;opacity:.55}
@@ -110,8 +111,8 @@ nav .links a.cta:hover{background:var(--accent)}
 #fp-2 .card .shot{aspect-ratio:4/3;overflow:hidden;background:var(--surface);margin-top:2vh;order:10}
 #fp-2 .card.wide .shot{aspect-ratio:16/10;margin-top:0;order:10}
 #fp-2 .card .shot img{width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .9s var(--ease)}
-#fp-2 .card:hover .shot img{transform:scale(1.04)}
+  transition:transform .25s linear;will-change:transform}
+
 #fp-2 .card.overview{display:block}
 #fp-2 .card.overview .shot{margin-top:0;aspect-ratio:21/9}
 #fp-2 .card .idx{display:block;margin-bottom:1em;color:var(--accent)}
@@ -158,7 +159,8 @@ nav .links a.cta:hover{background:var(--accent)}
 /* ---------- 05 quartier ---------- */
 #fp-5{padding-bottom:16vh}
 #fp-5 .quartier{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:center}
-#fp-5 .sideshot img{width:100%;height:clamp(280px,55vh,560px);object-fit:cover;display:block}
+#fp-5 .sideshot{overflow:hidden}
+#fp-5 .sideshot img{width:100%;height:clamp(280px,55vh,560px);object-fit:cover;display:block;transition:transform .25s linear;will-change:transform}
 #fp-5 h3{margin-bottom:4.5vh}
 #fp-5 .vielist{border-top:1px solid var(--line)}
 #fp-5 .vielist li{list-style:none;display:grid;grid-template-columns:4.5em 1fr;gap:2vw;padding:2.6vh 0;border-bottom:1px solid var(--line);align-items:baseline}
@@ -627,6 +629,27 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   check();
   setInterval(check, 120);
   window.addEventListener('scroll', check, {passive:true});
+
+  /* photos vivantes : zoom lent + parallaxe liee au scroll (aucun effet si l'utilisateur
+     prefere reduire les animations) */
+  var kbImgs = Array.prototype.slice.call(document.querySelectorAll('#fp-2 .shot img, #fp-1 .split-media img, #fp-5 .sideshot img'));
+  var kbReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function kbTick(){
+    if (kbReduced) return;
+    var vh = window.innerHeight;
+    kbImgs.forEach(function(img, i){
+      var r = img.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > vh) return;
+      var p = Math.max(-0.5, Math.min(1, 1 - (r.top + r.height/2) / vh));
+      var dir = (i % 2 ? -1 : 1);
+      img.style.transform = 'translate(' + (dir * p * 18).toFixed(1) + 'px,' + (p * -14).toFixed(1) + 'px) scale(' + (1.07 + p * 0.05).toFixed(3) + ')';
+    });
+  }
+  var kbRaf = null;
+  window.addEventListener('scroll', function(){
+    if (!kbRaf) kbRaf = requestAnimationFrame(function(){ kbRaf = null; kbTick(); });
+  }, {passive:true});
+  kbTick();
 
   /* DIAGNOSTIC (uniquement avec ?diag) : chaque calque recoit une couleur criarde.
      La couleur de la bande identifie l'element : ROSE = panneaux du haut,
