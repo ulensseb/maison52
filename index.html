@@ -45,7 +45,19 @@ body{font-family:'Manrope',sans-serif;font-weight:400;font-size:16px;line-height
 a{color:inherit;text-decoration:none}
 
 /* ---------- stage 3D ---------- */
-#stage{position:fixed;top:-70px;left:0;width:100%;height:calc(100vh + 140px);height:calc(100lvh + 140px);z-index:5;pointer-events:none;clip-path:inset(.02% .02% .02% .02%);will-change:clip-path,opacity}
+#hero,#outro-video{position:relative;height:100svh;height:100lvh;overflow:hidden;background:#0A0A0A}
+#hero-ui,#night-statement{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55),0 4px 34px rgba(0,0,0,.55)}
+#hero-ui h1,#night-statement h2{color:#fff}
+#hero-ui .kicker,#hero-ui .scroll-hint{color:rgba(255,255,255,.88)}
+#hero-ui .scroll-hint::after{background:var(--accent)}
+body:not(.scrolled) nav .brand .caps{color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+body:not(.scrolled) nav .brand .muted{color:rgba(255,255,255,.75)}
+body:not(.scrolled) nav .links a:not(.cta){color:rgba(255,255,255,.85)}
+nav{transition:background .35s}
+#hero video,#outro-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.film{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.30),rgba(0,0,0,.06) 38%,rgba(0,0,0,.08) 62%,rgba(0,0,0,.40))}
+#outro-video .film{background:linear-gradient(to bottom,rgba(0,0,0,.36),rgba(0,0,0,.30) 40%,rgba(0,0,0,.34) 60%,rgba(0,0,0,.48))}
+#outro-video .film::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 42% at 50% 48%,rgba(0,0,0,.42),transparent 72%)}
 #stage canvas{width:100%;height:100%;display:block}
 
 /* ---------- nav ---------- */
@@ -60,19 +72,19 @@ nav .links a.cta{background:var(--ink);color:var(--bg);line-height:1;padding:1em
 nav .links a.cta:hover{background:var(--accent)}
 
 /* ---------- hero ---------- */
-#hero-ui{position:fixed;inset:0;z-index:10;pointer-events:none;will-change:opacity}
-#hero-ui h1{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;text-align:center;
+#hero-ui{position:absolute;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6vw}
+#hero-ui h1{position:static;transform:none;width:100%;text-align:center;
   font-size:clamp(64px,11vw,168px);line-height:.9;letter-spacing:-.04em}
 #hero-ui h1 em{font-style:normal;color:var(--accent)}
-#hero-ui .kicker{position:absolute;top:calc(50% + 4.2vw);left:0;width:100%;text-align:center;color:var(--muted)}
+#hero-ui .kicker{position:static;margin-top:1.6em;width:100%;text-align:center}
 #hero-ui .scroll-hint{position:absolute;left:50%;bottom:5vh;transform:translateX(-50%);color:var(--muted);
   display:flex;align-items:center;gap:.8em}
 #hero-ui .scroll-hint::after{content:"";display:inline-block;width:2px;height:32px;background:var(--accent);animation:bar 1.6s ease-in-out infinite}
 @keyframes bar{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.4);opacity:.4}}
 
 /* ---------- statement ---------- */
-#statement{position:fixed;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:0 var(--pad);opacity:0;transform:translateY(3vh);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+#statement{position:relative;min-height:70svh;z-index:10;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:14vh var(--pad);opacity:0;transform:translateY(3vh);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 #statement.on{opacity:1;transform:none}
 #statement h2{font-size:clamp(32px,5.4vw,84px);line-height:1.05;text-align:center;max-width:14ch}
 #statement p{margin-top:3vh;max-width:44ch;text-align:center;font-size:16px;color:var(--muted)}
@@ -171,7 +183,7 @@ nav .links a.cta:hover{background:var(--accent)}
 #fp-5 .vielist p{margin-top:.4em;font-size:14px;line-height:1.6;color:var(--muted);max-width:42ch}
 
 /* ---------- night statement ---------- */
-#night-statement{position:fixed;inset:0;z-index:10;pointer-events:none;will-change:opacity;display:flex;flex-direction:column;
+#night-statement{position:absolute;inset:0;z-index:10;pointer-events:none;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:0 var(--pad);text-align:center;color:#fff;
   opacity:0;transform:translateY(3vh);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 #night-statement.on{opacity:1;transform:none}
@@ -203,10 +215,6 @@ form button{align-self:flex-start;background:var(--ink);border:0;color:var(--bg)
   line-height:1;padding:1.4em 2.6em;cursor:pointer;transition:background .3s var(--ease)}
 form button:hover{background:var(--accent)}
 .rgpd{font-size:12px;line-height:1.7;color:var(--muted);margin-top:1vh}
-
-/* ---------- experience / outro ---------- */
-#experience,#outro{position:relative;z-index:1}
-#experience .panel,#outro .panel{height:100vh;height:100lvh}
 
 /* ---------- footer ---------- */
 #after{position:relative;z-index:20;background:var(--bg)}
@@ -263,10 +271,8 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 @media(max-width:860px){
   :root{--pad:6vw}
   /* la maison descend dans le bas de l'écran, le texte occupe le haut : plus aucun chevauchement */
-  #stage{clip-path:inset(.02% .02% .02% .02%)}
-  #hero-ui h1{font-size:clamp(44px,12.5vw,88px);top:20vh;transform:translate(-50%,0)}
-  #hero-ui .kicker{top:calc(20vh + 12.5vw)}
-  #statement{justify-content:flex-start;padding-top:20vh}
+  #hero-ui h1{font-size:clamp(44px,12.5vw,88px)}
+  #hero-ui .kicker{font-size:10px;letter-spacing:.14em}
   #statement h2{font-size:clamp(28px,7.4vw,52px)}
   #statement p{margin-top:2.2vh;font-size:14px}
 
@@ -298,16 +304,9 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   form button{width:100%;text-align:center}
 }
 @media(max-width:640px){
-  #experience .panel,#outro .panel{height:100lvh}
   .fullpage,.snapwrap{min-height:100dvh}
   #fp-2 .cards{grid-template-columns:1fr}
 }
-
-/* ---------- no 3D fallback ---------- */
-.no3d #stage,.no3d #statement{display:none}
-.no3d .fullpage{position:relative;inset:auto;opacity:1;pointer-events:auto;transform:none;overflow:visible}
-.no3d #experience{display:none}
-.no3d #hero-ui{position:relative;height:70vh;background:var(--surface)}
 
 /* ---------- alternance de fonds (3 teintes, 2+ pages chacune) ---------- */
 #fp-1{background:var(--tone-a)}
@@ -340,7 +339,10 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 
 <div id="loader"><div class="lbg"></div><div class="word"><span style="animation-delay:120ms">M</span><span style="animation-delay:190ms">a</span><span style="animation-delay:260ms">i</span><span style="animation-delay:330ms">s</span><span style="animation-delay:400ms">o</span><span style="animation-delay:470ms">n</span><span style="animation-delay:540ms">&nbsp;</span><span style="animation-delay:610ms" class="accent">5</span><span style="animation-delay:680ms" class="accent">2</span></div><div class="bar"></div></div>
 
-<div id="stage"></div>
+<section id="hero">
+  <video id="hero-video" data-h="./dv-va.mp4" data-v="./dv-va-v.mp4" poster="./dv-poster.jpg" autoplay muted loop playsinline></video>
+  <div class="film"></div>
+</section>
 
 <nav id="nav">
   <div class="brand">
@@ -365,8 +367,6 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   <h2 class="serif">Vis avec un entourage qui <em>te ressemble</em>.</h2>
   <p>Six chambres pour jeunes entrepreneurs, dans une maison de maître rénovée.</p>
 </div>
-
-<div id="experience"><div class="panel"></div><div class="panel"></div></div>
 
 <div class="snapwrap">
 <section class="fullpage" id="fp-1">
@@ -527,16 +527,18 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 </section>
 </div>
 
-<div id="night-statement">
-  <h2 class="serif">Rejoindre ?</h2>
-  <div class="arrow-down" aria-hidden="true">
-    <svg width="18" height="28" viewBox="0 0 18 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M9 2v22M2 17l7 7 7-7"/>
-    </svg>
+<section id="outro-video">
+  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" autoplay muted loop playsinline></video>
+  <div class="film"></div>
+  <div id="night-statement">
+    <h2 class="serif">Rejoindre ?</h2>
+    <div class="arrow-down" aria-hidden="true">
+      <svg width="18" height="28" viewBox="0 0 18 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 2v22M2 17l7 7 7-7"/>
+      </svg>
+    </div>
   </div>
-</div>
-
-<div id="outro"><div class="panel"></div><div class="panel"></div><div class="panel"></div><div class="panel"></div><div class="panel last"></div></div>
+</section>
 
 <div id="after">
   <section id="s-candidater">
@@ -578,12 +580,19 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 
 
 </div>
-<script src="./m52-bundle.js?v=porte-orange"></script>
 <script>
 
 (function(){
-  document.documentElement.style.scrollSnapType = 'y mandatory';
-  M52.initExperience();
+  var portrait = innerHeight > innerWidth;
+
+  /* videos : version verticale sur mobile (plein pixel), paysage sur ordinateur */
+  ['hero-video','fin-video'].forEach(function(id){
+    var v = document.getElementById(id);
+    if (!v) return;
+    v.src = portrait ? v.dataset.v : v.dataset.h;
+    v.load();
+    var pr = v.play(); if (pr && pr.catch) pr.catch(function(){});
+  });
 
   /* écran de chargement : le titre monte et grossit jusqu'à la place du titre du hero */
   var loader = document.getElementById('loader');
@@ -651,16 +660,81 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   }, {passive:true});
   kbTick();
 
-  /* DIAGNOSTIC (uniquement avec ?diag) : chaque calque recoit une couleur criarde.
-     La couleur de la bande identifie l'element : ROSE = panneaux du haut,
-     CYAN = panneau de nuit, ORANGE = fond de page, VERT = page 07. */
-  if (/[?&]diag/.test(location.search)){
-    setInterval(function(){
-      document.querySelectorAll('#experience .panel').forEach(function(p){ p.style.backgroundColor = '#FF00AA'; });
-      document.querySelectorAll('#outro .panel').forEach(function(p){ p.style.backgroundColor = '#00C8FF'; });
-      document.body.style.backgroundColor = '#FF8800';
-      document.getElementById('s-candidater').style.backgroundColor = '#00CC44';
-    }, 150);
+  /* FAQ : accordeon */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var q = item.querySelector('.faq-q');
+    if (!q) return;
+    q.addEventListener('click', function(){
+      var open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(o){
+        o.classList.remove('open');
+        var a = o.querySelector('.faq-a'); if (a) a.style.maxHeight = '0';
+      });
+      if (!open){
+        item.classList.add('open');
+        var a = item.querySelector('.faq-a');
+        if (a) a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  /* formulaire : ouvre le courriel */
+  var form = document.getElementById('applyForm');
+  if (form) form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var n = document.getElementById('f-name').value.trim();
+    var e = document.getElementById('f-email').value.trim();
+    var m = document.getElementById('f-msg').value.trim();
+    if (!n || !e || !m) return;
+    location.href = 'mailto:hello@maison52.be?subject=' + encodeURIComponent('Contact Maison 52 · ' + n)
+      + '&body=' + encodeURIComponent(m + '\n\n' + n + '\n' + e);
+  });
+
+  /* navigation : defilement doux vers les sections */
+  document.querySelectorAll('nav a[data-target]').forEach(function(a){
+    a.addEventListener('click', function(ev){
+      ev.preventDefault();
+      var el = document.getElementById(a.getAttribute('data-target'));
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  var cand = document.querySelector('nav a[href="#s-candidater"]');
+  if (cand) cand.addEventListener('click', function(ev){
+    ev.preventDefault();
+    var el = document.getElementById('s-candidater');
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+  /* les deux phrases apparaissent quand elles entrent dans l'ecran */
+  var reveals = [document.getElementById('statement'), document.getElementById('night-statement')].filter(Boolean);
+  function revealTick(){
+    reveals.forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < innerHeight * 0.82 && r.bottom > innerHeight * 0.12) el.classList.add('on');
+    });
+  }
+  addEventListener('scroll', revealTick, {passive:true});
+  revealTick();
+  setTimeout(revealTick, 400);
+
+  /* le menu passe en sombre des qu'on quitte la video d'ouverture */
+  var heroEl = document.getElementById('hero');
+  function navTone(){
+    var h = heroEl ? heroEl.offsetHeight : innerHeight;
+    document.body.classList.toggle('scrolled', scrollY > h * 0.72);
+  }
+  addEventListener('scroll', navTone, {passive:true});
+  navTone();
+
+  /* la fleche de la finale amene au formulaire */
+  var arrow = document.querySelector('#night-statement .arrow-down');
+  if (arrow){
+    arrow.style.pointerEvents = 'auto';
+    arrow.style.cursor = 'pointer';
+    arrow.addEventListener('click', function(){
+      var el = document.getElementById('s-candidater');
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
   }
 })();
 
