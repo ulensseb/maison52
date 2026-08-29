@@ -30,18 +30,21 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
 .fin .ui h2{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(38px,8vw,72px);letter-spacing:-.03em}
 .btn{display:inline-block;margin-top:3vh;background:#fff;color:#0A0A0A;padding:1em 1.8em;font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-decoration:none}
 </style>
-<style>.cap{position:absolute;left:0;bottom:calc(9vh + env(safe-area-inset-bottom,0px));width:100%;text-align:center;color:#fff;opacity:0;transition:opacity .5s;text-shadow:0 2px 18px rgba(0,0,0,.5)}
+<style>html{scroll-snap-type:y mandatory}
+.band{height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
+.page,.stage.fin{scroll-snap-align:start}
+.cap{position:absolute;left:0;bottom:calc(9vh + env(safe-area-inset-bottom,0px));width:100%;text-align:center;color:#fff;opacity:0;transition:opacity .5s;text-shadow:0 2px 18px rgba(0,0,0,.5)}
 .cap.on{opacity:1}
 #chwrap{position:relative}
 </style></head><body>
-<div id="chwrap" style="height:500svh;position:relative"><section class="stage" id="chstage" style="position:sticky;top:0">
+<div id="chwrap" style="position:relative"><section class="stage" id="chstage" style="position:sticky;top:0;margin-bottom:-100svh">
   <video id="vid" src="./dv-va.mp4" poster="./dv-poster.jpg" muted playsinline preload="auto"></video>
   <div class="veil"></div>
   <div class="ui" id="tt"><h1>Maison <span class="accent">52</span></h1><div class="kick caps">Un geste = on avance dans la maison</div></div>
   <div class="ui" id="ph" style="opacity:0;transition:opacity .5s"><h2 class="serif" style="font-size:clamp(28px,6vw,54px)">Vis avec un entourage qui <span class="accent">te ressemble</span>.</h2></div>
   <div class="cap caps" id="cap"></div>
   <div class="hint caps" id="hint">D&eacute;filer</div>
-</section></div>
+</section><div class="band"></div><div class="band"></div><div class="band"></div><div class="band"></div></div>
 <section class="page">
   <div><span class="caps tag">01</span><span class="caps" style="color:#6B6B6B">La maison</span></div>
   <h3>Une maison de ma&icirc;tre r&eacute;nov&eacute;e pour vivre et <span class="accent">travailler</span>.</h3>

@@ -72,10 +72,14 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
   }
   for(var i=1;i<=N;i++){ (function(i){
     var im=new Image();
-    im.onload=function(){ loaded++; pct.textContent='Chargement '+Math.round(loaded/N*100)+'%';
-      if(loaded===N){ loaderEl.style.opacity=0; setTimeout(function(){loaderEl.style.display='none';},500); draw(cur); } };
+    var done=function(){ loaded++; pct.textContent='Chargement '+Math.round(loaded/N*100)+'%';
+      if(loaded>=N) go(); };
+    im.onload=done; im.onerror=done;
     im.src='./dvseq-f-'+String(i).padStart(3,'0')+'.jpg'; imgs[i-1]=im;
   })(i); }
+  var started=false;
+  function go(){ if(started) return; started=true; loaderEl.style.opacity=0; setTimeout(function(){loaderEl.style.display='none';},500); draw(cur); }
+  setTimeout(go, 12000);
   var wrap=document.getElementById('scrubwrap');
   function onScroll(){
     var r=wrap.getBoundingClientRect();
