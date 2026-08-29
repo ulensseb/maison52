@@ -31,7 +31,7 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
 .btn{display:inline-block;margin-top:3vh;background:#fff;color:#0A0A0A;padding:1em 1.8em;font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-decoration:none}
 </style></head><body>
 <section class="stage">
-  <video src="./dv-va.mp4" poster="./dv-poster.jpg" autoplay muted loop playsinline></video>
+  <video id="v-hero" data-h="./dv-va.mp4" data-v="./dv-va-v.mp4" poster="./dv-poster.jpg" autoplay muted loop playsinline></video>
   <div class="veil"></div>
   <div class="ui">
     <h1>Maison <span class="accent">52</span></h1>
@@ -51,7 +51,20 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
   </div>
 </section>
 <div class="note-demo">D&eacute;mo : ici viendraient les pages 02 &agrave; 05 du site, inchang&eacute;es.</div><section class="stage fin">
-  <video src="./dv-vb.mp4" autoplay muted loop playsinline></video>
+  <video id="v-fin" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" autoplay muted loop playsinline></video>
   <div class="veil"></div>
   <div class="ui"><h2>Rejoindre&nbsp;?</h2><a class="btn" href="#">Candidater</a></div>
-</section></body></html>
+</section>
+<script>
+(function(){
+  var vertical = innerHeight > innerWidth;
+  ['v-hero','v-fin'].forEach(function(id){
+    var v = document.getElementById(id);
+    if(!v) return;
+    v.src = vertical ? v.dataset.v : v.dataset.h;
+    v.load();
+    var p = v.play(); if(p&&p.catch) p.catch(function(){});
+  });
+})();
+</script>
+</body></html>
