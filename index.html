@@ -45,7 +45,12 @@ body{font-family:'Manrope',sans-serif;font-weight:400;font-size:16px;line-height
 a{color:inherit;text-decoration:none}
 
 /* ---------- stage 3D ---------- */
-#hero,#outro-video{position:relative;height:100svh;height:100lvh;overflow:hidden;background:#0A0A0A}
+/* la video deborde de 70px en haut et en bas : elle couvre les zones reservees d'iOS
+   (barre d'etat, barre d'adresse) exactement comme le faisait l'ancienne maquette 3D */
+.vfix{position:fixed;top:-70px;left:0;width:100%;height:calc(100vh + 140px);height:calc(100lvh + 140px);
+  z-index:0;pointer-events:none;overflow:hidden;background:#0A0A0A;opacity:0;transition:opacity .3s linear}
+.vfix.on{opacity:1}
+#hero,#outro-video{position:relative;height:100svh;height:100lvh;background:transparent;z-index:1}
 #hero-ui,#night-statement{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55),0 4px 34px rgba(0,0,0,.55)}
 #hero-ui h1,#night-statement h2{color:#fff}
 #hero-ui .kicker,#hero-ui .scroll-hint{color:rgba(255,255,255,.88)}
@@ -54,7 +59,7 @@ body:not(.scrolled) nav .brand .caps{color:#fff;text-shadow:0 2px 20px rgba(0,0,
 body:not(.scrolled) nav .brand .muted{color:rgba(255,255,255,.75)}
 body:not(.scrolled) nav .links a:not(.cta){color:rgba(255,255,255,.85)}
 nav{transition:background .35s}
-#hero video,#outro-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vfix video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .film{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.30),rgba(0,0,0,.06) 38%,rgba(0,0,0,.08) 62%,rgba(0,0,0,.40))}
 #outro-video .film{background:linear-gradient(to bottom,rgba(0,0,0,.36),rgba(0,0,0,.30) 40%,rgba(0,0,0,.34) 60%,rgba(0,0,0,.48))}
 #outro-video .film::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 42% at 50% 48%,rgba(0,0,0,.42),transparent 72%)}
@@ -354,10 +359,11 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 
 <div id="loader"><div class="lbg"></div><div class="word"><span style="animation-delay:120ms">M</span><span style="animation-delay:190ms">a</span><span style="animation-delay:260ms">i</span><span style="animation-delay:330ms">s</span><span style="animation-delay:400ms">o</span><span style="animation-delay:470ms">n</span><span style="animation-delay:540ms">&nbsp;</span><span style="animation-delay:610ms" class="accent">5</span><span style="animation-delay:680ms" class="accent">2</span></div><div class="bar"></div></div>
 
-<section id="hero">
+<div class="vfix" id="vfix-hero">
   <video id="hero-video" data-h="./dv-va.mp4" data-v="./dv-va-v.mp4" poster="./dv-poster.jpg" autoplay muted loop playsinline></video>
   <div class="film"></div>
-</section>
+</div>
+<section id="hero"></section>
 
 <nav id="nav">
   <div class="brand">
@@ -540,9 +546,11 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 </section>
 </div>
 
-<section id="outro-video">
-  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" autoplay muted loop playsinline></video>
+<div class="vfix" id="vfix-fin">
+  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" muted loop playsinline preload="metadata"></video>
   <div class="film"></div>
+</div>
+<section id="outro-video">
   <div id="night-statement">
     <h2 class="serif">Rejoindre ?</h2>
     <div class="arrow-down" aria-hidden="true">
@@ -649,7 +657,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
     });
   }
   check();
-  setInterval(function(){ check(); kbTick(); }, 120);
+  setInterval(function(){ check(); kbTick(); layersTick(); }, 120);
   window.addEventListener('scroll', check, {passive:true});
 
   /* photos vivantes : zoom lent + parallaxe liee au scroll (aucun effet si l'utilisateur
@@ -717,6 +725,27 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
     var el = document.getElementById('s-candidater');
     if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
   });
+
+  /* chaque calque video ne s'affiche que lorsque sa section occupe l'ecran */
+  var layers = [
+    {box: document.getElementById('hero'),        lay: document.getElementById('vfix-hero'), vid: document.getElementById('hero-video')},
+    {box: document.getElementById('outro-video'), lay: document.getElementById('vfix-fin'),  vid: document.getElementById('fin-video')}
+  ].filter(function(l){ return l.box && l.lay && l.vid; });
+
+  function layersTick(){
+    layers.forEach(function(l){
+      var r = l.box.getBoundingClientRect();
+      var visible = r.top < innerHeight * 0.92 && r.bottom > innerHeight * 0.08;
+      if (visible === l.on) return;
+      l.on = visible;
+      l.lay.classList.toggle('on', visible);
+      if (visible){ var p = l.vid.play(); if (p && p.catch) p.catch(function(){}); }
+      else l.vid.pause();
+    });
+  }
+  addEventListener('scroll', layersTick, {passive:true});
+  addEventListener('resize', layersTick);
+  layersTick();
 
   /* les deux phrases apparaissent quand elles entrent dans l'ecran */
   var reveals = [document.getElementById('statement'), document.getElementById('night-statement')].filter(Boolean);
