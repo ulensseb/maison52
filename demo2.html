@@ -1,0 +1,91 @@
+<!doctype html><html lang="fr"><head><title>D&eacute;mo 2 &middot; Le scroll pilote la visite</title><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&family=Manrope:wght@300;400;500&display=swap">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+html{background:#fff;color:#0A0A0A}
+body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;background:#fff}
+.caps{font-family:'Sora',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.serif{font-family:'Sora',sans-serif;font-weight:600;letter-spacing:-.03em}
+.accent{color:#FF5722}
+.stage{position:relative;height:100svh;overflow:hidden;background:#0A0A0A}
+.stage video,.stage canvas,.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.veil{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.25),transparent 40%,transparent 65%,rgba(0,0,0,.35))}
+.ui{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:0 6vw;text-shadow:0 2px 24px rgba(0,0,0,.45)}
+.ui h1{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(44px,10vw,90px);letter-spacing:-.03em;line-height:1}
+.ui .kick{margin-top:1.2em}
+.hint{position:absolute;bottom:calc(4vh + env(safe-area-inset-bottom,0px));left:0;width:100%;text-align:center;color:#fff;opacity:.85}
+.page{padding:14vh 6vw;max-width:680px;margin:0 auto}
+.page .tag{background:#0A0A0A;color:#fff;padding:.35em .6em;letter-spacing:.28em;margin-right:.9em}
+.page h3{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(26px,5vw,44px);letter-spacing:-.03em;line-height:1.1;margin:2.2vh 0 2vh}
+.page p{color:#6B6B6B}
+.stats{display:flex;gap:0;margin-top:5vh;border-top:1px solid #E8E8E8}
+.stat{flex:1;padding:2.2vh 0;border-right:1px solid #E8E8E8;padding-right:4%}
+.stat:last-child{border-right:0}
+.stat .n{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(22px,3.4vw,34px)}
+.stat .l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6B6B6B;margin-top:.3em}
+.note-demo{background:#FFF3EE;border-left:3px solid #FF5722;padding:14px 18px;margin:6vh 6vw;font-size:14px;color:#6B4A3F}
+.fin .ui h2{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(38px,8vw,72px);letter-spacing:-.03em}
+.btn{display:inline-block;margin-top:3vh;background:#fff;color:#0A0A0A;padding:1em 1.8em;font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-decoration:none}
+</style>
+<style>#scrubwrap{height:520svh}#scrubstage{position:sticky;top:0;height:100svh;overflow:hidden;background:#0A0A0A}
+#loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;z-index:3;background:#0A0A0A;transition:opacity .5s}
+#ph,#tt{transition:opacity .6s}
+</style></head><body>
+<div id="scrubwrap"><div id="scrubstage">
+  <canvas id="cv"></canvas>
+  <div class="veil"></div>
+  <div class="ui" id="tt"><h1>Maison <span class="accent">52</span></h1><div class="kick caps">Fais d&eacute;filer pour visiter</div></div>
+  <div class="ui" id="ph" style="opacity:0"><h2 class="serif" style="font-size:clamp(28px,6vw,54px)">Vis avec un entourage qui <span class="accent">te ressemble</span>.</h2></div>
+  <div id="loader"><span class="caps" id="pct">Chargement 0%</span></div>
+</div></div>
+<section class="page">
+  <div><span class="caps tag">01</span><span class="caps" style="color:#6B6B6B">La maison</span></div>
+  <h3>Une maison de ma&icirc;tre r&eacute;nov&eacute;e pour vivre et <span class="accent">travailler</span>.</h3>
+  <p><b style="color:#0A0A0A">310 m&sup2;, six chambres, un grand bureau, un jardin.</b> &Agrave; dix minutes de Louvain-la-Neuve, avec des mat&eacute;riaux durables.</p>
+  <div class="stats">
+    <div class="stat"><div class="n">310<small> m&sup2;</small></div><div class="l">Surface</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">Chambres</div></div>
+    <div class="stat"><div class="n">4<small> a</small></div><div class="l">Jardin</div></div>
+    <div class="stat"><div class="n">10<small> min</small></div><div class="l">LLN</div></div>
+  </div>
+</section>
+<div class="note-demo">D&eacute;mo : ici viendraient les pages 02 &agrave; 05 du site, inchang&eacute;es.</div><section class="stage fin">
+  <video src="./dv-jardin.mp4" autoplay muted loop playsinline></video>
+  <div class="veil"></div>
+  <div class="ui"><h2>Rejoindre&nbsp;?</h2><a class="btn" href="#">Candidater</a></div>
+</section>
+<script>
+(function(){
+  var N=132, imgs=[], loaded=0;
+  var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+  var loaderEl=document.getElementById('loader'), pct=document.getElementById('pct');
+  function fit(){ cv.width=innerWidth*devicePixelRatio; cv.height=innerHeight*devicePixelRatio; draw(cur); }
+  var cur=1;
+  function draw(i){
+    var im=imgs[i-1]; if(!im||!im.complete||!im.naturalWidth) return;
+    var cw=cv.width, ch=cv.height, ir=im.naturalWidth/im.naturalHeight, cr=cw/ch, w,h;
+    if(cr>ir){ w=cw; h=cw/ir; } else { h=ch; w=ch*ir; }
+    ctx.drawImage(im,(cw-w)/2,(ch-h)/2,w,h);
+  }
+  for(var i=1;i<=N;i++){ (function(i){
+    var im=new Image();
+    im.onload=function(){ loaded++; pct.textContent='Chargement '+Math.round(loaded/N*100)+'%';
+      if(loaded===N){ loaderEl.style.opacity=0; setTimeout(function(){loaderEl.style.display='none';},500); draw(cur); } };
+    im.src='./dvseq-f-'+String(i).padStart(3,'0')+'.jpg'; imgs[i-1]=im;
+  })(i); }
+  var wrap=document.getElementById('scrubwrap');
+  function onScroll(){
+    var r=wrap.getBoundingClientRect();
+    var p=Math.max(0,Math.min(1,-r.top/(r.height-innerHeight)));
+    var f=Math.max(1,Math.min(N,Math.round(1+p*(N-1))));
+    if(f!==cur){ cur=f; draw(f); }
+    document.getElementById('tt').style.opacity = p<0.06?1:0;
+    document.getElementById('ph').style.opacity = (p>0.38&&p<0.58)?1:0;
+  }
+  addEventListener('scroll',function(){requestAnimationFrame(onScroll)},{passive:true});
+  addEventListener('resize',fit); fit(); onScroll();
+})();
+</script></body></html>
