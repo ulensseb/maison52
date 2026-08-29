@@ -29,23 +29,43 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
 .note-demo{background:#FFF3EE;border-left:3px solid #FF5722;padding:14px 18px;margin:6vh 6vw;font-size:14px;color:#6B4A3F}
 .fin .ui h2{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(38px,8vw,72px);letter-spacing:-.03em}
 .btn{display:inline-block;margin-top:3vh;background:#fff;color:#0A0A0A;padding:1em 1.8em;font-family:'Sora',sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;text-decoration:none}
-</style>
-<style>html{scroll-snap-type:y mandatory}
-.band{height:100svh;scroll-snap-align:start;scroll-snap-stop:always}
+
+html{scroll-snap-type:y mandatory}
+#track{position:relative;height:400svh;height:400lvh}
+#stg{position:sticky;top:0;height:100svh;height:100lvh;overflow:hidden;background:#0A0A0A;z-index:1}
+#stg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .18s linear}
+#stg video.on{opacity:1}
+.band{position:absolute;left:0;width:100%;height:100svh;height:100lvh;scroll-snap-align:start;scroll-snap-stop:always;pointer-events:none;z-index:0}
+.band:nth-of-type(1){top:0}
+.band:nth-of-type(2){top:100lvh}
+.band:nth-of-type(3){top:200lvh}
+.band:nth-of-type(4){top:300lvh}
+.lay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:0 8vw;opacity:0;transition:opacity .5s ease;pointer-events:none;text-shadow:0 2px 26px rgba(0,0,0,.5);z-index:3}
+.lay.on{opacity:1}
+.lay h1{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(44px,11vw,90px);letter-spacing:-.03em;line-height:1}
+.lay h2{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(26px,6.5vw,52px);letter-spacing:-.03em;line-height:1.12}
+.lay .kick{margin-top:1.1em}
+#dots{position:absolute;right:calc(4vw + env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:4;display:flex;flex-direction:column;gap:9px}
+#dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);transition:background .3s,transform .3s}
+#dots i.on{background:#FF5722;transform:scale(1.5)}
+#hint{position:absolute;bottom:calc(4.5vh + env(safe-area-inset-bottom,0px));left:0;width:100%;text-align:center;color:#fff;opacity:.9;transition:opacity .4s;z-index:4}
 .page,.stage.fin{scroll-snap-align:start}
-.cap{position:absolute;left:0;bottom:calc(9vh + env(safe-area-inset-bottom,0px));width:100%;text-align:center;color:#fff;opacity:0;transition:opacity .5s;text-shadow:0 2px 18px rgba(0,0,0,.5)}
-.cap.on{opacity:1}
-#chwrap{position:relative}
-</style></head><body>
-<div id="chwrap" style="position:relative"><section class="stage" id="chstage" style="position:sticky;top:0;margin-bottom:-100svh">
-  <video id="vid" src="./dv-va.mp4" poster="./dv-poster.jpg" muted playsinline preload="auto"></video>
+</style></head><body><div id="track">
+<div id="stg">
+  <video class="seg" data-i="1" data-h="./dseg-1-h.mp4" data-v="./dseg-1-v.mp4" muted playsinline preload="auto" poster="./dseg-poster.jpg"></video>
+  <video class="seg" data-i="2" data-h="./dseg-2-h.mp4" data-v="./dseg-2-v.mp4" muted playsinline preload="none"></video>
+  <video class="seg" data-i="3" data-h="./dseg-3-h.mp4" data-v="./dseg-3-v.mp4" muted playsinline preload="none"></video>
+  <video class="seg" data-i="4" data-h="./dseg-4-h.mp4" data-v="./dseg-4-v.mp4" muted playsinline preload="none"></video>
   <div class="veil"></div>
-  <div class="ui" id="tt"><h1>Maison <span class="accent">52</span></h1><div class="kick caps">Un geste = on avance dans la maison</div></div>
-  <div class="ui" id="ph" style="opacity:0;transition:opacity .5s"><h2 class="serif" style="font-size:clamp(28px,6vw,54px)">Vis avec un entourage qui <span class="accent">te ressemble</span>.</h2></div>
-  <div class="cap caps" id="cap"></div>
-  <div class="hint caps" id="hint">D&eacute;filer</div>
-</section><div class="band"></div><div class="band"></div><div class="band"></div><div class="band"></div></div>
-<section class="page">
+  <div class="lay on" id="t1"><h1>Maison <span class="accent">52</span></h1><div class="kick caps">R&eacute;sidence d&apos;entrepreneurs</div></div>
+  <div class="lay" id="t2"><h2>Vis avec un entourage qui <span class="accent">te ressemble</span>.</h2></div>
+  <div class="lay" id="t3"><h2>Une cuisine enti&egrave;rement <span class="accent">neuve</span>.</h2></div>
+  <div class="lay" id="t4"><h2>Et un jardin de <span class="accent">quatre ares</span>.</h2></div>
+  <div id="dots"><i class="on"></i><i></i><i></i><i></i></div>
+  <div class="caps" id="hint">Un geste = une pi&egrave;ce</div>
+</div>
+<div class="band"></div><div class="band"></div><div class="band"></div><div class="band"></div>
+</div><section class="page">
   <div><span class="caps tag">01</span><span class="caps" style="color:#6B6B6B">La maison</span></div>
   <h3>Une maison de ma&icirc;tre r&eacute;nov&eacute;e pour vivre et <span class="accent">travailler</span>.</h3>
   <p><b style="color:#0A0A0A">310 m&sup2;, six chambres, un grand bureau, un jardin.</b> &Agrave; dix minutes de Louvain-la-Neuve, avec des mat&eacute;riaux durables.</p>
@@ -57,49 +77,73 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
   </div>
 </section>
 <div class="note-demo">D&eacute;mo : ici viendraient les pages 02 &agrave; 05 du site, inchang&eacute;es.</div><section class="stage fin">
-  <video src="./dv-jardin.mp4" autoplay muted loop playsinline></video>
+  <video id="v-fin" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" autoplay muted loop playsinline></video>
   <div class="veil"></div>
   <div class="ui"><h2>Rejoindre&nbsp;?</h2><a class="btn" href="#">Candidater</a></div>
-</section>
-<script>
+</section><script>
 (function(){
-  var vid=document.getElementById('vid');
-  var stops=[0.05,4.3,7.45,10.9,13.05];
-  var caps=['','La porte s&apos;ouvre','','La cuisine','Le jardin'];
-  var idx=0, playing=false, target=0;
-  var wrap=document.getElementById('chwrap'), cap=document.getElementById('cap');
-  var tt=document.getElementById('tt'), ph=document.getElementById('ph'), hint=document.getElementById('hint');
-  vid.currentTime=stops[0];
-  function showState(){
-    tt.style.opacity = idx===0?1:0;
-    ph.style.opacity = (idx===2&&!playing)?1:0;
-    cap.innerHTML = caps[idx]||'';
-    cap.classList.toggle('on', !playing && !!caps[idx]);
-    hint.style.opacity = idx>=stops.length-1?0:.85;
+  var portrait = innerHeight > innerWidth;
+  var segs = [].slice.call(document.querySelectorAll('.seg'));
+  var lays = [1,2,3,4].map(function(i){ return document.getElementById('t'+i); });
+  var dots = [].slice.call(document.querySelectorAll('#dots i'));
+  var hint = document.getElementById('hint');
+  var track = document.getElementById('track');
+  var N = segs.length, cur = -1;
+
+  segs.forEach(function(v){ v.src = portrait ? v.dataset.v : v.dataset.h; });
+
+  function prime(i){                      /* precharge le segment suivant */
+    var v = segs[i];
+    if (v && v.preload === 'none'){ v.preload = 'auto'; v.load(); }
   }
-  function advance(){
-    if(playing || idx>=target) return;
-    playing=true; showState();
-    var tgt=stops[idx+1];
-    vid.play();
-    var check=function(){
-      if(vid.currentTime>=tgt){
-        vid.pause(); vid.currentTime=tgt; idx++; playing=false;
-        vid.removeEventListener('timeupdate',check);
-        showState();
-        advance();
-      }
-    };
-    vid.addEventListener('timeupdate',check);
+
+  function show(i, fromTop){
+    if (i === cur) return;
+    var prev = segs[cur];
+    if (prev){ prev.pause(); prev.classList.remove('on'); }
+    cur = i;
+    var v = segs[i];
+    v.classList.add('on');
+    if (fromTop){                          /* on avance : on joue le segment */
+      try { v.currentTime = 0; } catch(e){}
+      var p = v.play(); if (p && p.catch) p.catch(function(){});
+    } else {                               /* on remonte : on se pose sur la fin */
+      v.pause();
+      var end = function(){ try { v.currentTime = Math.max(0, (v.duration || 1) - 0.05); } catch(e){} };
+      if (v.readyState >= 1) end(); else v.addEventListener('loadedmetadata', end, {once:true});
+    }
+    lays.forEach(function(l, k){ l.classList.toggle('on', k === i); });
+    dots.forEach(function(d, k){ d.classList.toggle('on', k === i); });
+    hint.style.opacity = i === 0 ? .9 : 0;
+    prime(i+1);
   }
+
   function onScroll(){
-    var r=wrap.getBoundingClientRect();
-    var p=Math.max(0,Math.min(1,-r.top/(r.height-innerHeight)));
-    target=Math.round(p*(stops.length-1));
-    if(target>idx) advance();
-    else if(target<idx && !playing){ idx=target; vid.pause(); vid.currentTime=stops[idx]; showState(); }
+    var r = track.getBoundingClientRect();
+    var span = r.height - innerHeight;
+    var p = span > 0 ? Math.max(0, Math.min(1, -r.top / span)) : 0;
+    var i = Math.min(N-1, Math.round(p * (N-1)));
+    if (i !== cur) show(i, i > cur);
   }
-  addEventListener('scroll',function(){requestAnimationFrame(onScroll)},{passive:true});
-  showState(); onScroll();
+
+  addEventListener('scroll', function(){ requestAnimationFrame(onScroll); }, {passive:true});
+  addEventListener('resize', onScroll);
+  /* les 4 segments sont legers : on les prepare tot pour qu'aucun geste n'attende */
+  setTimeout(function(){ prime(1); }, 800);
+  setTimeout(function(){ prime(2); prime(3); }, 3500);
+
+  /* si un segment n'etait pas encore pret, on lance la lecture des qu'il l'est */
+  segs.forEach(function(v, i){
+    v.addEventListener('canplay', function(){
+      if (i === cur && v.paused && v.currentTime < 0.2){
+        var p = v.play(); if (p && p.catch) p.catch(function(){});
+      }
+    });
+  });
+
+  show(0, true); onScroll();
+
+  var vf = document.getElementById('v-fin');
+  if (vf){ vf.src = portrait ? vf.dataset.v : vf.dataset.h; vf.load(); var pr = vf.play(); if (pr && pr.catch) pr.catch(function(){}); }
 })();
 </script></body></html>
