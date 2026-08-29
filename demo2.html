@@ -71,7 +71,7 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
   <div class="ui"><h2>Rejoindre&nbsp;?</h2><a class="btn" href="#">Candidater</a></div>
 </section><script>
 (function(){
-  var N = 95, PAD = 3;
+  var N = 120, PAD = 3;
   var portrait = innerHeight > innerWidth;
   var cv = document.getElementById('cv'), ctx = cv.getContext('2d', {alpha:false});
   var vid = document.getElementById('vid'), wrap = document.getElementById('wrap');
@@ -120,7 +120,7 @@ body{font-family:'Manrope',sans-serif;font-size:16px;line-height:1.6;-webkit-fon
       cb && cb();
     };
     im.onerror = function(){ loadedCount++; cb && cb(); };
-    im.src = './dq-s-' + pad(i+1) + '.jpg';
+    im.src = './dq2-' + pad(i+1) + '.webp';
     imgs[i] = im;
   }
 
