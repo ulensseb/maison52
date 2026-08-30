@@ -549,7 +549,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 </div>
 
 <section id="outro-video">
-  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" autoplay muted loop playsinline></video>
+  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" preload="none" autoplay muted loop playsinline></video>
   <div class="film"></div>
   <div id="night-statement">
     <h2 class="serif">Rejoindre ?</h2>
@@ -607,13 +607,36 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   var portrait = innerHeight > innerWidth;
 
   /* videos : version verticale sur mobile (plein pixel), paysage sur ordinateur */
-  ['hero-video','fin-video'].forEach(function(id){
-    var v = document.getElementById(id);
-    if (!v) return;
+  function startVideo(v){
+    if (!v || v.dataset.started) return;
+    v.dataset.started = '1';
     v.src = portrait ? v.dataset.v : v.dataset.h;
     v.load();
     var pr = v.play(); if (pr && pr.catch) pr.catch(function(){});
-  });
+  }
+
+  /* le hero demarre tout de suite */
+  startVideo(document.getElementById('hero-video'));
+
+  /* la video de fin ne se telecharge qu'a l'approche : page beaucoup plus legere a l'ouverture */
+  var fin = document.getElementById('fin-video');
+  if (fin){
+    var sec = fin.closest('section') || fin.parentNode;
+    if ('IntersectionObserver' in window){
+      var io2 = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ startVideo(fin); io2.disconnect(); }
+        });
+      }, {rootMargin: '150% 0px'});
+      io2.observe(sec);
+    } else {
+      startVideo(fin);
+    }
+    /* filet de securite : si l'observateur ne se declenche pas, on charge au premier scroll profond */
+    addEventListener('scroll', function onSc(){
+      if (scrollY > innerHeight * 3){ startVideo(fin); removeEventListener('scroll', onSc); }
+    }, {passive:true});
+  }
 
   /* écran de chargement : le titre monte et grossit jusqu'à la place du titre du hero */
   var loader = document.getElementById('loader');
