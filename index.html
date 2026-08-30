@@ -91,8 +91,8 @@ nav .links a.cta:hover{background:var(--accent)}
 @keyframes bar{0%,100%{transform:scaleY(1);opacity:1}50%{transform:scaleY(.4);opacity:.4}}
 
 /* ---------- statement ---------- */
-#statement{position:relative;min-height:78svh;z-index:10;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:16vh var(--pad);background:var(--bg);color:var(--ink);
+#statement{position:relative;min-height:68svh;z-index:10;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:13vh var(--pad);background:var(--bg);color:var(--ink);
   opacity:0;transform:translateY(3vh);transition:opacity .9s var(--ease),transform .9s var(--ease)}
 #statement.on{opacity:1;transform:none}
 #statement h2{font-size:clamp(34px,6vw,92px);line-height:1.04;text-align:center;max-width:15ch;color:var(--ink)}
@@ -279,6 +279,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 .wsplit .w{display:inline-block;opacity:0;transform:translateY(.42em);
   transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0ms);margin-right:.36em}
 .wsplit.in .w{opacity:1;transform:none}
+.wsplit .w.punct{margin-left:-.36em}
 
 /* ---------- mobile ---------- */
 @media(max-width:860px){
@@ -663,9 +664,38 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   /* titres : révélation mot par mot, déclenchée seulement quand la section est visible */
   var titles = Array.prototype.slice.call(document.querySelectorAll('.fullpage h3, #s-candidater h3, .fullpage .lead, #statement h2'));
   titles.forEach(function(el){
-    el.innerHTML = el.innerHTML.split(/\s+/).map(function(w, i){
-      return '<span class="w" style="--d:' + (i*55) + 'ms">' + w + '</span>';
-    }).join(' ');
+    var i = 0, dernier = null;
+    (function parcourir(noeud){
+      Array.prototype.slice.call(noeud.childNodes).forEach(function(n){
+        if (n.nodeType === 3){
+          var v = n.nodeValue;
+          /* ponctuation seule : on la colle au mot precedent au lieu de la laisser
+             derriere sa marge, sinon un espace apparait avant le point */
+          if (dernier && /^[.,;:!?\u2026\u00bb)\]]+$/.test(v)){
+            var pt = document.createElement('span');
+            pt.className = 'w punct';
+            pt.style.setProperty('--d', dernier.style.getPropertyValue('--d'));
+            pt.textContent = v;
+            noeud.replaceChild(pt, n);
+            return;
+          }
+          var frag = document.createDocumentFragment();
+          v.split(/(\s+)/).forEach(function(part){
+            if (!part) return;
+            if (/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return; }
+            var sp = document.createElement('span');
+            sp.className = 'w';
+            sp.style.setProperty('--d', (i++ * 55) + 'ms');
+            sp.textContent = part;
+            frag.appendChild(sp);
+            dernier = sp;
+          });
+          noeud.replaceChild(frag, n);
+        } else if (n.nodeType === 1){
+          parcourir(n);
+        }
+      });
+    })(el);
     el.classList.add('wsplit');
   });
   var pending = new Set(titles);
