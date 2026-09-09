@@ -550,7 +550,7 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 </div>
 
 <section id="outro-video">
-  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" preload="none" autoplay muted loop playsinline></video>
+  <video id="fin-video" data-h="./dv-vb.mp4" data-v="./dv-vb-v.mp4" poster="./dv-poster-fin.jpg" preload="none" autoplay muted loop playsinline></video>
   <div class="film"></div>
   <div id="night-statement">
     <h2 class="serif">Rejoindre ?</h2>
@@ -608,13 +608,35 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   var portrait = innerHeight > innerWidth;
 
   /* videos : version verticale sur mobile (plein pixel), paysage sur ordinateur */
+  /* iOS refuse regulierement le demarrage automatique : mode economie d'energie,
+     reseau lent, ou play() appele trop tot apres load(). Un seul essai ne suffit
+     donc pas : on retente des que le navigateur a de quoi lire, puis au premier
+     geste de l'utilisateur, qui leve toutes les restrictions. */
+  var aRelancer = [];
+  function essaiLecture(v){
+    if (!v) return;
+    var pr = v.play();
+    if (pr && pr.catch) pr.catch(function(){});
+  }
   function startVideo(v){
     if (!v || v.dataset.started) return;
     v.dataset.started = '1';
     v.src = portrait ? v.dataset.v : v.dataset.h;
     v.load();
-    var pr = v.play(); if (pr && pr.catch) pr.catch(function(){});
+    essaiLecture(v);
+    ['loadeddata','canplay','canplaythrough'].forEach(function(ev){
+      v.addEventListener(ev, function(){ essaiLecture(v); }, {once:true});
+    });
+    if (aRelancer.indexOf(v) === -1) aRelancer.push(v);
   }
+  function relanceAuGeste(){
+    for (var i = 0; i < aRelancer.length; i++){
+      if (aRelancer[i].paused) essaiLecture(aRelancer[i]);
+    }
+  }
+  ['touchstart','click','scroll'].forEach(function(ev){
+    addEventListener(ev, relanceAuGeste, {passive:true});
+  });
 
   /* le hero demarre tout de suite */
   startVideo(document.getElementById('hero-video'));
