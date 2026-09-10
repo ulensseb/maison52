@@ -116,8 +116,8 @@ nav .links a.cta:hover{background:var(--accent)}
 /* ---------- 01 la maison ---------- */
 #fp-1 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:center}
 #fp-1 .split-media .cadre{overflow:hidden}
+video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit-media-controls-start-playback-button,video::-webkit-media-controls-overlay-play-button{display:none !important;-webkit-appearance:none;opacity:0 !important}
 #fp-1 .split-media img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;transition:transform .25s linear;will-change:transform}
-#fp-1 .legende{margin-top:1.1em;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 @media(min-width:861px){#fp-1 .split{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}#fp-1 .split-media{max-width:min(100%,60vh)}}
 #fp-1 h3{margin-bottom:4.5vh}
 #fp-1 h3 em,#fp-1 .lead em{font-style:normal;color:var(--accent)}
@@ -399,7 +399,6 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   <div class="split">
     <div class="split-media">
       <div class="cadre"><img src="./m52-facade.jpg" alt="Façade de la Maison 52, colocation d'entrepreneurs à Court-Saint-Étienne près d'Ottignies" loading="lazy" width="1280" height="1600"></div>
-      <div class="legende">Façade côté rue · Court-Saint-Étienne</div>
     </div>
     <div class="split-body">
       <h3 class="serif">Une maison de maître rénovée pour vivre et <em>travailler</em>.</h3>
@@ -616,6 +615,9 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   var aRelancer = [];
   function essaiLecture(v){
     if (!v) return;
+    /* Safari exige que la video soit muette au moment precis de l'appel */
+    v.muted = true; v.defaultMuted = true; v.playsInline = true;
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
     var pr = v.play();
     if (pr && pr.catch) pr.catch(function(){});
   }
@@ -635,9 +637,13 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
       if (aRelancer[i].paused) essaiLecture(aRelancer[i]);
     }
   }
-  ['touchstart','click','scroll'].forEach(function(ev){
+  ['touchstart','touchend','pointerdown','click','keydown','scroll'].forEach(function(ev){
     addEventListener(ev, relanceAuGeste, {passive:true});
   });
+  /* Safari remet les videos en pause quand il restaure une page ou qu'on revient sur l'onglet */
+  addEventListener('pageshow', relanceAuGeste);
+  addEventListener('focus', relanceAuGeste);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) relanceAuGeste(); });
 
   /* le hero demarre tout de suite */
   startVideo(document.getElementById('hero-video'));
