@@ -374,13 +374,14 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 #fp-1 .stats{border-top-color:rgba(10,10,10,.12) !important}
 #fp-1 .stat + .stat{border-left-color:rgba(10,10,10,.12) !important}
 #fp-1 .stat .l{color:var(--muted) !important}
-#fp-1 .split{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
-#fp-1 .split-media{align-self:center;overflow:hidden;max-width:min(100%,60vh)}
+@media(min-width:861px){
+  #fp-1 .split{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+  #fp-1 .split-media{align-self:center;max-width:min(100%,60vh)}
+}
+#fp-1 .split-media{overflow:hidden}
 #fp-1 .split-media img{height:auto !important;aspect-ratio:4/5;width:100%}
 #fp-1 .legende{margin-top:1.1em;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-@media(max-width:860px){
-  #fp-1 .split-media{max-width:none}
-}
+
 </style>
 </head>
 <body>
