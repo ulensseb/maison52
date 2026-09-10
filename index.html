@@ -84,6 +84,8 @@ nav .links a.cta:hover{background:var(--accent)}
 #hero-ui h1{position:static;transform:none;width:100%;text-align:center;
   font-size:clamp(64px,11vw,168px);line-height:.9;letter-spacing:-.04em}
 #hero-ui h1 em{font-style:normal;color:var(--accent)}
+#hero-ui .titre-bloc{width:100%;transition:opacity 1s var(--ease)}
+#hero-ui .titre-bloc.fondu{opacity:0}
 #hero-ui .kicker{position:static;margin-top:1.6em;width:100%;text-align:center}
 #hero-ui .scroll-hint{position:absolute;left:50%;bottom:5vh;transform:translateX(-50%);color:var(--muted);
   display:flex;align-items:center;gap:.8em}
@@ -382,8 +384,10 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 </nav>
 
 <div id="hero-ui">
+  <div class="titre-bloc">
   <h1 class="serif">Maison <em>52</em></h1>
   <div class="kicker caps">Résidence d'entrepreneurs · à 10 min de Louvain-la-Neuve</div>
+  </div>
   <div class="scroll-hint caps">Défiler</div>
 </div>
 
@@ -640,6 +644,17 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 
   /* le hero demarre tout de suite */
   startVideo(document.getElementById('hero-video'));
+
+  /* le titre s'efface quand la camera arrive a hauteur de l'escalier (cuisine en vue),
+     puis revient quand la boucle repart sur la facade */
+  var FONDU_A = 6.5;
+  var heroV = document.getElementById('hero-video');
+  var titreBloc = document.querySelector('#hero-ui .titre-bloc');
+  if (heroV && titreBloc){
+    heroV.addEventListener('timeupdate', function(){
+      titreBloc.classList.toggle('fondu', heroV.currentTime >= FONDU_A);
+    });
+  }
 
   /* la video de fin ne se telecharge qu'a l'approche : page beaucoup plus legere a l'ouverture */
   var fin = document.getElementById('fin-video');
