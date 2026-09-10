@@ -645,14 +645,17 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
   /* le hero demarre tout de suite */
   startVideo(document.getElementById('hero-video'));
 
-  /* le titre s'efface quand la camera arrive a hauteur de l'escalier (cuisine en vue),
-     puis revient quand la boucle repart sur la facade */
-  var FONDU_A = 6.5;
+  /* le titre s'efface quand la camera franchit la porte de la cuisine,
+     une seule fois : il ne revient pas quand la video recommence */
+  var FONDU_A = 8.0;
   var heroV = document.getElementById('hero-video');
   var titreBloc = document.querySelector('#hero-ui .titre-bloc');
   if (heroV && titreBloc){
-    heroV.addEventListener('timeupdate', function(){
-      titreBloc.classList.toggle('fondu', heroV.currentTime >= FONDU_A);
+    heroV.addEventListener('timeupdate', function surTemps(){
+      if (heroV.currentTime >= FONDU_A){
+        titreBloc.classList.add('fondu');
+        heroV.removeEventListener('timeupdate', surTemps);
+      }
     });
   }
 
