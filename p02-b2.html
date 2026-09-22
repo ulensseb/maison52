@@ -403,6 +403,73 @@ nav .links a.cta:hover{background:var(--accent)}
 .marquee span{font-size:9vw;letter-spacing:-.06em !important}
 .marquee em{color:var(--accent)}
 @media(max-width:860px){#hero-ui h1{font-size:clamp(60px,21vw,100px)} .fullpage h3,#s-candidater h3{font-size:clamp(32px,9.4vw,52px)} #statement h2{font-size:clamp(36px,11vw,60px)} .stat .n{font-size:14vw}}
+
+/* ===== B+ : mise en page cassee (Studio + disposition) ===== */
+.fullpage,.snapwrap{min-height:0}
+.fullpage{padding-top:12vh;padding-bottom:10vh}
+.marquee{display:none}
+#hero-ui .scroll-hint{display:none}
+/* apparition : fondu du bloc entier, plus mot par mot */
+.wsplit .w{opacity:1 !important;transform:none !important;transition:none !important}
+.wsplit{opacity:0;transition:opacity .45s ease-in-out}
+.wsplit.in{opacity:1}
+/* moins de traits fins */
+.stats,#fp-2 .card,#fp-5 .vielist,#fp-3 .persona .points,#fp-2 .card .meta{border-top:0 !important}
+/* le bloc "entourage" : titre a gauche, phrase poussee a droite */
+#statement{align-items:stretch;text-align:left;min-height:0;padding:16vh var(--pad) 14vh}
+#statement .sep{display:none}
+#statement h2{text-align:left;max-width:13ch;margin-right:auto}
+#statement p{text-align:left;max-width:34ch;margin:5vh 0 0 auto;font-size:18px;color:var(--ink)}
+/* page 01 : colonnes 5/7, photo a fond perdu, chiffre dominant */
+.stat:first-child{grid-column:1 / -1}
+.stat:first-child .n{font-size:clamp(80px,9.5vw,168px);letter-spacing:-.07em !important}
+.stat .n{font-size:clamp(26px,2.2vw,38px)}
+.stat + .stat{border-left:0;padding-left:0}
+.stat .l{margin-top:.4em}
+@media(min-width:861px){
+  #fp-1 .split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,5vw,96px);align-items:end}
+  #fp-1 .split-media{max-width:none;margin-left:calc(-1 * var(--pad))}
+  #fp-1 .split-media .cadre{border-radius:0 .75rem .75rem 0}
+  #fp-1 .split-media img{aspect-ratio:4/5}
+  #fp-1 .split-body{padding-bottom:2vh}
+  .stats{grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:2vw;align-items:end;padding-top:0;margin-top:5vh}
+  .stat:first-child{grid-column:auto;grid-row:span 1}
+  .stat:not(:first-child){padding-bottom:1.2em}
+  /* page 02 : grande photo a fond perdu + liste editoriale a cote, titre qui chevauche */
+  #fp-2 h3{position:relative;z-index:2;margin-bottom:-.28em;max-width:13ch}
+  #fp-2 .cards{grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:0 clamp(32px,4vw,72px);align-items:start}
+  #fp-2 .card.wide{grid-column:1;grid-row:1 / span 5;display:block;padding-top:0;border:0}
+  #fp-2 .card.wide .shot{aspect-ratio:auto;height:min(78vh,720px);margin:0 0 3vh calc(-1 * var(--pad));border-radius:0 .75rem .75rem 0}
+  #fp-2 .card.wide > div{max-width:46ch}
+  #fp-2 .card:not(.wide){grid-column:2;display:grid;grid-template-columns:88px 1fr;gap:1.2rem 1.4rem;align-items:start;padding:2.6vh 0;border-bottom:1px solid var(--line)}
+  #fp-2 .card:not(.wide):nth-child(2){padding-top:7vh}
+  #fp-2 .card:not(.wide) .shot{grid-row:1 / span 3;width:88px;aspect-ratio:1;margin:0;border-radius:.5rem}
+  #fp-2 .card:not(.wide) .idx{margin-bottom:.3em}
+  #fp-2 .card:not(.wide) h4{font-size:clamp(20px,1.5vw,26px);margin-bottom:.35em}
+  #fp-2 .card:not(.wide) p{font-size:14px}
+  #fp-2 .note{margin-top:4vh}
+  /* page 03 : liste editoriale, un profil par ligne */
+  #fp-3 .personas{grid-template-columns:1fr;border-top:1px solid var(--line)}
+  #fp-3 .persona{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,4fr);gap:1vh 4vw;padding:4.2vh 0;border-left:0 !important;overflow:visible}
+  #fp-3 .persona .num{display:none}
+  #fp-3 .persona .idx{grid-column:1;grid-row:1;margin:0}
+  #fp-3 .persona h4{grid-column:1;grid-row:2;font-size:clamp(26px,2.6vw,44px);max-width:none}
+  #fp-3 .persona p{grid-column:2;grid-row:1 / span 2;max-width:none;font-size:15.5px}
+  #fp-3 .persona .points{grid-column:3;grid-row:1 / span 2;margin:0;padding:0}
+  /* page 04 : grande phrase a gauche, quatre arguments en colonne etroite a droite */
+  #fp-invest{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:8vw;align-items:start}
+  #fp-invest .label{grid-column:1 / -1}
+  #fp-invest h3.invest-title{grid-column:1;max-width:14ch;margin-bottom:0;position:sticky;top:12vh}
+  #fp-invest .invest-grid{grid-column:2;grid-template-columns:1fr;gap:0;border-top:0;padding-top:.6vh}
+  #fp-invest .invest-item{padding:3vh 0;border-top:1px solid rgba(255,255,255,.14)}
+  #fp-invest .invest-item:first-child{border-top:0;padding-top:0}
+  /* page 05 : photo a droite, a fond perdu, colonnes inegales */
+  #fp-5 .quartier{grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(40px,5vw,96px);align-items:start}
+  #fp-5 .sideshot{order:2;margin-right:calc(-1 * var(--pad));border-radius:.75rem 0 0 .75rem;overflow:hidden;position:sticky;top:12vh}
+  #fp-5 .sideshot img{height:min(80vh,760px)}
+  /* formulaire : colonnes inegales */
+  #s-candidater .grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,6vw,120px)}
+}
 </style>
 </head>
 <body>
@@ -908,6 +975,6 @@ nav .links a.cta:hover{background:var(--accent)}
 })();
 
 </script>
-<div id="proto-bar"><a href="./p02-a.html">A · Masia</a><a href="./p02-b.html" class="on">B · Studio</a><a href="./p02-b2.html">B+ · Studio + mise en page</a><a href="./p02-c.html">C · Carnet</a></div>
+<div id="proto-bar"><a href="./p02-a.html">A · Masia</a><a href="./p02-b.html">B · Studio</a><a href="./p02-b2.html" class="on">B+ · Studio + mise en page</a><a href="./p02-c.html">C · Carnet</a></div>
 </body>
 </html>
