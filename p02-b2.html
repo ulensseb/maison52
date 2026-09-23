@@ -407,7 +407,7 @@ nav .links a.cta:hover{background:var(--accent)}
 /* ===== B+ : mise en page cassee (Studio + disposition) ===== */
 .fullpage,.snapwrap{min-height:0}
 .fullpage{padding-top:12vh;padding-bottom:10vh}
-.marquee{display:none}
+
 #hero-ui .scroll-hint{display:none}
 /* apparition : fondu du bloc entier, plus mot par mot */
 .wsplit .w{opacity:1 !important;transform:none !important;transition:none !important}
@@ -471,6 +471,17 @@ nav .links a.cta:hover{background:var(--accent)}
   /* formulaire : colonnes inegales */
   #s-candidater .grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,6vw,120px)}
 }
+
+/* ===== bandeau : deux lignes contraires (choix du 23/09) ===== */
+.marquee{display:block !important;border-top:0;padding:3vh 0 2vh;overflow:hidden;background:var(--tone-b)}
+.marquee .track{display:flex;white-space:nowrap;animation:mq 34s linear infinite;will-change:transform}
+.marquee .track.rev{animation-direction:reverse;margin-top:-.08em}
+.marquee:hover .track{animation-play-state:paused}
+.marquee span{font-family:'Geist',sans-serif !important;font-weight:400 !important;letter-spacing:-.06em !important;line-height:1;padding-right:.5em;font-size:9vw;color:var(--ink)}
+.marquee em{color:var(--accent);font-style:normal}
+.marquee .track.rev span{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
+.marquee .track.rev em{color:transparent;-webkit-text-stroke:1.5px var(--accent)}
+@media(prefers-reduced-motion:reduce){.marquee .track{animation:none}}
 </style>
 </head>
 <body>
@@ -977,5 +988,6 @@ nav .links a.cta:hover{background:var(--accent)}
 
 </script>
 <div id="proto-bar"><a href="./p02-a.html">A · Masia</a><a href="./p02-b.html">B · Studio</a><a href="./p02-b2.html" class="on">B+ · Studio + mise en page</a><a href="./p02-c.html">C · Carnet</a></div>
+<script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
 </body>
 </html>
