@@ -505,6 +505,17 @@ nav .links a.cta:hover{background:var(--accent)}
   .stat:nth-child(odd){padding-left:0 !important;border-left:0}
   .stat:nth-child(3){padding-left:0 !important;border-left:0}
 }
+
+/* ===== menu : le nom s'efface des qu'on quitte la video, il revient en haut de page ===== */
+@media(max-width:860px){
+  body.scrolled nav .brand{opacity:0;pointer-events:none;transition:opacity .35s var(--ease);transition-delay:0s}
+}
+/* ===== moins de vide entre le bloc "entourage" et 01 La maison ===== */
+@media(max-width:860px){
+  #statement{padding-bottom:7vh}
+  .fullpage{padding-top:calc(9vh + env(safe-area-inset-top,0px));padding-bottom:calc(8vh + env(safe-area-inset-bottom,0px))}
+  #fp-2,#fp-3,#fp-4{padding-top:8vh;padding-bottom:8vh}
+}
 </style>
 </head>
 <body>
