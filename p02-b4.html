@@ -487,6 +487,24 @@ nav .links a.cta:hover{background:var(--accent)}
 #fp-2 .card.wide{align-items:stretch !important}
 #fp-2 .card.wide > div{width:100%;max-width:none;margin:0}
 @media(min-width:861px){#fp-2 .card.wide > div{max-width:46ch}}
+
+/* ===== page 01 : bande de chiffres, lisible sans animation ===== */
+.stat:first-child{grid-column:auto !important}
+.stat:first-child .n{font-size:inherit !important;letter-spacing:inherit !important}
+.stats{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:0 !important;margin-top:6vh !important;
+  padding:3.4vh 0 0 !important;border-top:1px solid var(--ink) !important;align-items:start}
+.stat{padding:0 1.6vw !important;border-left:1px solid var(--line)}
+.stat:first-child{padding-left:0 !important;border-left:0}
+.stat .n{font-size:clamp(40px,4.6vw,86px) !important;letter-spacing:-.06em !important;line-height:.88;
+  white-space:nowrap;font-variant-numeric:tabular-nums;display:block}
+.stat .n small{color:var(--accent);opacity:1;font-size:.32em;vertical-align:.55em;margin-left:.1em;letter-spacing:0}
+.stat .l{margin-top:.9em;font-size:11px;letter-spacing:.14em;color:var(--muted)}
+@media(max-width:860px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:5vh 0 !important}
+  .stat .n{font-size:12.5vw !important}
+  .stat:nth-child(odd){padding-left:0 !important;border-left:0}
+  .stat:nth-child(3){padding-left:0 !important;border-left:0}
+}
 </style>
 </head>
 <body>
@@ -992,7 +1010,7 @@ nav .links a.cta:hover{background:var(--accent)}
 })();
 
 </script>
-<div id="proto-bar"><a href="./p02-b2.html" class="on">B+ · 310 dominant</a><a href="./p02-b4.html">B+ · bande de 4 chiffres</a></div>
+<div id="proto-bar"><a href="./p02-b2.html">B+ · 310 dominant</a><a href="./p02-b4.html" class="on">B+ · bande de 4 chiffres</a></div>
 <script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
 </body>
 </html>
