@@ -482,6 +482,45 @@ nav .links a.cta:hover{background:var(--accent)}
 .marquee .track.rev span{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
 .marquee .track.rev em{color:transparent;-webkit-text-stroke:1.5px var(--accent)}
 @media(prefers-reduced-motion:reduce){.marquee .track{animation:none}}
+
+/* ===== revue 24/09 · page 01 : quatre chiffres egaux, animes ===== */
+.stat:first-child{grid-column:auto !important}
+.stat:first-child .n{font-size:inherit !important;letter-spacing:inherit !important}
+.stats{position:relative;grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:2vw !important;margin-top:6vh !important;padding-top:3.2vh !important;border-top:0 !important;align-items:end}
+.stats::before{content:"";position:absolute;left:0;top:0;height:1px;width:0;background:var(--ink);transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+.stats.in::before{width:100%}
+.stat{opacity:0;transform:translateY(14px);transition:opacity .6s ease-out,transform .6s cubic-bezier(.16,1,.3,1)}
+.stats.in .stat{opacity:1;transform:none}
+.stats.in .stat:nth-child(2){transition-delay:.08s}.stats.in .stat:nth-child(3){transition-delay:.16s}.stats.in .stat:nth-child(4){transition-delay:.24s}
+.stat .n{font-size:clamp(44px,5vw,92px) !important;letter-spacing:-.06em !important;line-height:.9;white-space:nowrap;font-variant-numeric:tabular-nums}
+.stat .n small{color:var(--accent);opacity:1;font-size:.3em;vertical-align:.6em;margin-left:.08em;letter-spacing:0}
+.stat:not(:first-child){padding-bottom:0 !important}
+.stat .l{margin-top:.55em;font-size:12px;color:var(--muted)}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:4vh 4vw !important}.stat .n{font-size:13vw !important}}
+
+/* ===== revue 24/09 · page 03 : quatre profils a balayer, le texte se devoile ===== */
+@media(min-width:861px){
+  #fp-3 .personas{grid-template-columns:1fr;border-top:1px solid var(--line)}
+  #fp-3 .persona{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:.4em 5vw;padding:3.4vh 0;border-left:0 !important;border-bottom:1px solid var(--line);cursor:pointer;align-items:start;overflow:visible}
+  #fp-3 .persona .num{display:none}
+  #fp-3 .persona .idx{grid-column:1;grid-row:1;margin:0;font-family:'Geist',sans-serif !important;font-size:clamp(40px,4.8vw,84px) !important;letter-spacing:-.055em !important;line-height:.95;text-transform:none !important;color:var(--muted) !important;transition:color .35s ease-out,transform .5s cubic-bezier(.16,1,.3,1)}
+  #fp-3 .persona h4{grid-column:1;grid-row:2;font-size:clamp(17px,1.35vw,22px);color:var(--muted);max-width:none;margin:0;transition:color .35s}
+  #fp-3 .persona p{grid-column:2;grid-row:1;max-width:none;font-size:15.5px;margin:0;padding-top:.7em}
+  #fp-3 .persona .points{grid-column:2;grid-row:2;margin:0;padding:0}
+  #fp-3 .persona p,#fp-3 .persona .points{opacity:0;transform:translateY(10px);transition:opacity .4s ease-out,transform .5s cubic-bezier(.16,1,.3,1)}
+  #fp-3 .persona:hover .idx,#fp-3 .persona.open .idx{color:var(--ink) !important;transform:translateX(.35vw)}
+  #fp-3 .persona:hover h4,#fp-3 .persona.open h4{color:var(--ink)}
+  #fp-3 .persona:hover p,#fp-3 .persona:hover .points,#fp-3 .persona.open p,#fp-3 .persona.open .points{opacity:1;transform:none}
+}
+@media(max-width:860px){
+  #fp-3 .persona{cursor:pointer}
+  #fp-3 .persona .idx{font-size:clamp(28px,8.6vw,40px) !important;letter-spacing:-.05em !important;text-transform:none !important;color:var(--muted) !important;line-height:1;margin-bottom:.35em;transition:color .3s}
+  #fp-3 .persona h4{font-size:16px !important;color:var(--muted);margin:0}
+  #fp-3 .persona p,#fp-3 .persona .points{max-height:0;overflow:hidden;opacity:0;margin-top:0;transition:max-height .5s cubic-bezier(.16,1,.3,1),opacity .35s,margin-top .35s}
+  #fp-3 .persona.open .idx,#fp-3 .persona.open h4{color:var(--ink) !important}
+  #fp-3 .persona.open p{max-height:20em;opacity:1;margin-top:1.2em}
+  #fp-3 .persona.open .points{max-height:20em;opacity:1;margin-top:1em}
+}
 </style>
 </head>
 <body>
@@ -989,5 +1028,24 @@ nav .links a.cta:hover{background:var(--accent)}
 </script>
 <div id="proto-bar"><a href="./p02-a.html">A · Masia</a><a href="./p02-b.html">B · Studio</a><a href="./p02-b2.html" class="on">B+ · Studio + mise en page</a><a href="./p02-c.html">C · Carnet</a></div>
 <script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
+<script>(function(){
+  /* chiffres de la page 01 : trait qui se trace, puis compteur de 0 a la valeur */
+  var stats=document.querySelector('.stats'); if(stats){
+    var cibles=[]; stats.querySelectorAll('.stat .n').forEach(function(n){
+      var t=n.firstChild; if(!t||t.nodeType!==3) return; var v=parseFloat(t.nodeValue.replace(',','.')); if(isNaN(v)) return;
+      cibles.push({node:t,val:v,txt:t.nodeValue}); t.nodeValue='0';
+    });
+    function compte(){ var d=1300,t0=performance.now();
+      (function pas(now){ var k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3);
+        cibles.forEach(function(c){ c.node.nodeValue=String(Math.round(c.val*e)); });
+        if(k<1) requestAnimationFrame(pas); else cibles.forEach(function(c){c.node.nodeValue=c.txt;}); })(t0); }
+    var fait=false; function verif(){ if(fait) return; var r=stats.getBoundingClientRect(); if(r.top<innerHeight*0.9&&r.bottom>0){fait=true;stats.classList.add('in');compte();} }
+    addEventListener('scroll',verif,{passive:true}); setInterval(verif,250); verif();
+  }
+  /* profils de la page 03 : clic pour ouvrir (le survol suffit sur ordinateur) */
+  var ps=document.querySelectorAll('#fp-3 .persona'); if(ps.length){ ps[0].classList.add('open');
+    ps.forEach(function(p){ p.addEventListener('click',function(){ var etait=p.classList.contains('open'); ps.forEach(function(o){o.classList.remove('open');}); if(!etait) p.classList.add('open'); }); });
+  }
+})();</script>
 </body>
 </html>
