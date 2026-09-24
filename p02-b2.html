@@ -521,6 +521,11 @@ nav .links a.cta:hover{background:var(--accent)}
   #fp-3 .persona.open p{max-height:20em;opacity:1;margin-top:1.2em}
   #fp-3 .persona.open .points{max-height:20em;opacity:1;margin-top:1em}
 }
+
+/* ===== revue 24/09 · page 02 : le bloc coworking ne se centre plus (il etait retreci par align-items:center) ===== */
+#fp-2 .card.wide{align-items:stretch !important}
+#fp-2 .card.wide > div{width:100%;max-width:none;margin:0}
+@media(min-width:861px){#fp-2 .card.wide > div{max-width:46ch}}
 </style>
 </head>
 <body>
@@ -1039,7 +1044,9 @@ nav .links a.cta:hover{background:var(--accent)}
       (function pas(now){ var k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3);
         cibles.forEach(function(c){ c.node.nodeValue=String(Math.round(c.val*e)); });
         if(k<1) requestAnimationFrame(pas); else cibles.forEach(function(c){c.node.nodeValue=c.txt;}); })(t0); }
-    var fait=false; function verif(){ if(fait) return; var r=stats.getBoundingClientRect(); if(r.top<innerHeight*0.9&&r.bottom>0){fait=true;stats.classList.add('in');compte();} }
+    var reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function final(){ cibles.forEach(function(c){c.node.nodeValue=c.txt;}); }
+    var fait=false; function verif(){ if(fait) return; var r=stats.getBoundingClientRect(); if(r.top<innerHeight*0.9&&r.bottom>0){fait=true;stats.classList.add('in'); if(reduit) final(); else { compte(); setTimeout(final,1600); } } }
     addEventListener('scroll',verif,{passive:true}); setInterval(verif,250); verif();
   }
   /* profils de la page 03 : clic pour ouvrir (le survol suffit sur ordinateur) */
