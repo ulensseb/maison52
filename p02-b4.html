@@ -220,7 +220,7 @@ video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit
 #s-candidater .intro strong{color:var(--ink);font-weight:600}
 #s-candidater .intro em{font-style:normal;color:var(--accent)}
 #s-candidater .steps{list-style:none;margin-top:3vh;border-top:1px solid var(--line)}
-#s-candidater .steps li{display:grid;grid-template-columns:2.5em 1fr;gap:1.5em;padding:1.6vh 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
+#s-candidater .steps li{display:block;padding:1.6vh 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
 #s-candidater .steps .idx{color:var(--accent);font-family:'Sora',sans-serif;font-size:11px;letter-spacing:.18em}
 form{display:flex;flex-direction:column;gap:3vh}
 form label{display:block}
@@ -253,13 +253,13 @@ footer .legal{margin-top:6vh;font-size:11.5px;line-height:1.8;color:var(--muted)
 #loader.done{opacity:0;visibility:hidden;transition:none}
 #loader .word{position:relative;display:flex;gap:0;color:var(--ink);font-family:'Sora',sans-serif;font-weight:600;
   font-size:clamp(32px,6vw,84px);letter-spacing:-.04em;line-height:.9;transform-origin:50% 50%;will-change:transform}
-#loader .word span{opacity:0;transform:translateY(.5em);animation:loadIn 1.1s var(--ease) forwards}
+#loader .word span{opacity:0;transform:translateY(.5em);animation:loadIn .7s var(--ease) forwards}
 #loader .word span.accent{color:var(--accent)}
 #loader .word.compact{display:block;white-space:nowrap}
 #loader .word.compact span{opacity:1;transform:none;animation:none}
-#loader .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);animation:loadBar 2.8s var(--ease) forwards}
+#loader .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);animation:loadBar 1.7s var(--ease) forwards}
 /* morph : le titre monte et grossit jusqu'à la place du titre du hero */
-#loader.morph .word{transform:var(--morph,none);transition:transform 1.3s var(--ease)}
+#loader.morph .word{transform:var(--morph,none);transition:transform .85s var(--ease)}
 #loader.morph .lbg{opacity:0}
 #loader.morph .bar{opacity:0;transition:opacity .6s var(--ease)}
 @keyframes loadIn{to{opacity:1;transform:none}}
@@ -516,13 +516,31 @@ nav .links a.cta:hover{background:var(--accent)}
   .fullpage{padding-top:calc(9vh + env(safe-area-inset-top,0px));padding-bottom:calc(8vh + env(safe-area-inset-bottom,0px))}
   #fp-2,#fp-3,#fp-4{padding-top:8vh;padding-bottom:8vh}
 }
+
+/* ===== FAQ : chevron fin au lieu du "+" de composant ===== */
+.faq-q .ind{font-size:0 !important;position:relative;width:14px;height:14px;display:inline-block;color:var(--ink) !important;transition:transform .4s var(--ease)}
+.faq-q .ind::after{content:"";position:absolute;left:1px;top:2px;width:10px;height:10px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg)}
+.faq-item.open .ind{transform:rotate(180deg)}
+.faq-item.open .ind::after{border-color:var(--accent)}
+/* ===== etiquettes de section : plus de pastille, un simple numero en orange ===== */
+.fullpage .label,#s-candidater .label{gap:.7em;align-items:baseline}
+.fullpage .label .tag,#s-candidater .label span:first-child{background:transparent !important;border:0 !important;border-radius:0 !important;padding:0 !important;color:var(--accent) !important;letter-spacing:0 !important;font-size:12px !important;font-weight:500}
+.fullpage .label .lb,#s-candidater .label span:last-child{color:var(--muted) !important;letter-spacing:0 !important;font-size:12px !important}
+#fp-invest .label .tag{color:var(--accent) !important}
+#fp-invest .label .lb{color:#9B9B9B !important}
+/* ===== formulaire : intitules en minuscules, champs plus discrets ===== */
+#s-candidater form label > span.caps{text-transform:none !important;letter-spacing:0 !important;font-size:13px !important;color:var(--muted) !important;font-weight:400}
+#s-candidater form input,#s-candidater form textarea{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;padding-left:0;padding-right:0}
+#s-candidater form input:focus,#s-candidater form textarea:focus{border-bottom-color:var(--ink);outline:0}
+#s-candidater .steps li{color:var(--muted);padding:1.4vh 0}
+#s-candidater button{border-radius:.5rem}
 </style>
 </head>
 <body>
 <div class="m52">
 
 
-<div id="loader"><div class="lbg"></div><div class="word"><span style="animation-delay:120ms">M</span><span style="animation-delay:190ms">a</span><span style="animation-delay:260ms">i</span><span style="animation-delay:330ms">s</span><span style="animation-delay:400ms">o</span><span style="animation-delay:470ms">n</span><span style="animation-delay:540ms">&nbsp;</span><span style="animation-delay:610ms" class="accent">5</span><span style="animation-delay:680ms" class="accent">2</span></div><div class="bar"></div></div>
+<div id="loader"><div class="lbg"></div><div class="word"><span style="animation-delay:80ms">M</span><span style="animation-delay:125ms">a</span><span style="animation-delay:170ms">i</span><span style="animation-delay:215ms">s</span><span style="animation-delay:260ms">o</span><span style="animation-delay:305ms">n</span><span style="animation-delay:350ms">&nbsp;</span><span style="animation-delay:395ms" class="accent">5</span><span style="animation-delay:440ms" class="accent">2</span></div><div class="bar"></div></div>
 
 <section id="hero">
   <video id="hero-video" data-h="./dv-va.mp4" data-v="./dv-va-v.mp4" poster="./dv-poster.jpg" autoplay muted loop playsinline></video>
@@ -584,32 +602,32 @@ nav .links a.cta:hover{background:var(--accent)}
     <article class="card wide">
       <div class="shot"><img src="./m52-table.jpg" alt="Espace de coworking de la colocation, à 10 min de Louvain-la-Neuve" loading="lazy" width="1280" height="960"></div>
       <div>
-        <span class="idx caps">01 — Le coworking</span>
+        <span class="idx caps">Le coworking</span>
         <h4>Un vrai bureau au rez, pas un coin de table</h4>
         <p>Un grand espace de travail partagé au rez-de-chaussée, entièrement neuf. Tu descends, tu travailles, tu remontes : les journées ont un début et une fin, et tu n'es jamais seul devant ton écran.</p>
       </div>
     </article>
     <article class="card">
       <div class="shot"><img src="./m52-chambre.jpg" alt="Chambre lumineuse de la colocation à Court-Saint-Étienne" loading="lazy" width="1280" height="960"></div>
-      <span class="idx caps">02 — Ta chambre</span>
+      <span class="idx caps">Ta chambre</span>
       <h4>Un vrai cocon</h4>
       <p>Des chambres magnifiques, tout juste rénovées, lumineuses et calmes. Tu les aménages comme tu veux : quand on construit un projet, avoir un endroit à soi où vraiment se reposer n'est pas un luxe, c'est ce qui tient la distance.</p>
     </article>
     <article class="card">
       <div class="shot"><img src="./m52-cuisine.jpg" alt="Cuisine équipée partagée du coliving près d'Ottignies" loading="lazy" width="1280" height="960"></div>
-      <span class="idx caps">03 — La cuisine</span>
+      <span class="idx caps">La cuisine</span>
       <h4>Neuve et entièrement équipée</h4>
       <p>Machine à café intégrée et tout l'électroménager déjà là. Rien à acheter, rien à installer : autant de tracas en moins, et une grande table quand l'envie de manger ensemble vient.</p>
     </article>
     <article class="card">
       <div class="shot"><img src="./m52-jardin.jpg" alt="Jardin de la colocation à Court-Saint-Étienne, Brabant wallon" loading="lazy" width="1280" height="960"></div>
-      <span class="idx caps">04 — Le jardin</span>
+      <span class="idx caps">Le jardin</span>
       <h4>Quatre ares pour décrocher</h4>
       <p>Grande terrasse pour travailler dehors l'été et couper vraiment le soir, barbecue, et un abri de jardin pour ceux qui ont du matériel ou des vélos à stocker.</p>
     </article>
     <article class="card">
       <div class="shot"><img src="./m52-salon.jpg" alt="Séjour partagé de la colocation d'entrepreneurs près de LLN" loading="lazy" width="1280" height="960"></div>
-      <span class="idx caps">05 — Le séjour</span>
+      <span class="idx caps">Le séjour</span>
       <h4>Le rythme de la maison</h4>
       <p>Point hebdo de trente minutes, sessions de travail communes, et des soirées où on parle d'autre chose que du boulot.</p>
     </article>
@@ -622,7 +640,7 @@ nav .links a.cta:hover{background:var(--accent)}
   <h3 class="serif">Tu t'y retrouves ?</h3>
   <div class="personas">
     <article class="persona">
-      <span class="num" aria-hidden="true">01</span><span class="idx caps">01 — Fondateur</span>
+      <span class="idx caps">Fondateur</span>
       <h4>Tu lances ta boîte</h4>
       <p>Tout repose sur toi. Ici tu gardes un cadre : des horaires, un bureau, et des gens à qui parler du problème du jour.</p>
       <ul class="points">
@@ -631,7 +649,7 @@ nav .links a.cta:hover{background:var(--accent)}
       </ul>
     </article>
     <article class="persona">
-      <span class="num" aria-hidden="true">02</span><span class="idx caps">02 — Indépendant</span>
+      <span class="idx caps">Indépendant</span>
       <h4>Tu travailles pour toi</h4>
       <p>Freelance, consultant, créatif : tu veux séparer la vie et le travail sans payer un espace vide.</p>
       <ul class="points">
@@ -640,7 +658,7 @@ nav .links a.cta:hover{background:var(--accent)}
       </ul>
     </article>
     <article class="persona">
-      <span class="num" aria-hidden="true">03</span><span class="idx caps">03 — Étudiant-entrepreneur</span>
+      <span class="idx caps">Étudiant-entrepreneur</span>
       <h4>Tu construis en parallèle</h4>
       <p>Près du campus, sans retomber dans un kot où personne ne construit rien.</p>
       <ul class="points">
@@ -649,7 +667,7 @@ nav .links a.cta:hover{background:var(--accent)}
       </ul>
     </article>
     <article class="persona">
-      <span class="num" aria-hidden="true">04</span><span class="idx caps">04 — En transition</span>
+      <span class="idx caps">En transition</span>
       <h4>Tu prépares ton saut</h4>
       <p>Encore salarié, mais un projet sérieux le soir et le week-end. Un endroit qui pousse à passer le cap.</p>
       <ul class="points">
@@ -716,9 +734,9 @@ nav .links a.cta:hover{background:var(--accent)}
         <strong>Explique-nous en quelques lignes qui tu es et ce que tu construis.</strong><br><br>
         Pas besoin d'un dossier : quelques phrases honnêtes suffisent. <em>On répond à tout le monde.</em>
         <ul class="steps">
-          <li><span class="idx">01</span><div>Tu envoies le formulaire</div></li>
-          <li><span class="idx">02</span><div>On te répond et on fait connaissance</div></li>
-          <li><span class="idx">03</span><div>Visite de la maison</div></li>
+          <li><div>Tu envoies le formulaire</div></li>
+          <li><div>On te répond et on fait connaissance</div></li>
+          <li><div>Visite de la maison</div></li>
         </ul>
       </div>
       <form id="applyForm">
@@ -866,8 +884,8 @@ nav .links a.cta:hover{background:var(--accent)}
     setTimeout(function(){
       document.body.classList.add('m52-ready');
       if (loader) loader.classList.add('done');
-    }, 1300);
-  }, 2100);
+    }, 850);
+  }, 1250);
 
   /* titres : révélation mot par mot, déclenchée seulement quand la section est visible */
   var titles = Array.prototype.slice.call(document.querySelectorAll('.fullpage h3, #s-candidater h3, .fullpage .lead, #statement h2'));
