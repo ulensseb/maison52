@@ -535,46 +535,56 @@ body.nav-clair nav .brand .caps,body.nav-clair nav .links a:not(.cta){color:#F9F
 body.nav-clair nav .brand .muted{color:rgba(249,249,249,.7) !important}
 body.nav-clair nav .links a.cta{background:#F9F9F9 !important;color:#1A1918 !important}
 
-/* ===== MISE EN PAGE TELEPHONE : sortir de la colonne unique ===== */
+/* ========== TELEPHONE : le texte sur une seule ligne de depart, l'image joue ========== */
 @media(max-width:860px){
-  /* 01 — la photo touche les deux bords, le titre mord dessus */
-  #fp-1 .split{gap:0}
-  #fp-1 .split-media{margin:0 calc(-1 * var(--pad));width:calc(100% + 2 * var(--pad));max-width:none}
+
+  /* --- 1. aucun decalage arbitraire sur le texte --- */
+  #fp-3 .persona,#fp-5 .vielist li,#s-candidater .steps li,
+  #fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{padding-left:0 !important;margin-left:0 !important}
+  .stat{padding-left:0 !important;margin-top:0 !important}
+
+  /* --- 2. images pleine largeur, avec fondu vers le fond de page --- */
+  #fp-1 .split-media,#fp-2 .card.wide .shot,#fp-5 .sideshot{
+    margin-left:calc(-1 * var(--pad)) !important;margin-right:calc(-1 * var(--pad)) !important;
+    width:calc(100% + 2 * var(--pad)) !important;max-width:none !important;border-radius:0 !important;
+    position:relative;overflow:hidden}
   #fp-1 .split-media .cadre{border-radius:0}
-  #fp-1 .split-media img{aspect-ratio:4/5}
-  #fp-1 .split-body{margin-top:-2.6em;position:relative;z-index:2}
-  #fp-1 h3{background:linear-gradient(180deg,rgba(249,249,249,0) 0,var(--bg) 1.15em);padding-top:1.15em;margin-bottom:3vh}
-  /* les chiffres : decales, pas alignes au carre */
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:4.5vh 0 !important}
-  .stat:nth-child(even){padding-left:14% !important}
-  .stat:nth-child(3),.stat:nth-child(4){margin-top:-1vh}
-  /* 02 — grande photo bord a bord, titre par-dessus ; les autres en liste decalee */
-  #fp-2 h3{position:relative;z-index:2;margin-bottom:-1.1em;max-width:11ch}
-  #fp-2 .cards{gap:4.5vh}
-  #fp-2 .card.wide .shot{margin:0 calc(-1 * var(--pad));width:calc(100% + 2 * var(--pad));aspect-ratio:3/4;border-radius:0}
-  #fp-2 .card.wide > div{padding-top:2.4vh}
-  #fp-2 .card:not(.wide){display:grid;grid-template-columns:30% 1fr;gap:0 1.1rem;align-items:start;border-top:1px solid var(--line);padding-top:2.4vh}
-  #fp-2 .card:not(.wide) .shot{grid-row:1 / span 3;aspect-ratio:3/4;margin:0;border-radius:0}
-  #fp-2 .card:not(.wide):nth-child(odd){direction:rtl}
-  #fp-2 .card:not(.wide):nth-child(odd) > *{direction:ltr}
-  #fp-2 .card:not(.wide) .idx{margin-bottom:.3em}
-  #fp-2 .card:not(.wide) h4{font-size:5.6vw;margin-bottom:.4em}
-  #fp-2 .card:not(.wide) p{font-size:13.5px}
-  /* 03 — les profils decales en escalier */
-  #fp-3 .persona{padding:3.4vh 0}
-  #fp-3 .persona:nth-child(even){padding-left:12%}
-  #fp-3 .persona h4{font-size:6.4vw}
-  /* 04 — bloc sombre, la phrase occupe tout l'ecran */
-  #fp-invest h3.invest-title{font-size:9.5vw;max-width:none;margin-bottom:5vh}
+
+  /* fondu en bas de la facade : le titre vient s'y poser */
+  #fp-1 .split-media::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;pointer-events:none;
+    background:linear-gradient(0deg,var(--tone-a) 0%,rgba(248,246,241,0) 100%)}
+  #fp-1 .split{gap:0}
+  #fp-1 .split-body{margin-top:-3.2em;position:relative;z-index:2}
+
+  /* fondu en haut de la photo du coworking : le titre descend dessus */
+  #fp-2 .card.wide .shot::after{content:"";position:absolute;left:0;right:0;top:0;height:30%;pointer-events:none;
+    background:linear-gradient(180deg,var(--tone-b) 0%,rgba(233,231,225,0) 100%)}
+  #fp-2 h3{position:relative;z-index:2;margin-bottom:-1.4em;max-width:11ch}
+  #fp-2 .card.wide .shot{aspect-ratio:3/4;margin-bottom:3vh !important}
+  #fp-2 .card.wide > div{padding-top:0}
+  #fp-2 .cards{gap:5vh}
+
+  /* --- 3. les quatre autres lieux : texte a gauche sur la ligne, image qui sort a droite --- */
+  #fp-2 .card:not(.wide){display:grid;grid-template-columns:1fr 38%;gap:0 1.1rem;align-items:start;
+    border-top:1px solid var(--line);padding-top:2.6vh}
+  #fp-2 .card:not(.wide) .shot{grid-column:2;grid-row:1 / span 3;aspect-ratio:3/4;margin:0 calc(-1 * var(--pad)) 0 0 !important;
+    width:calc(100% + var(--pad));border-radius:0}
+  #fp-2 .card:not(.wide) .idx{grid-column:1;grid-row:1;margin-bottom:.35em}
+  #fp-2 .card:not(.wide) h4{grid-column:1;grid-row:2;font-size:5.4vw;margin-bottom:.45em}
+  #fp-2 .card:not(.wide) p{grid-column:1;grid-row:3;font-size:13.5px}
+
+  /* --- 4. quartier : photo pleine largeur avec fondu, liste alignee --- */
+  #fp-5 .sideshot{margin-bottom:4vh !important}
+  #fp-5 .sideshot img{height:50vh}
+  #fp-5 .sideshot::after{content:"";position:absolute;left:0;right:0;top:0;height:26%;pointer-events:none;
+    background:linear-gradient(180deg,var(--tone-a) 0%,rgba(248,246,241,0) 100%)}
+  #fp-5 .quartier{display:flex;flex-direction:column}
+  #fp-5 .sideshot{order:-1}
+
+  /* --- 5. bloc loyer : la phrase prend l'ecran --- */
+  #fp-invest h3.invest-title{font-size:9.4vw;max-width:none;margin-bottom:5vh}
   #fp-invest .invest-item{padding:2.6vh 0;border-top:1px solid rgba(255,255,255,.16)}
-  #fp-invest .invest-item:first-child{border-top:0}
-  /* 05 — photo bord a bord, liste decalee */
-  #fp-5 .sideshot{margin:0 calc(-1 * var(--pad)) 4vh;width:calc(100% + 2 * var(--pad));border-radius:0}
-  #fp-5 .sideshot img{height:52vh}
-  #fp-5 .vielist li{padding-left:8%}
-  /* formulaire : etapes decalees */
-  #s-candidater .steps li:nth-child(2){padding-left:7%}
-  #s-candidater .steps li:nth-child(3){padding-left:14%}
+  #fp-invest .invest-item:first-child{border-top:0;padding-top:0}
 }
 </style>
 </head>
@@ -1092,6 +1102,6 @@ body.nav-clair nav .links a.cta{background:#F9F9F9 !important;color:#1A1918 !imp
   }
   addEventListener('scroll',tone,{passive:true}); addEventListener('resize',tone); setInterval(tone,300); tone();
 })();</script>
-<div id="proto-bar" style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;gap:4px;background:#0A0A0A;padding:5px;font:600 11px/1 system-ui,sans-serif;letter-spacing:.08em"><a href="https://maison52.be/" style="color:#bbb;text-decoration:none;padding:9px 12px;text-transform:uppercase">Site actuel</a><a href="./mobile-test.html" style="background:#FE531D;color:#fff;text-decoration:none;padding:9px 12px;text-transform:uppercase">Mobile retravaille</a></div>
+<div id="proto-bar" style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;gap:4px;background:#0A0A0A;padding:5px;font:600 11px/1 system-ui,sans-serif;letter-spacing:.08em"><a href="https://maison52.be/" style="color:#bbb;text-decoration:none;padding:9px 12px;text-transform:uppercase">Site actuel</a><a href="./mobile-test.html" style="background:#FE531D;color:#fff;text-decoration:none;padding:9px 12px;text-transform:uppercase">Mobile v2</a></div>
 </body>
 </html>
