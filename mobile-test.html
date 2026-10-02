@@ -539,7 +539,7 @@ body.nav-clair nav .links a.cta{background:#F9F9F9 !important;color:#1A1918 !imp
 @media(max-width:860px){
   /* 01 — la photo touche les deux bords, le titre mord dessus */
   #fp-1 .split{gap:0}
-  #fp-1 .split-media{margin:0 calc(-1 * var(--pad));max-width:none}
+  #fp-1 .split-media{margin:0 calc(-1 * var(--pad));width:calc(100% + 2 * var(--pad));max-width:none}
   #fp-1 .split-media .cadre{border-radius:0}
   #fp-1 .split-media img{aspect-ratio:4/5}
   #fp-1 .split-body{margin-top:-2.6em;position:relative;z-index:2}
@@ -551,7 +551,7 @@ body.nav-clair nav .links a.cta{background:#F9F9F9 !important;color:#1A1918 !imp
   /* 02 — grande photo bord a bord, titre par-dessus ; les autres en liste decalee */
   #fp-2 h3{position:relative;z-index:2;margin-bottom:-1.1em;max-width:11ch}
   #fp-2 .cards{gap:4.5vh}
-  #fp-2 .card.wide .shot{margin:0 calc(-1 * var(--pad));aspect-ratio:3/4;border-radius:0}
+  #fp-2 .card.wide .shot{margin:0 calc(-1 * var(--pad));width:calc(100% + 2 * var(--pad));aspect-ratio:3/4;border-radius:0}
   #fp-2 .card.wide > div{padding-top:2.4vh}
   #fp-2 .card:not(.wide){display:grid;grid-template-columns:30% 1fr;gap:0 1.1rem;align-items:start;border-top:1px solid var(--line);padding-top:2.4vh}
   #fp-2 .card:not(.wide) .shot{grid-row:1 / span 3;aspect-ratio:3/4;margin:0;border-radius:0}
@@ -569,7 +569,7 @@ body.nav-clair nav .links a.cta{background:#F9F9F9 !important;color:#1A1918 !imp
   #fp-invest .invest-item{padding:2.6vh 0;border-top:1px solid rgba(255,255,255,.16)}
   #fp-invest .invest-item:first-child{border-top:0}
   /* 05 — photo bord a bord, liste decalee */
-  #fp-5 .sideshot{margin:0 calc(-1 * var(--pad)) 4vh;border-radius:0}
+  #fp-5 .sideshot{margin:0 calc(-1 * var(--pad)) 4vh;width:calc(100% + 2 * var(--pad));border-radius:0}
   #fp-5 .sideshot img{height:52vh}
   #fp-5 .vielist li{padding-left:8%}
   /* formulaire : etapes decalees */
