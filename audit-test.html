@@ -474,69 +474,19 @@ nav .links a.cta::after,#s-candidater button::after{content:"";flex:none;width:.
 /* ===== phrase sous le titre : cachee tant que le titre ne l'est plus, puis monte en place sans se decentrer ===== */
 body:not(.m52-ready) #hero-ui .kicker{opacity:0;transform:translateY(10px)}
 body.m52-ready #hero-ui .kicker{transition-delay:.15s}
-/* ================= V2 AUDIT 2026-10-04 (aucun texte touche) ================= */
-/* --- mobile natif --- */
-html,body{touch-action:auto}                       /* zoom a deux doigts rendu */
-html{-webkit-tap-highlight-color:transparent}      /* plus de flash au toucher */
-#hero{height:100svh}                               /* le bas de la video ne passe plus sous la barre */
+/* ===== corrections invisibles (audit 2026-10-04) ===== */
+html,body{touch-action:auto}
+html{-webkit-tap-highlight-color:transparent}
 nav .links a.cta{position:relative}
-nav .links a.cta::before{content:"";position:absolute;inset:-7px -4px}   /* zone de toucher >= 44px */
-#night-statement .arrow-down{padding:10px 13px}
-footer a{display:inline-block;padding:15px 0;margin:-15px 0}
-#s-candidater button{min-height:48px}
+nav .links a.cta::before{content:"";position:absolute;inset:-7px -4px}
+#night-statement .arrow-down{padding:10px 13px;margin-left:-13px;margin-right:-13px;margin-bottom:-10px}
+#s-candidater button{position:relative}
+#s-candidater button::before{content:"";position:absolute;inset:-3px 0}
 nav .links a.cta,#s-candidater button{transition:background-color .25s ease,color .25s ease,transform .16s cubic-bezier(.23,1,.32,1)}
 nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
-/* --- photos : fond de secours si elles ne chargent pas --- */
 #fp-1 .split-media .cadre,#fp-5 .sideshot{background:var(--surface)}
 #fp-1 img,#fp-2 img,#fp-5 img{color:transparent}
-/* --- contraste --- */
-:root{--muted:#6E6E6E}
-#hero .film{background:linear-gradient(to bottom,rgba(0,0,0,.36),rgba(0,0,0,.16) 38%,rgba(0,0,0,.18) 62%,rgba(0,0,0,.42))}
-/* --- orange rare : garde sur les "52", le reste en encre, numeros en orange fonce lisible --- */
-.fullpage .label .tag,#s-candidater .label span:first-child{color:#C83C10 !important;font-variant-numeric:tabular-nums;min-width:1.6em}
-#fp-invest .label .tag{color:#FE7A4F !important}
-#fp-1 .stats .stat .n small,.stats .stat .n small{color:var(--ink) !important;opacity:.55 !important}
-#fp-3 .persona .points li::before{background:var(--ink);opacity:.5}
-#fp-3 .note em,#s-candidater .intro em{color:var(--ink)}
-/* --- libelles des chiffres : role "libelle" du systeme (12px, 500, 0) --- */
-.stat .l{font-size:12px;letter-spacing:0;font-weight:500}
-/* --- animations (audit Emil) --- */
-#loader .word{letter-spacing:-.07em !important}    /* le titre ne "saute" plus a la fin du chargement */
-nav .brand,nav .links{transform:translateY(-8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-body.m52-ready #hero-ui .kicker{transition:opacity .6s var(--ease),transform .6s var(--ease);transition-delay:.1s}
-body.m52-ready nav .brand{transition-delay:.2s}
-body.m52-ready nav .links{transition-delay:.25s}
-#statement h2.wsplit{opacity:1;transition:none}      /* le titre arrive avec sa phrase, plus apres */
-.wsplit{transition:opacity .6s var(--ease)}
-.faq-a{transition:max-height .3s var(--ease)}
-.faq-q .ind{transition:transform .3s var(--ease)}
-.faq-a p{opacity:0;transition:opacity .15s ease}
-.faq-item.open .faq-a p{opacity:1;transition:opacity .25s ease .08s}
-/* --- mobile : un seul texte courant, petits titres a 22, rythme regulier --- */
-@media(max-width:860px){
-  #statement p,#fp-1 .lead,#fp-2 .card p,#fp-2 .note,#fp-3 .persona p,#fp-3 .persona .points li,#fp-3 .note,#fp-invest .invest-item p,
-  #fp-5 .quartier-lead,#fp-5 .vielist p,#s-candidater .intro,#s-candidater .steps li,.faq-a p{font-size:16px;line-height:1.45}
-  #fp-3 .persona h4,#fp-invest .invest-item h4,#fp-5 .vielist h4,.faq-q h5{font-size:22px;line-height:1.02}
-  #fp-invest h3.invest-title{font-size:clamp(32px,9.4vw,52px);line-height:.98}
-  .fullpage,#fp-1,#fp-2,#fp-3,#fp-4,#fp-5,#fp-invest,#s-candidater{padding-top:72px;padding-bottom:72px}
-  #statement{padding:96px var(--pad) 72px}
-  #fp-1 h3,#fp-2 h3,#fp-3 h3,#fp-4 h3,#fp-5 h3,#fp-invest h3.invest-title,#s-candidater h3{margin-bottom:40px}
-}
-@media(min-width:861px){
-  .fullpage,#fp-1,#fp-2,#fp-3,#fp-4,#fp-5,#fp-invest,#s-candidater{padding-top:112px;padding-bottom:112px}
-}
-/* --- "Reduire les animations" : on garde les fondus, on retire les deplacements et zooms --- */
-@media (prefers-reduced-motion: reduce){
-  #loader .word span{animation:none;opacity:1;transform:none}
-  #loader .bar{display:none}
-  #loader.morph .word{transform:none;opacity:0;transition:opacity .4s ease}
-  #loader.morph .lbg{transition:opacity .4s ease}
-  #hero-ui h1{opacity:1}
-  #hero-ui .kicker,nav .brand,nav .links{transform:none !important;transition:opacity .5s ease !important;transition-delay:0s !important}
-  #statement,#night-statement{transform:none;transition:opacity .5s ease}
-  #night-statement .arrow-down{animation:none}
-  .faq-a,.faq-q .ind{transition-duration:.2s}
-}
+#loader .word{letter-spacing:-.07em !important}
 </style>
 </head>
 <body>
@@ -998,14 +948,14 @@ body.m52-ready nav .links{transition-delay:.25s}
     a.addEventListener('click', function(ev){
       ev.preventDefault();
       var el = document.getElementById(a.getAttribute('data-target'));
-      if (el) el.scrollIntoView({behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'), block:'start'});
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
     });
   });
   var cand = document.querySelector('nav a[href="#s-candidater"]');
   if (cand) cand.addEventListener('click', function(ev){
     ev.preventDefault();
     var el = document.getElementById('s-candidater');
-    if (el) el.scrollIntoView({behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'), block:'start'});
+    if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
   });
 
   /* les deux phrases apparaissent quand elles entrent dans l'ecran */
@@ -1036,7 +986,7 @@ body.m52-ready nav .links{transition-delay:.25s}
     arrow.style.cursor = 'pointer';
     arrow.addEventListener('click', function(){
       var el = document.getElementById('s-candidater');
-      if (el) el.scrollIntoView({behavior:(matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'), block:'start'});
+      if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
     });
   }
 })();
