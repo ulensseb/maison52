@@ -1,0 +1,12 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Diagnostic</title>
+<style>body{font:18px/1.4 -apple-system,sans-serif;padding:24px;background:#F9F9F9;color:#1A1918}
+b{font-size:26px}.box{overflow:hidden;border:1px solid #ccc;margin:24px 0;padding:12px 0}
+.t{display:flex;width:max-content;animation:m 6s linear infinite;font-size:40px;white-space:nowrap}
+@keyframes m{to{transform:translateX(-50%)}}</style></head><body>
+<p>Réduire les animations : <b id="rm"></b></p>
+<p>Navigateur : <span id="ua" style="font-size:13px"></span></p>
+<p>Bande de test (ignore le réglage, elle doit TOUJOURS bouger) :</p>
+<div class="box"><div class="t"><span>Maison 52 · Maison 52 · </span><span>Maison 52 · Maison 52 · </span></div></div>
+<script>document.getElementById('rm').textContent=matchMedia('(prefers-reduced-motion: reduce)').matches?'OUI (activé)':'NON';
+document.getElementById('ua').textContent=navigator.userAgent;</script></body></html>
