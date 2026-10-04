@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Avant / Après</title>
+<style>
+html,body{margin:0;height:100%;background:#111;overflow:hidden;font-family:-apple-system,Helvetica,Arial,sans-serif}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
+iframe.off{visibility:hidden}
+.bar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:10;
+  display:flex;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:999px;padding:4px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.bar button{appearance:none;border:0;background:transparent;color:#fff;font:600 14px/1 -apple-system,Helvetica,Arial,sans-serif;
+  padding:12px 20px;border-radius:999px;-webkit-tap-highlight-color:transparent;min-width:92px}
+.bar button.on{background:#FE531D}
+@media(min-width:900px){
+  body.duo iframe{width:50%} body.duo #apres{left:50%} body.duo iframe.off{visibility:visible}
+}
+</style></head><body>
+<iframe id="avant" src="/?v=cmp1" title="Avant"></iframe>
+<iframe id="apres" src="/audit-test.html?v=cmp1" title="Après" class="off"></iframe>
+<div class="bar"><button id="bA" class="on">Avant</button><button id="bB">Après</button></div>
+<script>
+var A=document.getElementById('avant'),B=document.getElementById('apres'),bA=document.getElementById('bA'),bB=document.getElementById('bB');
+function y(f){try{return f.contentWindow.scrollY}catch(e){return 0}}
+function ratio(f){try{var d=f.contentDocument.documentElement;return f.contentWindow.scrollY/Math.max(1,d.scrollHeight-f.clientHeight)}catch(e){return 0}}
+function go(f,r){try{var d=f.contentDocument.documentElement;f.contentWindow.scrollTo(0,r*(d.scrollHeight-f.clientHeight))}catch(e){}}
+/* aligne la meme section, au meme endroit dans la section (les hauteurs different un peu) */
+var SEC='#hero,#statement,#fp-1,#fp-2,#fp-3,#fp-invest,#fp-5,#outro-video,#s-candidater,#fp-4,#after';
+function sync(from,to){try{
+  var fd=from.contentDocument,td=to.contentDocument,cur=null;
+  fd.querySelectorAll(SEC).forEach(function(s){if(s.getBoundingClientRect().top<=1)cur=s;});
+  if(!cur){go(to,ratio(from));return;}
+  var r=cur.getBoundingClientRect(),p=-r.top/Math.max(1,r.height),t=td.getElementById(cur.id);
+  if(!t){go(to,ratio(from));return;}
+  var tr=t.getBoundingClientRect();
+  to.contentWindow.scrollTo(0,to.contentWindow.scrollY+tr.top+p*tr.height);
+}catch(e){go(to,ratio(from));}}
+function show(to){var from=to===B?A:B;if(!to.classList.contains('off'))return;
+  sync(from,to);to.classList.remove('off');from.classList.add('off');
+  bA.classList.toggle('on',to===A);bB.classList.toggle('on',to===B);}
+bA.onclick=function(){show(A)};bB.onclick=function(){show(B)};
+/* sur grand ecran : les deux cote a cote */
+if(matchMedia('(min-width:900px)').matches)document.body.classList.add('duo');
+</script>
+</body></html>
