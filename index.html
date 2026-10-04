@@ -65,7 +65,7 @@ nav .brand .caps{display:block}
 nav .brand .muted{color:var(--muted);margin-top:.4em}
 nav .links{display:flex;gap:2.6em;align-items:center}
 nav .links a:not(.cta){position:relative;color:var(--muted);transition:color .3s var(--ease)}
-nav .links a:not(.cta):hover{color:var(--ink)}
+@media(hover:hover) and (pointer:fine){nav .links a:not(.cta):hover{color:var(--ink)}}
 nav .links a.cta{line-height:1;cursor:pointer;transition:background .3s var(--ease)}
 
 /* ---------- hero ---------- */
@@ -196,7 +196,7 @@ form input:focus,form textarea:focus{border-color:var(--accent);background:var(-
 form textarea{resize:vertical;min-height:7em}
 form button{align-self:flex-start;background:var(--ink);border:0;color:var(--bg);font-family:'Geist',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
   line-height:1;padding:1.4em 2.6em;cursor:pointer;transition:background .3s var(--ease)}
-form button:hover{background:var(--accent)}
+@media(hover:hover) and (pointer:fine){form button:hover{background:var(--accent)}}
 .rgpd{font-size:12px;line-height:1.7;color:var(--muted);margin-top:1vh}
 
 /* ---------- footer ---------- */
@@ -320,7 +320,7 @@ body{font-family:'Geist',-apple-system,Helvetica,Arial,sans-serif;font-size:16px
 nav .brand .caps,nav .links a{letter-spacing:0;font-size:12px;text-transform:none}
 nav .links a.cta{background:var(--ink);color:#fff;border-radius:.5rem;padding:.8em 1.2em;font-size:12px;letter-spacing:0;text-transform:none}
 nav .links a.cta::after{content:"  →"}
-nav .links a.cta:hover{background:var(--accent)}
+@media(hover:hover) and (pointer:fine){nav .links a.cta:hover{background:var(--accent)}}
 #fp-2 .card .idx,#fp-3 .persona .idx,#fp-5 .vielist .idx{font-size:12px !important;letter-spacing:0 !important;text-transform:none !important;color:var(--muted) !important}
 #fp-2 .card .shot,#fp-1 .split-media .cadre,#fp-5 .sideshot{border-radius:.75rem;overflow:hidden}
 #fp-1 .lead{font-size:clamp(16px,1.2vw,19px);line-height:1.45;letter-spacing:-.01em}
@@ -473,6 +473,19 @@ nav .links a.cta::after,#s-candidater button::after{content:"";flex:none;width:.
 /* ===== phrase sous le titre : cachee tant que le titre ne l'est plus, puis monte en place sans se decentrer ===== */
 body:not(.m52-ready) #hero-ui .kicker{opacity:0;transform:translateY(10px)}
 body.m52-ready #hero-ui .kicker{transition-delay:.15s}
+/* ===== corrections invisibles (audit 2026-10-04) ===== */
+html,body{touch-action:auto}
+html{-webkit-tap-highlight-color:transparent}
+nav .links a.cta{position:relative}
+nav .links a.cta::before{content:"";position:absolute;inset:-7px -4px}
+#night-statement .arrow-down{padding:10px 13px;margin-left:-13px;margin-right:-13px;margin-bottom:-10px}
+#s-candidater button{position:relative}
+#s-candidater button::before{content:"";position:absolute;inset:-3px 0}
+nav .links a.cta,#s-candidater button{transition:background-color .25s ease,color .25s ease,transform .16s cubic-bezier(.23,1,.32,1)}
+nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
+#fp-1 .split-media .cadre,#fp-5 .sideshot{background:var(--surface)}
+#fp-1 img,#fp-2 img,#fp-5 img{color:transparent}
+#loader .word{letter-spacing:-.07em !important}
 </style>
 </head>
 <body>
@@ -679,9 +692,9 @@ body.m52-ready #hero-ui .kicker{transition-delay:.15s}
         </ul>
       </div>
       <form id="applyForm">
-        <label><span class="caps">Prénom et nom</span><input id="f-name" type="text" autocomplete="name" required></label>
-        <label><span class="caps">Email</span><input id="f-email" type="email" autocomplete="email" required></label>
-        <label><span class="caps">Ton projet</span><textarea id="f-msg" required></textarea></label>
+        <label><span class="caps">Prénom et nom</span><input id="f-name" type="text" autocomplete="name" autocapitalize="words" enterkeyhint="next" required></label>
+        <label><span class="caps">Email</span><input id="f-email" type="email" autocomplete="email" enterkeyhint="next" required></label>
+        <label><span class="caps">Ton projet</span><textarea id="f-msg" enterkeyhint="send" required></textarea></label>
         <button type="submit">Envoyer</button>
         <p class="rgpd">Tes données servent uniquement à traiter ta demande. Pas de newsletter, pas de revente, pas de tracking.</p>
       </form>
