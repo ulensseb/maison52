@@ -1,0 +1,9 @@
+Polices utilisees sur maison52.be — toutes sous licence SIL Open Font License 1.1 (https://openfontlicense.org)
+
+Syne — Bonjour Monde (Lucas Descroix, Arman Mohtadji, Gregori Vincens), https://gitlab.com/bonjour-monde/fonderie/syne-typeface
+Copyright 2017 The Syne Project Authors
+
+Uncut Sans — Kaspar Huber / uncut.wtf, https://github.com/kaspernordkvist/uncut_sans
+Copyright The Uncut Sans Project Authors
+
+Fichiers obtenus via Fontsource (https://fontsource.org), sous-ensemble latin.
