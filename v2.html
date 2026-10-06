@@ -512,6 +512,24 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
 #night-statement h2{font-size:calc(.891 * clamp(36px,6vw,96px)) !important}
 .marquee span{font-size:calc(.864 * 9vw) !important}
 .stat .n{font-weight:400 !important;letter-spacing:-.06em !important}
+
+/* ===== 02 La vie au 52 — mobile : les 5 espaces en cartes a faire glisser (choix du 06/10, V1) ===== */
+@media(max-width:860px){
+  #fp-2 .cards{display:flex !important;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--pad));padding:0 var(--pad) 4px;scroll-padding:0 var(--pad);scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  #fp-2 .cards::-webkit-scrollbar{display:none}
+  #fp-2 .card,#fp-2 .card.wide{flex:0 0 84%;scroll-snap-align:start;padding-top:0 !important;border:0 !important}
+  #fp-2 .card .shot,#fp-2 .card.wide .shot{aspect-ratio:4/3 !important;margin-bottom:1.6vh !important}
+  #fp-2 .points{display:flex;gap:6px;margin-top:2.4vh}
+  #fp-2 .points i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.18;transition:opacity .3s ease,width .3s var(--ease)}
+  #fp-2 .points i.on{opacity:.8;width:18px;border-radius:3px}
+  /* V2 : liste compacte, construite a part (petite photo a gauche, tout visible) */
+  html.c2 #fp-2 .liste2{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  html.c2 #fp-2 .liste2 li{display:grid;grid-template-columns:96px 1fr;gap:0 16px;align-items:start;padding:2.2vh 0;border-bottom:1px solid var(--line)}
+  html.c2 #fp-2 .liste2 img{width:96px;height:96px;object-fit:cover;border-radius:.5rem;display:block;background:var(--surface)}
+  html.c2 #fp-2 .liste2 .idx{display:block;margin-bottom:.3em;color:var(--muted)}
+  html.c2 #fp-2 .liste2 h4{margin-bottom:.35em;font-family:'Syne',sans-serif;font-weight:500;font-size:22px;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+  html.c2 #fp-2 .liste2 p{font-size:13.5px;line-height:1.55;color:var(--muted)}
+}
 </style>
 </head>
 <body>
@@ -1028,5 +1046,14 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
   }
   addEventListener('scroll',tone,{passive:true}); addEventListener('resize',tone); setInterval(tone,300); tone();
 })();</script>
+<script>
+/* 02 : points de position du carrousel (mobile) */
+(function(){if(innerWidth>860)return;document.addEventListener('DOMContentLoaded',function(){
+  var cards=document.querySelector('#fp-2 .cards');if(!cards)return;var items=cards.querySelectorAll('.card');
+  var pts=document.createElement('div');pts.className='points';pts.setAttribute('aria-hidden','true');
+  items.forEach(function(){pts.appendChild(document.createElement('i'))});cards.after(pts);
+  var maj=function(){var i=Math.round(cards.scrollLeft/(items[0].offsetWidth+14));[].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===i)})};
+  cards.addEventListener('scroll',maj,{passive:true});maj();});})();
+</script>
 </body>
 </html>
