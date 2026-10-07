@@ -1141,7 +1141,7 @@ html.v4 #fp-3 .pq-visu{position:static;height:auto;grid-row:1}
 </script>
 <script>
 (function(){
-  var V=new URLSearchParams(location.search).get('v3')||'1',R=document.documentElement;R.classList.add('v'+V);
+  var V=new URLSearchParams(location.search).get('v3')||'6',R=document.documentElement;R.classList.add('v'+V);
   var reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ICONES={"rocket-launch": "<svg class=\"pq-ico\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M221.86,47.24a14,14,0,0,0-13.11-13.1c-12.31-.73-43.77.39-69.88,26.5L133.52,66H74.35a13.9,13.9,0,0,0-9.89,4.1L30.11,104.44a14,14,0,0,0,7.94,23.76l39.13,5.46,45.16,45.16L127.8,218a14,14,0,0,0,23.76,7.92l34.35-34.35a13.91,13.91,0,0,0,4.1-9.89V122.48l5.35-5.35h0C221.46,91,222.59,59.56,221.86,47.24ZM38.11,115a2,2,0,0,1,.49-2L72.94,78.58A2,2,0,0,1,74.35,78h47.17L77.87,121.64l-38.14-5.32A1.93,1.93,0,0,1,38.11,115ZM178,181.65a2,2,0,0,1-.59,1.41L143.08,217.4a2,2,0,0,1-3.4-1.11l-5.32-38.16L178,134.48Zm8.87-73h0L128,167.51,88.49,128l58.87-58.88a78.47,78.47,0,0,1,60.69-23A2,2,0,0,1,209.88,48,78.47,78.47,0,0,1,186.88,108.64ZM100,190.31C95.68,199.84,81.13,222,40,222a6,6,0,0,1-6-6c0-41.13,22.16-55.68,31.69-60a6,6,0,1,1,5,10.92c-7,3.17-22.53,13.52-24.47,42.91,29.39-1.94,39.74-17.52,42.91-24.47a6,6,0,1,1,10.92,5Z\"/></svg>", "headphones": "<svg class=\"pq-ico\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M200.47,56.07A101.37,101.37,0,0,0,128.77,26H128A102,102,0,0,0,26,128v56a22,22,0,0,0,22,22H64a22,22,0,0,0,22-22V144a22,22,0,0,0-22-22H38.2A90.12,90.12,0,0,1,192,64.52,89.41,89.41,0,0,1,217.81,122H192a22,22,0,0,0-22,22v40a22,22,0,0,0,22,22h16a22,22,0,0,0,22-22V128A101.44,101.44,0,0,0,200.47,56.07ZM64,134a10,10,0,0,1,10,10v40a10,10,0,0,1-10,10H48a10,10,0,0,1-10-10V134Zm154,50a10,10,0,0,1-10,10H192a10,10,0,0,1-10-10V144a10,10,0,0,1,10-10h26Z\"/></svg>", "graduation-cap": "<svg class=\"pq-ico\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M250.82,90.71l-120-64a5.94,5.94,0,0,0-5.64,0l-120,64a6,6,0,0,0,0,10.58L34,116.67v49.62a14,14,0,0,0,3.55,9.32C50.42,189.94,79.29,214,128,214a127.21,127.21,0,0,0,50-9.73V240a6,6,0,0,0,12,0V198.35a113.18,113.18,0,0,0,28.45-22.75,13.91,13.91,0,0,0,3.55-9.31V116.67l28.82-15.38a6,6,0,0,0,0-10.58ZM128,202c-44,0-70-21.56-81.52-34.41a2,2,0,0,1-.48-1.3V123.07l79.18,42.22a6,6,0,0,0,5.64,0L178,140.13v51C165,197.35,148.45,202,128,202Zm82-35.71a2,2,0,0,1-.48,1.3A100.25,100.25,0,0,1,190,184.3V133.73l20-10.66Zm-22.15-45a6.27,6.27,0,0,0-1-.71l-56-29.86a6,6,0,0,0-5.64,10.58L175.25,128,128,153.2,20.75,96,128,38.8,235.25,96Z\"/></svg>", "door-open": "<svg class=\"pq-ico\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M232,218H206V40a14,14,0,0,0-14-14H64A14,14,0,0,0,50,40V218H24a6,6,0,0,0,0,12H232a6,6,0,0,0,0-12ZM194,40V218H174V38h18A2,2,0,0,1,194,40ZM62,40a2,2,0,0,1,2-2h98V218H62Zm80,92a10,10,0,1,1-10-10A10,10,0,0,1,142,132Z\"/></svg>"};
   var CLES=['fondateur','independant','etudiant','transition'];
@@ -1149,7 +1149,7 @@ html.v4 #fp-3 .pq-visu{position:static;height:auto;grid-row:1}
   var PHOTOS=['./m52-table.jpg','./m52-chambre.jpg','./m52-salon.jpg','./m52-entree.jpg'];
   document.addEventListener('DOMContentLoaded',function(){
     var bar=document.createElement('div');bar.id='vbar';
-    [['1','1 · Maison 3D'],['2','2 · Personnages'],['3','3 · Icônes'],['4','4 · Mot géant'],['5','5 · Photos']].forEach(function(o){
+    [['6','Maison 3D v2'],['1','1 · Maison 3D'],['2','2 · Personnages'],['3','3 · Icônes'],['4','4 · Mot géant'],['5','5 · Photos']].forEach(function(o){
       var a=document.createElement('a');a.textContent=o[1];a.href='?v3='+o[0]+'&v='+Date.now()+'#fp-3';if(o[0]===V)a.className='on';bar.appendChild(a);});
     document.body.appendChild(bar);
     R.style.setProperty('--navh',document.querySelector('nav').getBoundingClientRect().height+'px');
@@ -1173,6 +1173,12 @@ html.v4 #fp-3 .pq-visu{position:static;height:auto;grid-row:1}
       if(best!==actif){actif=best;ps.forEach(function(p,i){p.classList.toggle('pq-actif',i===best)});if(window.__pq3d)window.__pq3d(best);}
     };
     addEventListener('scroll',tick,{passive:true});addEventListener('resize',tick);tick();
+    if(V==='6'){
+      var box6=document.createElement('div');box6.id='pq-3d';document.body.appendChild(box6);
+      var ch=function(src,cb){var sc=document.createElement('script');sc.src=src;sc.onload=cb;document.head.appendChild(sc);};
+      ch('./js/three.min.js',function(){ch('./js/maison3d.js',function(){ch('./js/maison3d-scene.js',function(){
+        try{var sc3=creerScene3D(box6);window.__pq3d=sc3.montrer;actif=-2;tick();}catch(e){console.error(e)}})})});
+    }
     if(V==='1'){
       var box=document.createElement('div');box.id='pq-3d';document.body.appendChild(box);
       var charger=function(src,cb){var sc=document.createElement('script');sc.src=src;sc.onload=cb;document.head.appendChild(sc);};
