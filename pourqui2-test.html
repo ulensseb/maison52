@@ -604,7 +604,8 @@ html.v4 #fp-3 .pq-visu{position:static;height:auto;grid-row:1}
 
 /* ===== placements de la maison 3D (2026-10-08) ===== */
 /* M1 : au centre, en grand, texte dessous */
-html.v7 #pq-3d{left:50%;right:auto;transform:translateX(-50%);top:calc(var(--navh,64px) + 2vh);width:min(1100px,86vw);height:52svh}
+html.v7 #fp-3 .pq-decor{position:sticky;top:calc(var(--navh,64px) + 2vh);height:52svh;margin-bottom:-52svh;z-index:5;pointer-events:none}
+html.v7 #pq-3d{position:absolute !important;left:50% !important;right:auto !important;top:0 !important;transform:translateX(-50%) !important;width:min(1100px,86vw) !important;height:100% !important}
 html.v7 #fp-3 .persona{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start;align-content:start;padding-top:calc(var(--navh,64px) + 2vh + 54svh) !important}
 html.v7 #fp-3 .pq-visu{display:none}
 html.v7 #fp-3 .persona > .pq-texte{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:0 5vw}
@@ -614,13 +615,15 @@ html.v7 #fp-3 .persona h4{grid-column:1;grid-row:2 / span 2}
 html.v7 #fp-3 .persona p{grid-column:2;grid-row:2}
 html.v7 #fp-3 .persona .points{grid-column:2;grid-row:3;margin-top:1.4em !important}
 @media(max-width:860px){
-  html.v7 #pq-3d{width:calc(100vw - 2 * var(--pad));height:38svh;top:calc(var(--navh,64px))}
+  html.v7 #fp-3 .pq-decor{top:var(--navh,64px);height:38svh;margin-bottom:-38svh}
+  html.v7 #pq-3d{width:calc(100vw - 2 * var(--pad)) !important}
   html.v7 #fp-3 .persona{padding-top:calc(var(--navh,64px) + 39svh) !important}
   html.v7 #fp-3 .persona > .pq-texte{display:block}
   html.v7 #fp-3 .persona h4{font-size:clamp(28px,8vw,40px) !important}
 }
 /* M2 : la maison en decor plein ecran, les profils passent devant dans des panneaux */
 html.v8 #fp-3 .pq-decor{position:sticky;top:0;height:100svh;margin-bottom:-100svh;z-index:0;pointer-events:none}
+html.v7 #pq-3d,html.v8 #pq-3d{opacity:1 !important}
 html.v8 #pq-3d{position:absolute !important;inset:0 0 0 auto !important;width:64% !important;height:100% !important;transform:none !important;top:0 !important}
 html.v8 #fp-3 .persona{position:relative !important;z-index:1;background:transparent !important;box-shadow:none !important;min-height:115svh;grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:center;transform:none !important;filter:none !important}
 html.v8 #fp-3 .persona:not(:last-child){margin-bottom:0}
@@ -1204,14 +1207,14 @@ html.v9 #pq-3d{position:absolute !important;inset:0 !important;width:100% !impor
         var n=ps[i+1];if(n&&!reduit&&V!=='8'){var d=n.getBoundingClientRect().top,k=Math.min(1,Math.max(0,1-d/(innerHeight*.9)));
           p.style.transform='scale('+(1-k*.1)+')';p.style.borderRadius=(k*28)+'px';p.style.filter='brightness('+(1-k*.15)+')';}
         if(V==='4'){var m=p.querySelector('.pq-mot');if(m)m.style.setProperty('--x',(-(innerHeight-r.top)*.25+innerWidth*.05)+'px');}});
-      var sec=document.getElementById('fp-3').getBoundingClientRect(),dedans=ps[0].getBoundingClientRect().top<innerHeight*.6&&ps[ps.length-1].getBoundingClientRect().bottom>innerHeight*.4;
+      var sec=document.getElementById('fp-3').getBoundingClientRect(),dedans=ps[0].getBoundingClientRect().top<innerHeight*.35&&ps[ps.length-1].getBoundingClientRect().bottom>innerHeight*.5;
       if(!dedans)best=-1;
       if(best!==actif){actif=best;ps.forEach(function(p,i){p.classList.toggle('pq-actif',i===best)});if(window.__pq3d)window.__pq3d(best);}
     };
     addEventListener('scroll',tick,{passive:true});addEventListener('resize',tick);tick();
     if(V==='6'||V==='7'||V==='8'||V==='9'){
       var box6=document.createElement('div');box6.id='pq-3d';
-      if(V==='8'){var dec=document.createElement('div');dec.className='pq-decor';dec.setAttribute('aria-hidden','true');dec.appendChild(box6);var pl=document.querySelector('#fp-3 .personas');pl.insertBefore(dec,pl.firstChild);}
+      if(V==='8'||V==='7'){var dec=document.createElement('div');dec.className='pq-decor';dec.setAttribute('aria-hidden','true');dec.appendChild(box6);var pl=document.querySelector('#fp-3 .personas');pl.insertBefore(dec,pl.firstChild);}
       else if(V==='9'){ps[0].querySelector('.pq-visu').appendChild(box6);}
       else document.body.appendChild(box6);
       var ch=function(src,cb){var sc=document.createElement('script');sc.src=src;sc.onload=cb;document.head.appendChild(sc);};
