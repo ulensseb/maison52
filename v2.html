@@ -577,6 +577,11 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
   #fp-2 .note.cachee{max-height:0;opacity:0;margin-top:0}
 }
 @media(min-width:861px) and (prefers-reduced-motion:reduce){#fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{opacity:1;transform:none}}
+
+/* ===== 02 : fin de glissement sans a-coup (12/10) =====
+   la fin du glissement (aimantation de la carte) envoie peu d'evenements de defilement sur iPhone :
+   on lisse donc l'inclinaison et le leger decalage de la photo au lieu de les appliquer d'un coup */
+@media(prefers-reduced-motion:reduce){#fp-2 .card{transition:none !important}}
 </style>
 </head>
 <body>
@@ -1108,12 +1113,21 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
         c.style.transform=Math.abs(k)<.002?'none':'rotateY('+(-k*62)+'deg) scale('+(1-Math.abs(k)*.12)+')';
         c.style.zIndex=100-Math.round(Math.abs(k)*10);
         var sh=c.querySelector('.shot');if(sh)sh.style.filter=Math.abs(k)<.002?'':'brightness('+(1-Math.abs(k)*.18)+')';
-        var img=c.querySelector('.shot img');if(img)img.style.translate=(-d*10)+'% 0';}});
+      }});
     items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
     [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});
     if(note)note.classList.toggle('cachee',best>0);};
-  cards.addEventListener('scroll',maj,{passive:true});addEventListener('resize',maj);maj();
-  var aller=function(i){i=Math.max(0,Math.min(items.length-1,i));var c=items[i];cards.scrollTo({left:c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2,behavior:reduit?'auto':'smooth'});};
+  /* suivi image par image tant que la carte bouge (y compris l'aimantation finale, que le navigateur ne signale presque pas) */
+  var suivi=0,derniere=-1,immobile=0;
+  function boucle(){var x=cards.scrollLeft;maj();if(Math.abs(x-derniere)<.5){immobile++}else{immobile=0}derniere=x;
+    if(immobile<8)suivi=requestAnimationFrame(boucle);else suivi=0;}
+  function reveil(){immobile=0;if(!suivi)suivi=requestAnimationFrame(boucle);}
+  cards.addEventListener('scroll',reveil,{passive:true});cards.addEventListener('touchstart',reveil,{passive:true});cards.addEventListener('touchend',reveil,{passive:true});cards.addEventListener('scrollend',reveil);addEventListener('resize',maj);maj();
+  var aller=function(i){i=Math.max(0,Math.min(items.length-1,i));var c=items[i];
+    /* l'aimantation est coupee pendant le trajet, sinon elle reprend la main a l'arrivee et la carte saute */
+    cards.style.scrollSnapType='none';
+    var fin=function(){cards.style.scrollSnapType='';cards.removeEventListener('scrollend',fin)};cards.addEventListener('scrollend',fin);setTimeout(fin,900);
+    cards.scrollTo({left:c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2,behavior:reduit?'auto':'smooth'});reveil();};
   var courant=function(){return items.findIndex(function(c){return c.classList.contains('actif')})};
   items.forEach(function(c,i){c.addEventListener('click',function(){if(!c.classList.contains('actif'))aller(i)})});
   if(innerWidth>860){var f=document.createElement('div');f.className='fleches2';f.innerHTML='<button class="prec" aria-label="Précédent"></button><button class="suiv" aria-label="Suivant"></button>';

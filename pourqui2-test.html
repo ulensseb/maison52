@@ -754,6 +754,18 @@ html.v13 #fp-3 .pq-visu{transform:translateZ(0)}
   html.v13 #fp-3 .pq-vid video,html.v13 #fp-3 .pq-vid img{left:50% !important}
   html.v13 #fp-3 .persona > .pq-texte{width:auto;margin:-14svh var(--pad) 0 !important}
 }
+
+/* ===== v13 : chaque profil monte par-dessus le precedent, sans que l'ancien reapparaisse (12/10) ===== */
+html.v13 #fp-3 .persona{height:250svh;background:var(--bg) !important;z-index:var(--z,1)}
+html.v13 #fp-3 .persona:nth-child(even){background:#F1F1F0 !important}
+html.v13 #fp-3 .persona + .persona{margin-top:-100svh !important;box-shadow:0 -24px 48px rgba(0,0,0,.08) !important;border-radius:1.5rem 1.5rem 0 0 !important}
+html.v13 #fp-3 .persona > .pq-texte{margin-top:-22svh !important}
+@media(max-width:860px){html.v13 #fp-3 .persona{height:235svh}html.v13 #fp-3 .persona > .pq-texte{margin-top:-10svh !important}}
+
+/* ===== 02 : fin de glissement sans a-coup (12/10) =====
+   la fin du glissement (aimantation de la carte) envoie peu d'evenements de defilement sur iPhone :
+   on lisse donc l'inclinaison et le leger decalage de la photo au lieu de les appliquer d'un coup */
+@media(prefers-reduced-motion:reduce){#fp-2 .card{transition:none !important}}
 </style>
 </head>
 <body>
@@ -1285,12 +1297,21 @@ html.v13 #fp-3 .pq-visu{transform:translateZ(0)}
         c.style.transform=Math.abs(k)<.002?'none':'rotateY('+(-k*62)+'deg) scale('+(1-Math.abs(k)*.12)+')';
         c.style.zIndex=100-Math.round(Math.abs(k)*10);
         var sh=c.querySelector('.shot');if(sh)sh.style.filter=Math.abs(k)<.002?'':'brightness('+(1-Math.abs(k)*.18)+')';
-        var img=c.querySelector('.shot img');if(img)img.style.translate=(-d*10)+'% 0';}});
+      }});
     items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
     [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});
     if(note)note.classList.toggle('cachee',best>0);};
-  cards.addEventListener('scroll',maj,{passive:true});addEventListener('resize',maj);maj();
-  var aller=function(i){i=Math.max(0,Math.min(items.length-1,i));var c=items[i];cards.scrollTo({left:c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2,behavior:reduit?'auto':'smooth'});};
+  /* suivi image par image tant que la carte bouge (y compris l'aimantation finale, que le navigateur ne signale presque pas) */
+  var suivi=0,derniere=-1,immobile=0;
+  function boucle(){var x=cards.scrollLeft;maj();if(Math.abs(x-derniere)<.5){immobile++}else{immobile=0}derniere=x;
+    if(immobile<8)suivi=requestAnimationFrame(boucle);else suivi=0;}
+  function reveil(){immobile=0;if(!suivi)suivi=requestAnimationFrame(boucle);}
+  cards.addEventListener('scroll',reveil,{passive:true});cards.addEventListener('touchstart',reveil,{passive:true});cards.addEventListener('touchend',reveil,{passive:true});cards.addEventListener('scrollend',reveil);addEventListener('resize',maj);maj();
+  var aller=function(i){i=Math.max(0,Math.min(items.length-1,i));var c=items[i];
+    /* l'aimantation est coupee pendant le trajet, sinon elle reprend la main a l'arrivee et la carte saute */
+    cards.style.scrollSnapType='none';
+    var fin=function(){cards.style.scrollSnapType='';cards.removeEventListener('scrollend',fin)};cards.addEventListener('scrollend',fin);setTimeout(fin,900);
+    cards.scrollTo({left:c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2,behavior:reduit?'auto':'smooth'});reveil();};
   var courant=function(){return items.findIndex(function(c){return c.classList.contains('actif')})};
   items.forEach(function(c,i){c.addEventListener('click',function(){if(!c.classList.contains('actif'))aller(i)})});
   if(innerWidth>860){var f=document.createElement('div');f.className='fleches2';f.innerHTML='<button class="prec" aria-label="Précédent"></button><button class="suiv" aria-label="Suivant"></button>';
@@ -1314,7 +1335,7 @@ html.v13 #fp-3 .pq-visu{transform:translateZ(0)}
     R.style.setProperty('--navh',document.querySelector('nav').getBoundingClientRect().height+'px');
     var ps=[].slice.call(document.querySelectorAll('#fp-3 .persona'));
     ps.forEach(function(p,i){
-      var t=document.createElement('div');t.className='pq-texte';while(p.firstChild)t.appendChild(p.firstChild);p.appendChild(t);
+      p.style.setProperty('--z',i+1);var t=document.createElement('div');t.className='pq-texte';while(p.firstChild)t.appendChild(p.firstChild);p.appendChild(t);
       var v=document.createElement('div');v.className='pq-visu';v.setAttribute('aria-hidden','true');p.appendChild(v);
       if(V==='13'){var bx=document.createElement('div');bx.className='pq-vid';
         if(CLES[i]==='fondateur'){var vd=document.createElement('video');vd.muted=true;vd.playsInline=true;vd.setAttribute('playsinline','');vd.setAttribute('muted','');vd.preload='auto';
