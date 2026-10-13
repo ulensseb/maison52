@@ -766,6 +766,17 @@ html.v13 #fp-3 .persona > .pq-texte{margin-top:-22svh !important}
    la fin du glissement (aimantation de la carte) envoie peu d'evenements de defilement sur iPhone :
    on lisse donc l'inclinaison et le leger decalage de la photo au lieu de les appliquer d'un coup */
 @media(prefers-reduced-motion:reduce){#fp-2 .card{transition:none !important}}
+
+/* ===== 02 : coverflow pilote par le site (13/10) ===== */
+#fp-2 .cards.pilote{overflow:hidden !important;scroll-snap-type:none !important;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+#fp-2 .cards.pilote:active{cursor:grabbing}
+#fp-2 .cards.pilote img{pointer-events:none;-webkit-user-drag:none}
+
+/* ===== v13 (13/10) : le profil suivant arrive collé sous la carte, on ne revoit jamais le bas du personnage ===== */
+html.v13 #fp-3 .persona{height:auto !important;min-height:0 !important}
+html.v13 #fp-3 .persona + .persona{margin-top:0 !important}
+html.v13 #fp-3 .persona > .pq-texte{margin-bottom:0 !important}
+html.v13 #fp-3 .pq-visu{margin-bottom:0 !important}
 </style>
 </head>
 <body>
@@ -1283,40 +1294,55 @@ html.v13 #fp-3 .persona > .pq-texte{margin-top:-22svh !important}
   addEventListener('scroll',tone,{passive:true}); addEventListener('resize',tone); setInterval(tone,300); tone();
 })();</script>
 <script>
-/* 02 (mobile) : coverflow — la carte du centre est de face, les voisines inclinees et chevauchees (choix du 07/10, E4) */
+/* 02 : coverflow pilote par le site (13/10) — la carte du centre est de face, les voisines inclinees et chevauchees.
+   Plus de defilement natif ni d'aimantation du navigateur (Safari depassait puis recentrait) :
+   le doigt deplace les cartes, puis un ressort amorti les pose pile au centre, sans rebond. */
 (function(){document.addEventListener('DOMContentLoaded',function(){
   var cards=document.querySelector('#fp-2 .cards');if(!cards)return;
   var items=[].slice.call(cards.querySelectorAll('.card')),note=document.querySelector('#fp-2 .note');
   var reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cards.classList.add('pilote');
   var pts=document.createElement('div');pts.className='points';pts.setAttribute('aria-hidden','true');
   items.forEach(function(){pts.appendChild(document.createElement('i'))});cards.after(pts);
-  var maj=function(){var milieu=cards.scrollLeft+cards.clientWidth/2,best=0,bd=1e9;
-    items.forEach(function(c,i){var d=(c.offsetLeft+c.offsetWidth/2-milieu)/c.offsetWidth;   /* 0 = au centre */
+  var x=0,v=0,cible=0,actif=-1,anim=0;
+  function centre(i){var c=items[i];return c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2}
+  function bornes(){return [centre(0),centre(items.length-1)]}
+  function maj(){var milieu=x+cards.clientWidth/2,best=0,bd=1e9;
+    items.forEach(function(c,i){var d=(c.offsetLeft+c.offsetWidth/2-milieu)/c.offsetWidth;
       if(Math.abs(d)<bd){bd=Math.abs(d);best=i}
-      if(!reduit){var k=Math.max(-1.4,Math.min(1.4,d));
-        c.style.transform=Math.abs(k)<.002?'none':'rotateY('+(-k*62)+'deg) scale('+(1-Math.abs(k)*.12)+')';
-        c.style.zIndex=100-Math.round(Math.abs(k)*10);
-        var sh=c.querySelector('.shot');if(sh)sh.style.filter=Math.abs(k)<.002?'':'brightness('+(1-Math.abs(k)*.18)+')';
-      }});
-    items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
-    [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});
-    if(note)note.classList.toggle('cachee',best>0);};
-  /* suivi image par image tant que la carte bouge (y compris l'aimantation finale, que le navigateur ne signale presque pas) */
-  var suivi=0,derniere=-1,immobile=0;
-  function boucle(){var x=cards.scrollLeft;maj();if(Math.abs(x-derniere)<.5){immobile++}else{immobile=0}derniere=x;
-    if(immobile<8)suivi=requestAnimationFrame(boucle);else suivi=0;}
-  function reveil(){immobile=0;if(!suivi)suivi=requestAnimationFrame(boucle);}
-  cards.addEventListener('scroll',reveil,{passive:true});cards.addEventListener('touchstart',reveil,{passive:true});cards.addEventListener('touchend',reveil,{passive:true});cards.addEventListener('scrollend',reveil);addEventListener('resize',maj);maj();
-  var aller=function(i){i=Math.max(0,Math.min(items.length-1,i));var c=items[i];
-    /* l'aimantation est coupee pendant le trajet, sinon elle reprend la main a l'arrivee et la carte saute */
-    cards.style.scrollSnapType='none';
-    var fin=function(){cards.style.scrollSnapType='';cards.removeEventListener('scrollend',fin)};cards.addEventListener('scrollend',fin);setTimeout(fin,900);
-    cards.scrollTo({left:c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2,behavior:reduit?'auto':'smooth'});reveil();};
-  var courant=function(){return items.findIndex(function(c){return c.classList.contains('actif')})};
-  items.forEach(function(c,i){c.addEventListener('click',function(){if(!c.classList.contains('actif'))aller(i)})});
+      var k=Math.max(-1.4,Math.min(1.4,d)),t='translate3d('+(-x)+'px,0,0)';
+      if(!reduit&&Math.abs(k)>=.002)t+=' rotateY('+(-k*62)+'deg) scale('+(1-Math.abs(k)*.12)+')';
+      c.style.transform=t;c.style.zIndex=100-Math.round(Math.abs(k)*10);
+      var sh=c.querySelector('.shot');if(sh)sh.style.filter=(reduit||Math.abs(k)<.002)?'':'brightness('+(1-Math.abs(k)*.18)+')';});
+    if(best!==actif){actif=best;items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
+      [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});if(note)note.classList.toggle('cachee',best>0);}}
+  /* ressort critique : arrive vite, ralentit, s'arrete sans depasser */
+  function ressort(){var dt=1/60,w=reduit?60:15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
+    if(Math.abs(cible-x)<.3&&Math.abs(v)<5){x=cible;v=0;maj();anim=0;return}
+    maj();anim=requestAnimationFrame(ressort);}
+  function aller(i){i=Math.max(0,Math.min(items.length-1,i));cible=centre(i);if(!anim)anim=requestAnimationFrame(ressort);}
+  /* glissement au doigt (ou a la souris) */
+  var debut=null,x0=0,dernier=[],sens=null;
+  cards.addEventListener('pointerdown',function(e){debut={x:e.clientX,y:e.clientY};x0=x;sens=null;dernier=[[performance.now(),e.clientX]];
+    cancelAnimationFrame(anim);anim=0;v=0;});
+  addEventListener('pointermove',function(e){if(!debut)return;var dx=e.clientX-debut.x,dy=e.clientY-debut.y;
+    if(!sens){if(Math.abs(dx)<6&&Math.abs(dy)<6)return;sens=Math.abs(dx)>Math.abs(dy)?'h':'v';if(sens==='h')cards.setPointerCapture&&cards.setPointerCapture(e.pointerId)}
+    if(sens!=='h')return;var b=bornes(),nx=x0-dx;
+    if(nx<b[0])nx=b[0]-(b[0]-nx)*.35;if(nx>b[1])nx=b[1]+(nx-b[1])*.35;   /* resistance aux extremites */
+    x=nx;maj();dernier.push([performance.now(),e.clientX]);if(dernier.length>6)dernier.shift();},{passive:true});
+  function lacher(){if(!debut)return;var etaitH=sens==='h';debut=null;if(!etaitH){aller(actif);return}
+    var a=dernier[0],z=dernier[dernier.length-1],vit=(z[0]-a[0])>0?(z[1]-a[1])/(z[0]-a[0]):0;   /* px par ms */
+    var w=items[0].offsetWidth,proj=x-vit*180,i=Math.round((proj-centre(0))/(centre(1)-centre(0)));
+    if(Math.abs(vit)>.35)i=Math.max(Math.min(i,actif+1),actif-1);   /* un geste vif avance d'une carte */
+    aller(i);}
+  addEventListener('pointerup',lacher);addEventListener('pointercancel',lacher);
+  cards.addEventListener('click',function(e){if(Math.abs(x-x0)>4){e.preventDefault();e.stopPropagation()}},true);
+  items.forEach(function(c,i){c.addEventListener('click',function(){if(i!==actif)aller(i)})});
   if(innerWidth>860){var f=document.createElement('div');f.className='fleches2';f.innerHTML='<button class="prec" aria-label="Précédent"></button><button class="suiv" aria-label="Suivant"></button>';
-    pts.after(f);f.querySelector('.prec').onclick=function(){aller(courant()-1)};f.querySelector('.suiv').onclick=function(){aller(courant()+1)};}
-  cards.tabIndex=0;cards.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();aller(courant()+1)}if(e.key==='ArrowLeft'){e.preventDefault();aller(courant()-1)}});
+    pts.after(f);f.querySelector('.prec').onclick=function(){aller(actif-1)};f.querySelector('.suiv').onclick=function(){aller(actif+1)};}
+  cards.tabIndex=0;cards.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();aller(actif+1)}if(e.key==='ArrowLeft'){e.preventDefault();aller(actif-1)}});
+  addEventListener('resize',function(){x=cible=centre(Math.max(0,actif));maj()});
+  x=cible=centre(0);maj();
 });})();
 </script>
 <script>
