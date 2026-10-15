@@ -777,6 +777,12 @@ html.v13 #fp-3 .persona{height:auto !important;min-height:0 !important}
 html.v13 #fp-3 .persona + .persona{margin-top:0 !important}
 html.v13 #fp-3 .persona > .pq-texte{margin-bottom:0 !important}
 html.v13 #fp-3 .pq-visu{margin-bottom:0 !important}
+
+/* ===== v13 (15/10) : plus de ligne entre les profils : meme fond, ni ombre ni coins ===== */
+html.v13 #fp-3 .persona,html.v13 #fp-3 .persona:nth-child(even){background:var(--bg) !important;box-shadow:none !important;border-radius:0 !important}
+html.v13 #fp-3 .persona + .persona{box-shadow:none !important;border-radius:0 !important;padding-top:6svh !important}
+
+html.v13 #fp-3 .persona > .pq-texte{box-shadow:none !important;border:1px solid color-mix(in srgb,var(--ink) 9%,transparent)}
 </style>
 </head>
 <body>
