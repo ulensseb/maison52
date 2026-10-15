@@ -1370,9 +1370,9 @@ html.v13 #fp-3 .persona > .pq-texte{box-shadow:none !important;border:1px solid 
       p.style.setProperty('--z',i+1);var t=document.createElement('div');t.className='pq-texte';while(p.firstChild)t.appendChild(p.firstChild);p.appendChild(t);
       var v=document.createElement('div');v.className='pq-visu';v.setAttribute('aria-hidden','true');p.appendChild(v);
       if(V==='13'){var bx=document.createElement('div');bx.className='pq-vid';
-        if(CLES[i]==='fondateur'){var vd=document.createElement('video');vd.muted=true;vd.playsInline=true;vd.setAttribute('playsinline','');vd.setAttribute('muted','');vd.preload='auto';
-          vd.poster='./img-pourqui/video/fondatrice-poster.jpg';vd.src='./img-pourqui/video/fondatrice.mp4';vd.style.setProperty('--c','.5');bx.appendChild(vd);}
-        else{var im2=document.createElement('img');im2.alt='';im2.src='./img-pourqui/anim/repos-'+CLES[i]+'.webp';bx.style.mixBlendMode='normal';im2.style.setProperty('--c',{independant:.4843,etudiant:.5173,transition:.4385}[CLES[i]]);bx.appendChild(im2);}
+        var FICH={fondateur:['fondatrice',.5],independant:['independant',.493],etudiant:['etudiant',.555],transition:['transition',.544]}[CLES[i]];
+        var vd=document.createElement('video');vd.muted=true;vd.playsInline=true;vd.setAttribute('playsinline','');vd.setAttribute('muted','');vd.preload=i===0?'auto':'metadata';
+        vd.poster='./img-pourqui/video/'+FICH[0]+'-poster.jpg';vd.src='./img-pourqui/video/'+FICH[0]+'.mp4';vd.style.setProperty('--c',FICH[1]);bx.appendChild(vd);
         v.appendChild(bx);}
       if(V==='12'){var AL={"repos-fondateur": 0.4961, "geste-fondateur": 0.5089, "repos-independant": 0.4843, "geste-independant": 0.4727, "repos-etudiant": 0.5173, "geste-etudiant": 0.5156, "repos-transition": 0.5043, "geste-transition": 0.4432},k=CLES[i],an=document.createElement('div');an.className='pq-anim';
         var r=document.createElement('img');r.className='f-repos';r.alt='';r.src='./img-pourqui/anim/repos-'+k+'.webp';r.style.setProperty('--c',AL['repos-'+k]);an.appendChild(r);
