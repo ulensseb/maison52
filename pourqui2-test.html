@@ -836,6 +836,33 @@ html.court.k4 #fp-3 .persona .points li + li::before{display:inline-block !impor
 #kbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.15)}
 #kbar a{color:#111;font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif;padding:10px 12px;border-radius:999px;white-space:nowrap}
 #kbar a.on{background:#111;color:#fff}
+
+/* ===== 03 facon « Shipro » (17/10) : cadre etiquete, personnage plus petit, noir et blanc (16) ou couleur (17) ===== */
+html.sh #fp-3 .personas{display:grid !important;gap:2.4vh;margin:0 !important;border:0 !important}
+html.sh #fp-3 .persona{position:relative !important;top:auto !important;min-height:0 !important;height:auto !important;margin:0 !important;padding:0 !important;display:grid !important;
+  grid-template-columns:1fr;gap:0;background:var(--bg) !important;border:1px solid color-mix(in srgb,var(--ink) 10%,transparent) !important;border-radius:.6rem !important;
+  box-shadow:none !important;transform:none !important;filter:none !important;overflow:hidden !important}
+html.sh #fp-3 .pq-visu{position:relative !important;grid-column:1 !important;grid-row:1 !important;height:30svh !important;margin:0 !important;background:#EFEFEE;overflow:hidden !important;z-index:0;mix-blend-mode:normal !important}
+html.sh #fp-3 .pq-vid{position:absolute;inset:0;opacity:1 !important;transform:none !important;mix-blend-mode:multiply}
+html.sh #fp-3 .pq-vid video{position:absolute;left:50% !important;bottom:-14% !important;top:auto !important;height:118% !important;width:auto;transform:translateX(calc(var(--c,.5) * -100%)) !important;-webkit-mask-image:none !important;mask-image:none !important}
+html.v16 #fp-3 .pq-vid video{filter:grayscale(1) contrast(1.18) brightness(1.04)}
+html.sh #fp-3 .pq-tag{position:absolute;left:12px;top:12px;z-index:2;display:flex;gap:.6em;align-items:center;background:#fff;border:1px solid color-mix(in srgb,var(--ink) 10%,transparent);border-radius:4px;padding:.45em .6em;
+  font:500 10.5px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+html.sh #fp-3 .pq-tag b{color:var(--accent);font-weight:500}
+html.sh #fp-3 .persona > .pq-texte{grid-column:1 !important;grid-row:2 !important;position:relative;z-index:1;width:auto !important;margin:0 !important;padding:2.4vh 5vw 2.8vh !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;background:transparent !important}
+html.sh #fp-3 .persona .idx{display:none !important}
+html.sh #fp-3 .persona h4{font-size:clamp(24px,6.6vw,30px) !important;line-height:1.02 !important;margin:0 0 .45em !important}
+html.sh #fp-3 .persona p{font-size:15px !important;line-height:1.5 !important;max-width:none !important}
+html.sh #fp-3 .persona .points{display:grid !important;gap:.65em !important;margin-top:1.3em !important;padding-top:1.1em !important;border-top:1px solid var(--line) !important;list-style:none}
+html.sh #fp-3 .persona .points li{display:flex !important;gap:.7em;align-items:flex-start;padding:0 !important;border:0 !important;font-size:14px !important;line-height:1.4 !important;color:var(--ink) !important;opacity:1 !important}
+html.sh #fp-3 .persona .points li::before{display:block !important;position:static !important;content:"" !important;flex:none;width:17px !important;height:17px !important;margin-top:.08em;border-radius:50%;
+  background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8.5l2.6 2.5L12 5.5'/%3E%3C/svg%3E") center/11px no-repeat !important}
+@media(min-width:861px){
+  html.sh #fp-3 .personas{grid-template-columns:1fr 1fr;gap:20px}
+  html.sh #fp-3 .pq-visu{height:min(34vh,320px) !important}
+  html.sh #fp-3 .persona > .pq-texte{padding:28px 28px 30px !important}
+  html.sh #fp-3 .persona h4{font-size:clamp(26px,2.2vw,34px) !important}
+}
 </style>
 </head>
 <body>
@@ -1406,9 +1433,10 @@ html.court.k4 #fp-3 .persona .points li + li::before{display:inline-block !impor
 </script>
 <script>
 (function(){
-  var V=new URLSearchParams(location.search).get('v3')||'15',R=document.documentElement;R.classList.add('v'+V);
+  var V=new URLSearchParams(location.search).get('v3')||'16',R=document.documentElement;R.classList.add('v'+V);
   /* 14 et 15 = la version video (13) en plus court */
   if(V==='14'||V==='15'){R.classList.add('v13','court');V='13';}
+  if(V==='16'||V==='17'){R.classList.add('sh');}
   var K=new URLSearchParams(location.search).get('k')||'2';if(R.classList.contains('court'))R.classList.add('k'+K);
   document.addEventListener('DOMContentLoaded',function(){if(!R.classList.contains('court'))return;var kb=document.createElement('div');kb.id='kbar';
     [['1','Liste'],['2','Coches'],['3','Colonnes'],['4','Phrase']].forEach(function(o){var a=document.createElement('a');a.textContent=o[1];
@@ -1420,19 +1448,20 @@ html.court.k4 #fp-3 .persona .points li + li::before{display:inline-block !impor
   var PHOTOS=['./m52-table.jpg','./m52-chambre.jpg','./m52-salon.jpg','./m52-entree.jpg'];
   document.addEventListener('DOMContentLoaded',function(){
     var bar=document.createElement('div');bar.id='vbar';
-    [['14','D · Buste + carte compacte'],['15','D serré'],['13','Personnages vidéo'],['12','Personnages animés'],['11','Personnages détourés'],['10','Personnages BD'],['7','M1 · Au centre'],['8','M2 · En décor'],['9','M3 · Dans la carte'],['6','Maison 3D v2'],['1','1 · Maison 3D'],['2','2 · Personnages'],['3','3 · Icônes'],['4','4 · Mot géant'],['5','5 · Photos']].forEach(function(o){
-      var a=document.createElement('a');a.textContent=o[1];a.href='?v3='+o[0]+'&v='+Date.now()+'#fp-3';if(o[0]===(new URLSearchParams(location.search).get('v3')||'15'))a.className='on';bar.appendChild(a);});
+    [['16','Cadre · noir et blanc'],['17','Cadre · couleur'],['14','D · Buste + carte compacte'],['15','D serré'],['13','Personnages vidéo'],['12','Personnages animés'],['11','Personnages détourés'],['10','Personnages BD'],['7','M1 · Au centre'],['8','M2 · En décor'],['9','M3 · Dans la carte'],['6','Maison 3D v2'],['1','1 · Maison 3D'],['2','2 · Personnages'],['3','3 · Icônes'],['4','4 · Mot géant'],['5','5 · Photos']].forEach(function(o){
+      var a=document.createElement('a');a.textContent=o[1];a.href='?v3='+o[0]+'&v='+Date.now()+'#fp-3';if(o[0]===(new URLSearchParams(location.search).get('v3')||'16'))a.className='on';bar.appendChild(a);});
     document.body.appendChild(bar);
     R.style.setProperty('--navh',document.querySelector('nav').getBoundingClientRect().height+'px');
     var ps=[].slice.call(document.querySelectorAll('#fp-3 .persona'));
     ps.forEach(function(p,i){
       p.style.setProperty('--z',i+1);var t=document.createElement('div');t.className='pq-texte';while(p.firstChild)t.appendChild(p.firstChild);p.appendChild(t);
       var v=document.createElement('div');v.className='pq-visu';v.setAttribute('aria-hidden','true');p.appendChild(v);
-      if(V==='13'){var bx=document.createElement('div');bx.className='pq-vid';
+      if(V==='13'||V==='16'||V==='17'){var bx=document.createElement('div');bx.className='pq-vid';
         var FICH={fondateur:['fondatrice',.5],independant:['independant',.493],etudiant:['etudiant',.555],transition:['transition',.544]}[CLES[i]];
         var vd=document.createElement('video');vd.muted=true;vd.playsInline=true;vd.setAttribute('playsinline','');vd.setAttribute('muted','');vd.preload=i===0?'auto':'metadata';
         vd.poster='./img-pourqui/video/'+FICH[0]+'-poster.jpg';vd.src='./img-pourqui/video/'+FICH[0]+'.mp4';vd.style.setProperty('--c',FICH[1]);bx.appendChild(vd);
-        v.appendChild(bx);}
+        v.appendChild(bx);
+        if(V==='16'||V==='17'){var tg=document.createElement('span');tg.className='pq-tag';tg.innerHTML='<b>['+String(i+1).padStart(2,'0')+']</b>'+p.querySelector('.idx').textContent;v.appendChild(tg);}}
       if(V==='12'){var AL={"repos-fondateur": 0.4961, "geste-fondateur": 0.5089, "repos-independant": 0.4843, "geste-independant": 0.4727, "repos-etudiant": 0.5173, "geste-etudiant": 0.5156, "repos-transition": 0.5043, "geste-transition": 0.4432},k=CLES[i],an=document.createElement('div');an.className='pq-anim';
         var r=document.createElement('img');r.className='f-repos';r.alt='';r.src='./img-pourqui/anim/repos-'+k+'.webp';r.style.setProperty('--c',AL['repos-'+k]);an.appendChild(r);
         var G={"fondateur": {"hauteur": 0.9866, "corps": 0.5123}, "transition": {"hauteur": 0.9836, "corps": 0.3327}};var g=document.createElement('img');g.className='f-geste';g.alt='';g.src='./img-pourqui/anim/geste-'+k+'.webp';
@@ -1452,14 +1481,14 @@ html.court.k4 #fp-3 .persona .points li + li::before{display:inline-block !impor
       if(i<0||reduit)return;var v=ps[i].querySelector('.pq-vid video');if(!v)return;
       var lancer=function(){v.currentTime=0;var p=v.play();if(p&&p.catch)p.catch(function(){});};
       v.onended=function(){vidMin=setTimeout(lancer,2500)};setTimeout(lancer,600);}
-    function jouer(i){if(V==='13'){jouerVideo(i);return;}clearTimeout(minuteur);document.querySelectorAll('#fp-3 .pq-anim').forEach(function(a){a.classList.remove('geste')});
+    function jouer(i){if(V==='13'||V==='16'||V==='17'){jouerVideo(i);return;}clearTimeout(minuteur);document.querySelectorAll('#fp-3 .pq-anim').forEach(function(a){a.classList.remove('geste')});
       if(V!=='12'||i<0||reduit)return;var a=ps[i].querySelector('.pq-anim');if(!a||!a.querySelector('.f-geste'))return;
       var k=CLES[i],pas={independant:[[1,200],[0,200],[1,200],[0,200],[1,200],[0,200],[1,200],[0,1900]],etudiant:[[0,1300],[1,1200],[0,1600]],fondateur:[[0,1200],[1,1500],[0,2200]],transition:[[0,1400],[1,1400],[0,2400]]}[k];
       var n=0;(function suivant(){var e=pas[n%pas.length];a.classList.toggle('geste',!!e[0]);n++;minuteur=setTimeout(suivant,e[1]);})();}
     /* carte active = celle qui occupe l'ecran ; la precedente recule et s'arrondit (C3) */
     var actif=-1,tick=function(){var best=0;
       ps.forEach(function(p,i){var r=p.getBoundingClientRect();if(r.top<=innerHeight*(V==='13'?.6:.45))best=i;
-        var n=ps[i+1];if(n&&!reduit&&V!=='8'&&V!=='13'){var d=n.getBoundingClientRect().top,k=Math.min(1,Math.max(0,1-d/(innerHeight*.9)));
+        var n=ps[i+1];if(n&&!reduit&&V!=='8'&&V!=='13'&&V!=='16'&&V!=='17'){var d=n.getBoundingClientRect().top,k=Math.min(1,Math.max(0,1-d/(innerHeight*.9)));
           p.style.transform='scale('+(1-k*.1)+')';p.style.borderRadius=(k*28)+'px';p.style.filter='brightness('+(1-k*.15)+')';}
         if(V==='4'){var m=p.querySelector('.pq-mot');if(m)m.style.setProperty('--x',(-(innerHeight-r.top)*.25+innerWidth*.05)+'px');}});
       var sec=document.getElementById('fp-3').getBoundingClientRect(),dedans=ps[0].getBoundingClientRect().top<innerHeight*.35&&ps[ps.length-1].getBoundingClientRect().bottom>innerHeight*.5;
