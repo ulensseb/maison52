@@ -1409,7 +1409,7 @@ html.court.k4 #fp-3 .persona .points li + li::before{display:inline-block !impor
   var V=new URLSearchParams(location.search).get('v3')||'15',R=document.documentElement;R.classList.add('v'+V);
   /* 14 et 15 = la version video (13) en plus court */
   if(V==='14'||V==='15'){R.classList.add('v13','court');V='13';}
-  var K=new URLSearchParams(location.search).get('k')||'1';if(R.classList.contains('court'))R.classList.add('k'+K);
+  var K=new URLSearchParams(location.search).get('k')||'2';if(R.classList.contains('court'))R.classList.add('k'+K);
   document.addEventListener('DOMContentLoaded',function(){if(!R.classList.contains('court'))return;var kb=document.createElement('div');kb.id='kbar';
     [['1','Liste'],['2','Coches'],['3','Colonnes'],['4','Phrase']].forEach(function(o){var a=document.createElement('a');a.textContent=o[1];
       var q=new URLSearchParams(location.search);q.set('k',o[0]);q.set('v',Date.now());a.href='?'+q.toString()+'#fp-3';if(o[0]===K)a.className='on';kb.appendChild(a)});document.body.appendChild(kb);});
