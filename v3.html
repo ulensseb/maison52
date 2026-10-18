@@ -606,10 +606,6 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
 #fp-1.photo-fond h3 em,#fp-1.photo-fond .lead em{color:#fff !important}
 #fp-1.photo-fond .lead{color:rgba(255,255,255,.82) !important}
 #fp-1.photo-fond .lead strong{color:#fff !important}
-#fp-1.photo-fond .stats{border-top-color:rgba(255,255,255,.38) !important}
-#fp-1.photo-fond .stat{border-left-color:rgba(255,255,255,.18) !important}
-#fp-1.photo-fond .stat .n{color:#fff !important}
-#fp-1.photo-fond .stat .l{color:rgba(255,255,255,.7) !important}
 @media(max-width:860px){#fp-1.photo-fond h3{color:rgba(255,255,255,.8) !important}}
 @media(min-width:861px){#fp-1.photo-fond .split-media img{object-position:50% 45%}#fp-1.photo-fond .split-body{max-width:min(46rem,52vw)}}
 
@@ -660,29 +656,22 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
 #fp-1.photo-fond .split-media img{object-position:50% 30% !important}
 #fp-1.photo-fond h3{font-size:clamp(24px,6.6vw,30px) !important;line-height:1.02 !important;margin-bottom:1.4vh !important;max-width:18ch !important;color:rgba(255,255,255,.72) !important}
 #fp-1.photo-fond .lead{font-size:14px !important;line-height:1.45 !important;margin-bottom:0 !important;max-width:40ch !important}
-#fp-1.photo-fond .stats{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:0 !important;margin-top:2.2vh !important;padding-top:1.6vh !important}
-#fp-1.photo-fond .stat{padding:0 0 0 3.5vw !important;border-left:1px solid rgba(255,255,255,.18) !important}
-#fp-1.photo-fond .stat:first-child{padding-left:0 !important;border-left:0 !important}
-#fp-1.photo-fond .stat .n,#fp-1.photo-fond .stat:first-child .n{font-size:clamp(26px,7.4vw,34px) !important;line-height:.9 !important}
-#fp-1.photo-fond .stat .l{margin-top:.5em !important;font-size:10.5px !important}
 @media(min-width:861px){
   #fp-1.photo-fond .split-media::after{background:linear-gradient(to right,rgba(10,10,10,.5) 0%,rgba(10,10,10,.2) 45%,rgba(10,10,10,0) 70%),linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 18%,rgba(10,10,10,0) 55%,rgba(10,10,10,.5) 70%,rgba(10,10,10,.85) 100%) !important}
   #fp-1.photo-fond .split-media img{object-position:50% 40% !important}
   #fp-1.photo-fond .split-body{max-width:min(40rem,46vw) !important}
   #fp-1.photo-fond h3{font-size:clamp(30px,2.9vw,46px) !important;max-width:20ch !important}
   #fp-1.photo-fond .lead{font-size:15px !important}
-  #fp-1.photo-fond .stat{padding-left:1.6vw !important}
-  #fp-1.photo-fond .stat .n,#fp-1.photo-fond .stat:first-child .n{font-size:clamp(30px,2.6vw,42px) !important}
 }
+
+/* ===== v3.2 (19/10) : Pour qui sans les points ni filets, 01 sans les chiffres ===== */
+#fp-3.pq04 .persona,html.pq-sombre #fp-3.pq04 .persona{border-top:0 !important}
+#fp-3.pq04 .persona{padding:2.2vh 0 !important}
+#fp-3.pq04 .persona:first-child{padding-top:0 !important}
+@media(min-width:861px){#fp-3.pq04 .persona{padding:2.6vh 0 !important}#fp-3.pq04 .persona:first-child{padding-top:0 !important}}
+#fp-1.photo-fond .lead{margin-bottom:0 !important}
 </style>
-<script>
-(function(){var q=new URLSearchParams(location.search),R=document.documentElement;
-  if(q.get('pq')!=='clair')R.classList.add('pq-sombre');if(q.get('pts')==='0')R.classList.add('pq-sanspoints');
-  document.addEventListener('DOMContentLoaded',function(){var bar=document.createElement('div');bar.id='v3bar';
-    function lien(k,v,t){var a=document.createElement('a');a.textContent=t;var p=new URLSearchParams(location.search);p.set(k,v);p.set('v',Date.now());a.href='?'+p.toString()+'#fp-3';
-      if((q.get(k)||(k==='pq'?'clair':'1'))===v)a.className='on';bar.appendChild(a);}
-    lien('pts','1','Avec les points');lien('pts','0','Sans');document.body.appendChild(bar);});})();
-</script>
+<script>document.documentElement.classList.add('pq-sombre');</script>
 </head>
 <body>
 <div class="m52">
@@ -732,12 +721,6 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
     <div class="split-body">
       <h3 class="serif">Une maison de maître rénovée pour vivre et <em>travailler</em>.</h3>
       <p class="lead"><strong>310 m², six chambres, un grand bureau, un jardin.</strong> À <em>dix minutes de Louvain-la-Neuve</em>, avec des matériaux durables.</p>
-      <div class="stats">
-        <div class="stat"><div class="n">310<small> m²</small></div><div class="l">Surface</div></div>
-        <div class="stat"><div class="n">6</div><div class="l">Chambres</div></div>
-        <div class="stat"><div class="n">4<small> a</small></div><div class="l">Jardin</div></div>
-        <div class="stat"><div class="n">10<small> min</small></div><div class="l">LLN</div></div>
-      </div>
     </div>
   </div>
 </section>
@@ -751,37 +734,21 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
       <span class="idx caps">Fondateur</span>
       <h4>Tu lances ta boîte</h4>
       <p>Tout repose sur toi. Ici tu gardes un cadre : des horaires, un bureau, et des gens à qui parler du problème du jour.</p>
-      <ul class="points">
-        <li>Un poste de travail disponible quand tu veux</li>
-        <li>Des voisins qui comprennent ce que « ça n'avance pas » veut dire</li>
-      </ul>
     </article>
     <article class="persona">
       <span class="idx caps">Indépendant</span>
       <h4>Tu travailles pour toi</h4>
       <p>Freelance, consultant, créatif : tu veux séparer la vie et le travail sans payer un espace vide.</p>
-      <ul class="points">
-        <li>Un endroit calme pour tes appels et tes visios</li>
-        <li>Un rythme régulier, donné par la maison</li>
-      </ul>
     </article>
     <article class="persona">
       <span class="idx caps">Étudiant-entrepreneur</span>
       <h4>Tu construis en parallèle</h4>
       <p>Près du campus, sans retomber dans un kot où personne ne construit rien.</p>
-      <ul class="points">
-        <li>Dix minutes de Louvain-la-Neuve, train direct depuis la gare</li>
-        <li>Un environnement qui rend les semaines productives</li>
-      </ul>
     </article>
     <article class="persona">
       <span class="idx caps">En transition</span>
       <h4>Tu prépares ton saut</h4>
       <p>Encore salarié, mais un projet sérieux le soir et le week-end. Un endroit qui pousse à passer le cap.</p>
-      <ul class="points">
-        <li>Un bureau disponible dès que tu rentres</li>
-        <li>Des retours francs sur ton projet, sans complaisance</li>
-      </ul>
     </article>
   </div>
   <p class="note">On ne cherche pas des profils identiques : un groupe se construit avec des parcours différents. <em>On cherche surtout des gens motivés.</em></p>
@@ -1192,7 +1159,7 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
 <script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
 <script>(function(){
   /* le menu passe en clair quand une section sombre passe derriere lui */
-  var sombres=[document.getElementById('fp-1'),document.getElementById('fp-invest'),(new URLSearchParams(location.search).get('pq')!=='clair')?document.getElementById('fp-3'):null,document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
+  var sombres=[document.getElementById('fp-1'),document.getElementById('fp-invest'),document.getElementById('fp-3'),document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
   function tone(){
     var h=document.querySelector('nav').getBoundingClientRect().height||70;
     var clair=sombres.some(function(s){var r=s.getBoundingClientRect();return r.top<=h*0.6 && r.bottom>=h*0.6;});
