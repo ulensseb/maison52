@@ -652,14 +652,36 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
 #v3bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.3)}
 #v3bar a{color:#fff;font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif;padding:11px 12px;border-radius:999px;white-space:nowrap}
 #v3bar a.on{background:var(--accent)}
+
+/* ===== v3.1 (18/10) — marge basse reduite pour que le texte tienne dans le tiers bas */
+#fp-1.photo-fond{padding-bottom:calc(4.5vh + env(safe-area-inset-bottom,0px)) !important}
+/* ===== : texte de 01 dans le tiers bas de la photo ; Pour qui aux couleurs de 04 ===== */
+#fp-1.photo-fond .split-media::after{background:linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 18%,rgba(10,10,10,0) 50%,rgba(10,10,10,.55) 66%,rgba(10,10,10,.86) 100%) !important}
+#fp-1.photo-fond .split-media img{object-position:50% 30% !important}
+#fp-1.photo-fond h3{font-size:clamp(24px,6.6vw,30px) !important;line-height:1.02 !important;margin-bottom:1.4vh !important;max-width:18ch !important;color:rgba(255,255,255,.72) !important}
+#fp-1.photo-fond .lead{font-size:14px !important;line-height:1.45 !important;margin-bottom:0 !important;max-width:40ch !important}
+#fp-1.photo-fond .stats{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:0 !important;margin-top:2.2vh !important;padding-top:1.6vh !important}
+#fp-1.photo-fond .stat{padding:0 0 0 3.5vw !important;border-left:1px solid rgba(255,255,255,.18) !important}
+#fp-1.photo-fond .stat:first-child{padding-left:0 !important;border-left:0 !important}
+#fp-1.photo-fond .stat .n,#fp-1.photo-fond .stat:first-child .n{font-size:clamp(26px,7.4vw,34px) !important;line-height:.9 !important}
+#fp-1.photo-fond .stat .l{margin-top:.5em !important;font-size:10.5px !important}
+@media(min-width:861px){
+  #fp-1.photo-fond .split-media::after{background:linear-gradient(to right,rgba(10,10,10,.5) 0%,rgba(10,10,10,.2) 45%,rgba(10,10,10,0) 70%),linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 18%,rgba(10,10,10,0) 55%,rgba(10,10,10,.5) 70%,rgba(10,10,10,.85) 100%) !important}
+  #fp-1.photo-fond .split-media img{object-position:50% 40% !important}
+  #fp-1.photo-fond .split-body{max-width:min(40rem,46vw) !important}
+  #fp-1.photo-fond h3{font-size:clamp(30px,2.9vw,46px) !important;max-width:20ch !important}
+  #fp-1.photo-fond .lead{font-size:15px !important}
+  #fp-1.photo-fond .stat{padding-left:1.6vw !important}
+  #fp-1.photo-fond .stat .n,#fp-1.photo-fond .stat:first-child .n{font-size:clamp(30px,2.6vw,42px) !important}
+}
 </style>
 <script>
 (function(){var q=new URLSearchParams(location.search),R=document.documentElement;
-  if(q.get('pq')==='sombre')R.classList.add('pq-sombre');if(q.get('pts')==='0')R.classList.add('pq-sanspoints');
+  if(q.get('pq')!=='clair')R.classList.add('pq-sombre');if(q.get('pts')==='0')R.classList.add('pq-sanspoints');
   document.addEventListener('DOMContentLoaded',function(){var bar=document.createElement('div');bar.id='v3bar';
     function lien(k,v,t){var a=document.createElement('a');a.textContent=t;var p=new URLSearchParams(location.search);p.set(k,v);p.set('v',Date.now());a.href='?'+p.toString()+'#fp-3';
       if((q.get(k)||(k==='pq'?'clair':'1'))===v)a.className='on';bar.appendChild(a);}
-    lien('pq','clair','Clair');lien('pq','sombre','Sombre');lien('pts','1','Avec les points');lien('pts','0','Sans');document.body.appendChild(bar);});})();
+    lien('pts','1','Avec les points');lien('pts','0','Sans');document.body.appendChild(bar);});})();
 </script>
 </head>
 <body>
@@ -1170,7 +1192,7 @@ html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
 <script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
 <script>(function(){
   /* le menu passe en clair quand une section sombre passe derriere lui */
-  var sombres=[document.getElementById('fp-1'),document.getElementById('fp-invest'),document.documentElement.classList.contains('pq-sombre')?document.getElementById('fp-3'):null,document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
+  var sombres=[document.getElementById('fp-1'),document.getElementById('fp-invest'),(new URLSearchParams(location.search).get('pq')!=='clair')?document.getElementById('fp-3'):null,document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
   function tone(){
     var h=document.querySelector('nav').getBoundingClientRect().height||70;
     var clair=sombres.some(function(s){var r=s.getBoundingClientRect();return r.top<=h*0.6 && r.bottom>=h*0.6;});
