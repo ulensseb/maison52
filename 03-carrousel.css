@@ -1,0 +1,156 @@
+/* 03 « Pour qui » — proposition « carrousel », v2 (17/10).
+   Quatre portraits en noir et blanc sur une rangee qu'on fait glisser (defilement natif + scroll-snap, aucun
+   transform sur la rangee). L'actif est net et joue son geste ; le suivant attend pali au bord, visage visible.
+   Sous la rangee, l'index [01]-[04] des quatre profils, toujours visible et tapable, avec le filet qui avance.
+   Le texte passe d'un profil a l'autre en fondu enchaine lie au doigt. Une seule couleur d'accent : les coches. */
+#fp-3.k3{--fh:clamp(280px,38svh,340px);--sw:58vw;--gap:3vw;--mono:ui-monospace,'SF Mono',SFMono-Regular,Menlo,Consolas,monospace;
+  --ressort:cubic-bezier(.34,1.45,.64,1);--sortie:cubic-bezier(.16,1,.3,1)}
+#fp-3.k3 .k3-grid{display:flex;flex-direction:column}
+#fp-3.k3 .k3-col,#fp-3.k3 .k3-main{display:contents}
+#fp-3.k3 .label{order:1}
+#fp-3.k3 h3{order:2;margin-bottom:3.2vh}
+#fp-3.k3 .k3-vp{order:3}
+#fp-3.k3 .k3-tabs{order:4}
+#fp-3.k3 .personas{order:5}
+#fp-3.k3 .k3-ctrl{order:6}
+#fp-3.k3 .note{order:7}
+
+/* rangee : defilement natif sur toute la largeur de l'ecran. Fond opaque, pas de transform ni de will-change :
+   le multiply des videos se fait directement contre ce fond (aucun contexte intermediaire a isoler) */
+#fp-3 .k3-vp{position:relative;display:flex;margin:0 calc(-1 * var(--pad));padding:0 0 0 var(--pad);scroll-padding-left:var(--pad);
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none;
+  background:var(--bg);outline:0;-webkit-tap-highlight-color:transparent}
+#fp-3 .k3-vp::-webkit-scrollbar{display:none}
+#fp-3 .k3-vp.glisse{scroll-snap-type:none;cursor:grabbing}
+#fp-3 .k3-s{position:relative;flex:0 0 var(--sw);height:var(--fh);margin-right:var(--gap);scroll-snap-align:start;scroll-snap-stop:always;cursor:pointer;
+  background:var(--bg)}   /* fond opaque sous chaque portrait : meme si Safari isole le contenu defilant, le multiply trouve #F9F9F9 */
+#fp-3 .k3-s.on{cursor:default}
+#fp-3 .k3-fin{flex:0 0 auto;height:1px}
+/* portrait en buste : la video depasse vers le bas et sur les cotes, la case la coupe (la veste du 04 ne
+   deborde jamais sur le voisin). Noir et blanc pour tous, fixe : aucun filtre anime. brightness pousse le blanc casse de
+   la compression vers 255 ; et les quatre bords de la case sont fondus (haut 14 px, cotes 18 px, bas en degrade) :
+   si un navigateur rend le blanc a 254, la difference d'un niveau n'a plus d'arete visible */
+#fp-3 .k3-fig{position:absolute;inset:0;overflow:hidden;mix-blend-mode:multiply}
+#fp-3 .k3-fig video{position:absolute;left:50%;top:14px;height:calc(var(--fh) / .62);width:auto;max-width:none;display:block;
+  background:#fff;pointer-events:none;filter:grayscale(1) brightness(1.04) contrast(1.06);transform:translate3d(calc(var(--c,.5) * -100% + var(--px,0px)),0,0)}
+/* deux voiles poses au-dessus, jamais d'opacity sur le groupe fusionne :
+   ::before fond le bas du buste et les deux bords de la case ; ::after palit le profil qui n'est pas actif */
+#fp-3 .k3-s::before,#fp-3 .k3-s::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none}
+#fp-3 .k3-s::before{background:linear-gradient(to bottom,var(--bg),rgb(249 249 249 / 0) 14px),
+  linear-gradient(to right,var(--bg),rgb(249 249 249 / 0) 18px,rgb(249 249 249 / 0) calc(100% - 18px),var(--bg)),
+  linear-gradient(to bottom,rgb(249 249 249 / 0) 56%,rgb(249 249 249 / .8) 80%,var(--bg) 96%)}
+#fp-3 .k3-s::after{background:var(--bg);opacity:var(--o,0)}
+/* le 04 n'a pas de voisin a droite : sa case s'ouvre de ce cote, la veste sur l'epaule n'est plus tranchee net */
+#fp-3 .k3-s.k3-der .k3-fig,#fp-3 .k3-s.k3-der::before,#fp-3 .k3-s.k3-der::after{right:calc(-1 * var(--ext,22vw))}
+#fp-3 .k3-s.k3-der .k3-fig video{left:calc(50% - var(--ext,22vw) / 2)}   /* le corps reste au milieu de sa case */
+#fp-3 .k3-s.k3-der::before{background:linear-gradient(to bottom,var(--bg),rgb(249 249 249 / 0) 14px),
+  linear-gradient(to right,var(--bg),rgb(249 249 249 / 0) 18px),
+  linear-gradient(to bottom,rgb(249 249 249 / 0) 56%,rgb(249 249 249 / .8) 80%,var(--bg) 96%)}
+
+/* index des quatre profils : [01] puis la categorie ; le filet du haut avance avec le doigt */
+#fp-3 .k3-tabs{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:8px;margin-top:1.2vh;
+  border-top:1px solid var(--line)}
+#fp-3 .k3-pouce{position:absolute;top:-1px;left:0;height:1px;width:calc((100% - 24px) / 4);background:var(--ink);
+  transform:translate3d(calc(var(--f,0) * (100% + 8px)),0,0)}
+#fp-3 .k3-tab{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-height:48px;padding:11px 0 4px;margin:0;
+  background:none;border:0;border-radius:0;font-family:var(--mono);font-size:10px;line-height:1.3;letter-spacing:.05em;
+  text-transform:uppercase;text-align:left;color:var(--muted);cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:color .35s ease;outline:0}
+#fp-3 .k3-tab .idx{display:block;margin:0;font:inherit !important;letter-spacing:inherit !important;text-transform:inherit !important;
+  color:inherit !important;overflow-wrap:normal}
+#fp-3 .k3-tab .k3-n{letter-spacing:.02em;opacity:.75}
+#fp-3 .k3-tab[aria-selected="true"]{color:var(--ink);cursor:default}
+#fp-3 .k3-tab:focus-visible .idx{text-decoration:underline;text-underline-offset:3px}
+@media(hover:hover) and (pointer:fine){#fp-3 .k3-tab[aria-selected="false"]:hover{color:var(--ink)}}
+
+/* texte : les quatre profils empiles dans la meme case (hauteur du plus long, rien ne saute en dessous).
+   Le texte actif suit le doigt (il glisse et s'estompe jusqu'a 0,6), puis a mi-geste un fondu enchaine de 0,24 s
+   passe au suivant, qui arrive deja decale du bon cote : jamais de zone vide, jamais deux textes melanges */
+#fp-3.k3 .personas{display:grid !important;grid-template-columns:minmax(0,1fr) !important;gap:0 !important;border:0 !important;
+  margin-top:2.4vh;padding:0 !important}
+#fp-3.k3 .persona{grid-area:1 / 1;display:block !important;padding:0 !important;border:0 !important;overflow:visible !important;
+  opacity:0;visibility:hidden;transform:translate3d(var(--tx,0px),0,0);transition:opacity .24s ease,visibility 0s linear .24s}
+#fp-3.k3 .persona.on{opacity:var(--t,1);visibility:visible;transition:opacity .24s ease,visibility 0s}
+#fp-3.k3 .persona h4{font-size:clamp(25px,7.2vw,30px) !important;line-height:1.04;margin:0 0 .42em;max-width:none;color:var(--ink)}
+#fp-3.k3 .persona p{font-size:15px;line-height:1.5;color:var(--muted);max-width:none;margin:0}
+#fp-3.k3 .persona .points{display:grid;gap:.7em;margin:1.9vh 0 0 !important;padding:0 !important;border:0 !important}
+#fp-3.k3 .persona .points li{padding-left:28px;font-size:14.5px;line-height:1.42;color:var(--ink);opacity:1}
+#fp-3.k3 .persona .points li::before{left:0;top:.06em;width:18px;height:18px;border-radius:50%;
+  background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5.2 9.3 7.8 11.8 12.9 6.4'/%3E%3C/svg%3E") center/18px 18px no-repeat}
+
+/* premiere apparition seulement : cascade 0,55 s decalee de 0,1 s sur un ressort. Ensuite le texte suit le doigt ;
+   seules les deux coches rebondissent a chaque profil qui devient actif */
+#fp-3.k3:not(.k3-vu) .persona h4,#fp-3.k3:not(.k3-vu) .persona p,#fp-3.k3:not(.k3-vu) .persona li{opacity:0;transform:translate3d(0,14px,0)}
+#fp-3.k3 .persona h4,#fp-3.k3 .persona p,#fp-3.k3 .persona li{transition:opacity .55s var(--sortie),transform .55s var(--ressort)}
+#fp-3.k3 .persona p{transition-delay:.1s}
+#fp-3.k3 .persona li:nth-child(1){transition-delay:.2s}
+#fp-3.k3 .persona li:nth-child(2){transition-delay:.3s}
+#fp-3.k3 .persona li::before{transform:scale(.35);opacity:0;transition:transform .2s ease,opacity .2s ease}
+#fp-3.k3-vu .persona.on li::before{transform:none;opacity:1;transition:transform .5s var(--ressort),opacity .2s ease}
+#fp-3.k3-vu .persona.on li:nth-child(1)::before{transition-delay:.35s}
+#fp-3.k3-vu .persona.on li:nth-child(2)::before{transition-delay:.45s}
+#fp-3.k3-pret .persona.on li:nth-child(1)::before{transition-delay:.04s}
+#fp-3.k3-pret .persona.on li:nth-child(2)::before{transition-delay:.12s}
+
+/* commandes : compteur 01 / 04 dont le chiffre roule + deux fleches de 44 px (telephone compris) */
+#fp-3 .k3-ctrl{display:flex;align-items:center;gap:14px;margin-top:2.6vh}
+#fp-3 .k3-cpt{display:flex;align-items:center;gap:.55em;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+#fp-3 .k3-roll{position:relative;display:inline-block;width:2.1ch;height:1.25em;overflow:hidden;color:var(--ink)}
+#fp-3 .k3-roll b{position:absolute;left:0;top:0;line-height:1.25em;font-weight:500;transition:transform .5s var(--ressort)}
+#fp-3 .k3-roll b.bas{transform:translate3d(0,110%,0)}
+#fp-3 .k3-roll b.haut{transform:translate3d(0,-110%,0)}
+#fp-3 .k3-fl{display:flex;gap:8px;margin-left:auto}
+#fp-3 .k3-fl button{width:44px;height:44px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:.5rem;
+  background:transparent;color:var(--ink);cursor:pointer;outline:0;-webkit-tap-highlight-color:transparent;
+  transition:background-color .25s ease,border-color .25s ease,color .25s ease,opacity .25s ease,transform .16s cubic-bezier(.23,1,.32,1)}
+#fp-3 .k3-fl .prec svg{transform:scaleX(-1)}
+#fp-3 .k3-fl .suiv{background:var(--ink);border-color:var(--ink);color:#fff}
+#fp-3 .k3-fl button:active{transform:scale(.95)}
+#fp-3 .k3-fl button:disabled{opacity:.25;cursor:default;transform:none}
+#fp-3 .k3-fl .prec:focus-visible{border-color:var(--ink)}
+#fp-3 .k3-fl .suiv:focus-visible{background:var(--accent);border-color:var(--accent)}
+@media(hover:hover) and (pointer:fine){
+  #fp-3 .k3-fl .prec:not(:disabled):hover{border-color:var(--ink)}
+  #fp-3 .k3-fl .suiv:not(:disabled):hover{background:var(--accent);border-color:var(--accent)}}
+#fp-3.k3 .note{margin-top:3.4vh;font-size:14px;line-height:1.5;max-width:40ch}
+
+/* petits telephones : l'index passe sur deux colonnes (les categories longues tiennent sans etre coupees) */
+@media(max-width:359px){
+  #fp-3.k3{--sw:64vw}
+  #fp-3 .k3-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #fp-3 .k3-pouce{display:none}
+  #fp-3 .k3-tab{flex-direction:row;gap:6px;min-height:44px}
+}
+
+/* ordinateur : a gauche le titre, le texte du profil actif, les commandes puis la note (plus de vide sous les fleches) ;
+   a droite deux portraits (l'actif dans la case gauche, le suivant pali et cliquable) et l'index. La rangee sort par le bord droit */
+@media(min-width:861px){
+  #fp-3.k3{--gap:2.4vw;--sw:calc((54vw - var(--gap)) / 2);--fh:clamp(320px,47vh,470px)}
+  #fp-3.k3 .k3-grid{display:grid;grid-template-columns:minmax(0,30vw) minmax(0,1fr);column-gap:4vw;align-items:start}
+  #fp-3.k3 .k3-col{display:flex;flex-direction:column;align-items:flex-start}
+  #fp-3.k3 .k3-main{display:block;min-width:0}
+  #fp-3.k3 h3{font-size:clamp(40px,4.2vw,64px) !important;max-width:9ch;margin-bottom:0}
+  #fp-3.k3 .note{margin:4.2vh 0 0;max-width:36ch;font-size:14.5px}
+  #fp-3.k3 .k3-ctrl{margin-top:3.8vh;gap:18px}
+  #fp-3 .k3-fl{margin-left:0}
+  /* la rangee commence 4vw avant la colonne, sous un voile degrade : le portrait qui sort par la gauche s'efface
+     dans la goutiere au lieu d'etre tranche net au bord de la colonne */
+  #fp-3.k3{--fade:4vw}
+  #fp-3 .k3-vp{margin:0 calc(-1 * var(--pad)) 0 calc(-1 * var(--fade));padding:0 0 0 var(--fade);scroll-padding-left:var(--fade)}
+  #fp-3.k3 .k3-main{position:relative}
+  #fp-3.k3 .k3-main::before{content:"";position:absolute;z-index:2;top:0;left:calc(-1 * var(--fade));width:var(--fade);height:var(--fh);
+    pointer-events:none;background:linear-gradient(to right,var(--bg) 30%,rgb(249 249 249 / 0))}
+  #fp-3 .k3-tabs{column-gap:24px;margin-top:1.4vh}
+  #fp-3 .k3-pouce{width:calc((100% - 72px) / 4);transform:translate3d(calc(var(--f,0) * (100% + 24px)),0,0)}
+  #fp-3 .k3-tab{font-size:10.5px;padding-top:13px}
+  #fp-3.k3 .personas{margin-top:clamp(36px,6.4vh,72px);max-width:none;width:100%}
+  #fp-3.k3 .persona h4{font-size:clamp(28px,2.4vw,38px) !important}
+  #fp-3.k3 .persona .points li{font-size:14.5px}
+}
+@media(prefers-reduced-motion:reduce){
+  #fp-3.k3 .persona h4,#fp-3.k3 .persona p,#fp-3.k3 .persona li,#fp-3.k3 .persona li::before,#fp-3 .k3-roll b,#fp-3 .k3-tab{transition:none !important}
+  /* sans animation, le texte et les coches sont lisibles d'emblee (pas d'attente de la premiere apparition) */
+  #fp-3.k3:not(.k3-vu) .persona h4,#fp-3.k3:not(.k3-vu) .persona p,#fp-3.k3:not(.k3-vu) .persona li{opacity:1;transform:none}
+  #fp-3.k3 .persona.on li::before{transform:none;opacity:1}
+}
