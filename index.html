@@ -6,6 +6,8 @@
 <title>Maison 52 · Colocation d'entrepreneurs à Ottignies et Louvain-la-Neuve</title>
 <meta name="description" content="Colocation et coliving pour jeunes entrepreneurs à Court-Saint-Étienne, en bordure d'Ottignies, à 10 minutes de Louvain-la-Neuve (LLN). Six chambres, espace de coworking, jardin.">
 <meta name="author" content="Maison 52">
+<link rel="preload" href="/fonts/syne-500.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/uncut-sans-400.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:site_name" content="Maison 52">
 <meta property="og:locale" content="fr_BE">
 <meta property="og:type" content="website">
@@ -24,16 +26,18 @@
 <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png?v=m53">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=m53">
 <meta name="theme-color" content="#0A0A0A">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&display=swap">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":["LocalBusiness","Residence"],"name":"Maison 52","alternateName":"Maison 52 · Colocation d'entrepreneurs","description":"Colocation et coliving pour jeunes entrepreneurs : six chambres dans une maison de maître rénovée de 310 m² à Court-Saint-Étienne, en bordure d'Ottignies, à dix minutes de Louvain-la-Neuve.","url":"https://maison52.be/","image":"https://maison52.be/og-maison52.jpg","email":"hello@maison52.be","priceRange":"€€","address":{"@type":"PostalAddress","addressLocality":"Court-Saint-Étienne","postalCode":"1490","addressRegion":"Brabant wallon","addressCountry":"BE"},"geo":{"@type":"GeoCoordinates","latitude":50.6389,"longitude":4.5694},"areaServed":[{"@type":"City","name":"Court-Saint-Étienne"},{"@type":"City","name":"Ottignies-Louvain-la-Neuve"},{"@type":"City","name":"Louvain-la-Neuve"},{"@type":"AdministrativeArea","name":"Brabant wallon"}],"knowsAbout":["colocation","coliving","espace de coworking","résidence d'entrepreneurs","logement étudiant-entrepreneur"],"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Espace de coworking","value":true},{"@type":"LocationFeatureSpecification","name":"Jardin de 4 ares","value":true},{"@type":"LocationFeatureSpecification","name":"Cuisine équipée partagée","value":true},{"@type":"LocationFeatureSpecification","name":"Abri à vélos","value":true}],"numberOfRooms":6,"floorSize":{"@type":"QuantitativeValue","value":310,"unitCode":"MTK"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quel est le loyer ?","acceptedAnswer":{"@type":"Answer","text":"Fixé en cohérence avec le marché local de Court-Saint-Étienne. Les charges sont réparties équitablement entre résidents."}},{"@type":"Question","name":"Les chambres sont-elles meublées ?","acceptedAnswer":{"@type":"Answer","text":"Tu choisis. Meublée ou vide selon ce qui te convient."}},{"@type":"Question","name":"Quelle est la durée d'engagement ?","acceptedAnswer":{"@type":"Answer","text":"Un an, renouvelable. Des situations particulières peuvent se discuter."}},{"@type":"Question","name":"Qui peut rejoindre cette colocation ?","acceptedAnswer":{"@type":"Answer","text":"Tout le monde. Il suffit d'être porteur d'un projet : fondateur, indépendant, étudiant-entrepreneur ou jeune actif."}},{"@type":"Question","name":"Y a-t-il un parking et un local vélo ?","acceptedAnswer":{"@type":"Answer","text":"Oui : stationnement dans la rue et sur place, et un abri fermé pour les vélos. La gare est à cinq minutes à pied."}},{"@type":"Question","name":"À partir de quand la colocation est-elle disponible ?","acceptedAnswer":{"@type":"Answer","text":"Horizon fin 2026, début 2027, à la fin des travaux de rénovation."}}]}]</script>
 <style>
+/* polices (licence libre OFL, hebergees sur le site) : Syne (Bonjour Monde) pour les titres, Uncut Sans (uncut.wtf) pour le texte et les chiffres */
+@font-face{font-family:'Syne';font-weight:500;font-display:swap;src:url(/fonts/syne-500.woff2) format('woff2')}
+@font-face{font-family:'Uncut Sans';font-weight:400;font-display:swap;src:url(/fonts/uncut-sans-400.woff2) format('woff2')}
+@font-face{font-family:'Uncut Sans';font-weight:500;font-display:swap;src:url(/fonts/uncut-sans-500.woff2) format('woff2')}
+
 
 :root{
   --ease:cubic-bezier(.16,1,.3,1);
   --pad:6vw;
-  --tone-c:#3A3A38;--bg:#F9F9F9;--tone-a:#F9F9F9;--tone-b:#F1F1F1;--ink:#1A1918;--muted:#787878;--line:#DFDFDF;--accent:#FE531D;--surface:#EBEBEB;
+  --tone-c:#3A3A38;--bg:#F9F9F9;--tone-a:#F9F9F9;--tone-b:#F1F1F1;--ink:#1A1918;--muted:#787878;--line:#DFDFDF;--accent:#E26A3E;--surface:#EBEBEB;
 
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -129,7 +133,7 @@ video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit
 #fp-3 .personas{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--line)}
 #fp-3 .persona{position:relative;border-bottom:1px solid var(--line);padding:4.6vh 2.6vw 4.8vh;overflow:hidden}
 #fp-3 .persona:nth-child(even){border-left:1px solid var(--line)}
-#fp-3 .persona .num{position:absolute;top:2.2vh;right:1.6vw;font-family:'Geist',sans-serif;font-weight:600;
+#fp-3 .persona .num{position:absolute;top:2.2vh;right:1.6vw;font-family:'Uncut Sans',sans-serif;font-weight:600;
   font-size:clamp(56px,6vw,104px);line-height:1;color:var(--ink);opacity:.055;pointer-events:none;user-select:none}
 #fp-3 .persona .idx{display:block;margin-bottom:1.1em}
 #fp-3 .persona h4{
@@ -146,7 +150,7 @@ video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit
 #fp-4 .faq{border-top:1px solid var(--line);max-width:900px}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-q{display:flex;justify-content:space-between;align-items:center;gap:2em;padding:2.4vh 0;cursor:pointer}
-.faq-q .ind{font-family:'Geist',sans-serif;flex-shrink:0}
+.faq-q .ind{font-family:'Uncut Sans',sans-serif;flex-shrink:0}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease)}
 .faq-a p{padding:0 0 2.6vh;font-size:15px;line-height:1.7;color:var(--muted);max-width:60ch}
 
@@ -163,7 +167,7 @@ video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit
 #fp-5 .sideshot img{width:100%;height:clamp(280px,55vh,560px);object-fit:cover;display:block;transition:transform .25s linear;will-change:transform}
 #fp-5 h3{margin-bottom:4.5vh}
 #fp-5 .vielist li{list-style:none;display:grid;grid-template-columns:4.5em 1fr;gap:2vw;padding:2.6vh 0;border-bottom:1px solid var(--line);align-items:baseline}
-#fp-5 .vielist .idx{font-family:'Geist',sans-serif;white-space:nowrap}
+#fp-5 .vielist .idx{font-family:'Uncut Sans',sans-serif;white-space:nowrap}
 #fp-5 .quartier-lead{font-size:clamp(15px,1.05vw,18px);line-height:1.7;color:var(--muted);max-width:46ch;margin-bottom:4vh}
 #fp-5 .vielist p{margin-top:.4em;font-size:14px;line-height:1.6;color:var(--muted);max-width:42ch}
 
@@ -186,15 +190,15 @@ video::-webkit-media-controls,video::-webkit-media-controls-panel,video::-webkit
 #s-candidater .intro em{font-style:normal;color:var(--accent)}
 #s-candidater .steps{list-style:none;margin-top:3vh;border-top:1px solid var(--line)}
 #s-candidater .steps li{display:block;border-bottom:1px solid var(--line);font-size:14px}
-#s-candidater .steps .idx{color:var(--accent);font-family:'Geist',sans-serif;font-size:11px;letter-spacing:.18em}
+#s-candidater .steps .idx{color:var(--accent);font-family:'Uncut Sans',sans-serif;font-size:11px;letter-spacing:.18em}
 form{display:flex;flex-direction:column;gap:3vh}
 form label{display:block}
 form .caps{color:var(--muted);margin-bottom:.8em;display:block}
 form input,form textarea{width:100%;background:var(--surface);border:1px solid var(--surface);color:var(--ink);
-  font-family:'Geist',sans-serif;font-size:16px;padding:1em;outline:none;border-radius:0;transition:border-color .3s var(--ease)}
+  font-family:'Uncut Sans',sans-serif;font-size:16px;padding:1em;outline:none;border-radius:0;transition:border-color .3s var(--ease)}
 form input:focus,form textarea:focus{border-color:var(--accent);background:var(--bg)}
 form textarea{resize:vertical;min-height:7em}
-form button{align-self:flex-start;background:var(--ink);border:0;color:var(--bg);font-family:'Geist',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+form button{align-self:flex-start;background:var(--ink);border:0;color:var(--bg);font-family:'Uncut Sans',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
   line-height:1;padding:1.4em 2.6em;cursor:pointer;transition:background .3s var(--ease)}
 @media(hover:hover) and (pointer:fine){form button:hover{background:var(--accent)}}
 .rgpd{font-size:12px;line-height:1.7;color:var(--muted);margin-top:1vh}
@@ -296,9 +300,9 @@ h1.wsplit,h2.wsplit,h3.wsplit,h4.wsplit,p.wsplit{display:block}
 
 /* ===== PROTOTYPE DIRECTION ARTISTIQUE ===== */
 html,body{background:var(--bg)}
-body{font-family:'Geist',-apple-system,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.35;letter-spacing:-.01em}
-.caps{font-family:'Geist',sans-serif;font-weight:500;font-size:11px;letter-spacing:.02em;text-transform:none}
-.serif,#hero-ui h1,#statement h2,.fullpage h3,#s-candidater h3,#fp-invest h3.invest-title,#fp-2 .card h4,#fp-3 .persona h4,#fp-5 .vielist h4,#fp-invest .invest-item h4,.faq-q h5,.marquee span,.stat .n,#night-statement h2,#loader .word{font-family:'Geist',sans-serif !important;font-weight:400 !important;letter-spacing:-.05em !important}
+body{font-family:'Uncut Sans',-apple-system,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.35;letter-spacing:-.01em}
+.caps{font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:11px;letter-spacing:.02em;text-transform:none}
+.serif,#hero-ui h1,#statement h2,.fullpage h3,#s-candidater h3,#fp-invest h3.invest-title,#fp-2 .card h4,#fp-3 .persona h4,#fp-5 .vielist h4,#fp-invest .invest-item h4,.faq-q h5,.marquee span,.stat .n,#night-statement h2,#loader .word{font-family:'Uncut Sans',sans-serif !important;font-weight:400 !important;letter-spacing:-.05em !important}
 #hero-ui h1{font-size:clamp(64px,13vw,190px);line-height:.92;letter-spacing:-.07em !important}
 #hero-ui h1 em{color:var(--accent);font-weight:400}
 #hero-ui .kicker{font-size:14px;letter-spacing:-.01em;text-transform:none;margin-top:2em;opacity:.9}
@@ -402,7 +406,7 @@ nav .links a.cta::after{content:"  →"}
 .marquee .track{display:flex;white-space:nowrap;animation:mq 34s linear infinite;will-change:transform}
 .marquee .track.rev{animation-direction:reverse;margin-top:-.08em}
 @media(hover:hover) and (pointer:fine){.marquee:hover .track{animation-play-state:paused}}
-.marquee span{font-family:'Geist',sans-serif !important;font-weight:400 !important;letter-spacing:-.06em !important;line-height:1;padding-right:.5em;font-size:9vw;color:var(--ink)}
+.marquee span{font-family:'Uncut Sans',sans-serif !important;font-weight:400 !important;letter-spacing:-.06em !important;line-height:1;padding-right:.5em;font-size:9vw;color:var(--ink)}
 .marquee em{color:var(--accent);font-style:normal}
 .marquee .track.rev span{color:transparent;-webkit-text-stroke:1.5px var(--ink)}
 .marquee .track.rev em{color:transparent;-webkit-text-stroke:1.5px var(--accent)}
@@ -486,7 +490,193 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
 #fp-1 .split-media .cadre,#fp-5 .sideshot{background:var(--surface)}
 #fp-1 img,#fp-2 img,#fp-5 img{color:transparent}
 #loader .word{letter-spacing:-.07em !important}
+
+/* ===== v2 : titres en Syne 500 (choix du 5 octobre). Syne est plus large que l'ancienne police :
+   les grands titres sont reduits pour garder la meme largeur (x0,864 pour le hero, x0,891 pour les titres de section) ===== */
+#statement h2,.fullpage h3,#s-candidater h3,#fp-invest h3.invest-title,#night-statement h2,#hero-ui h1,#loader .word,.marquee span,#fp-2 .card h4,#fp-3 .persona h4,#fp-5 .vielist h4,#fp-invest .invest-item h4,.faq-q h5{font-family:'Syne',sans-serif !important;font-weight:500 !important;letter-spacing:-.03em !important}
+#fp-2 .card h4,#fp-3 .persona h4,#fp-5 .vielist h4,#fp-invest .invest-item h4,.faq-q h5{letter-spacing:-.02em !important}
+#hero-ui h1,#loader .word{white-space:nowrap}
+@media(max-width:860px){
+  #hero-ui h1{font-size:calc(.864 * clamp(60px,21vw,100px)) !important}
+  #statement h2{font-size:calc(.891 * clamp(36px,11vw,60px)) !important}
+  .fullpage h3,#s-candidater h3{font-size:calc(.891 * clamp(32px,9.4vw,52px)) !important}
+  #fp-invest h3.invest-title{font-size:calc(.891 * 34px) !important}
+}
+@media(min-width:861px){
+  #hero-ui h1{font-size:calc(.864 * clamp(64px,13vw,190px)) !important}
+  #statement h2{font-size:calc(.891 * clamp(40px,7.6vw,124px)) !important}
+  .fullpage h3,#s-candidater h3{font-size:calc(.891 * clamp(34px,5.4vw,92px)) !important}
+  #fp-invest h3.invest-title{font-size:calc(.891 * clamp(34px,6vw,104px)) !important}
+}
+#night-statement h2{font-size:calc(.891 * clamp(36px,6vw,96px)) !important}
+.marquee span{font-size:calc(.864 * 9vw) !important}
+.stat .n{font-weight:400 !important;letter-spacing:-.06em !important}
+
+/* ===== 02 La vie au 52 — mobile : les 5 espaces en cartes a faire glisser (choix du 06/10, V1) ===== */
+@media(max-width:860px){
+  #fp-2 .cards{display:flex !important;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--pad));padding:0 var(--pad) 4px;scroll-padding:0 var(--pad);scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  #fp-2 .cards::-webkit-scrollbar{display:none}
+  #fp-2 .card,#fp-2 .card.wide{flex:0 0 84%;scroll-snap-align:start;padding-top:0 !important;border:0 !important}
+  #fp-2 .card .shot,#fp-2 .card.wide .shot{aspect-ratio:4/3 !important;margin-bottom:1.6vh !important}
+  #fp-2 .points{display:flex;gap:6px;margin-top:2.4vh}
+  #fp-2 .points i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.18;transition:opacity .3s ease,width .3s var(--ease)}
+  #fp-2 .points i.on{opacity:.8;width:18px;border-radius:3px}
+  /* V2 : liste compacte, construite a part (petite photo a gauche, tout visible) */
+  html.c2 #fp-2 .liste2{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  html.c2 #fp-2 .liste2 li{display:grid;grid-template-columns:96px 1fr;gap:0 16px;align-items:start;padding:2.2vh 0;border-bottom:1px solid var(--line)}
+  html.c2 #fp-2 .liste2 img{width:96px;height:96px;object-fit:cover;border-radius:.5rem;display:block;background:var(--surface)}
+  html.c2 #fp-2 .liste2 .idx{display:block;margin-bottom:.3em;color:var(--muted)}
+  html.c2 #fp-2 .liste2 h4{margin-bottom:.35em;font-family:'Syne',sans-serif;font-weight:500;font-size:22px;line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+  html.c2 #fp-2 .liste2 p{font-size:13.5px;line-height:1.55;color:var(--muted)}
+}
+
+/* ===== 02 mobile : coverflow (E4, choix du 07/10) ===== */
+@media(max-width:860px){
+  #fp-2 .cards{position:relative;gap:0 !important;padding:0 13vw 4px !important;scroll-padding:0 13vw !important;perspective:1000px}
+  #fp-2 .card,#fp-2 .card.wide{flex:0 0 74vw !important;scroll-snap-align:center !important;transform-origin:50% 40%;will-change:transform;position:relative}
+  #fp-2 .card:not(:last-child){margin-right:-12vw}
+  #fp-2 .card .shot{box-shadow:0 12px 30px rgba(0,0,0,.12);transition:filter .3s ease}
+  #fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{opacity:0;transform:translateY(12px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+  #fp-2 .card.actif .idx,#fp-2 .card.actif h4,#fp-2 .card.actif p{opacity:1;transform:none}
+  #fp-2 .card.actif h4{transition-delay:.06s}
+  #fp-2 .card.actif p{transition-delay:.12s}
+  #fp-2 .points{justify-content:center}
+  #fp-2 .note{max-height:5em;overflow:hidden;transition:max-height .45s cubic-bezier(.16,1,.3,1),opacity .3s ease,margin .45s cubic-bezier(.16,1,.3,1)}
+  #fp-2 .note.cachee{max-height:0;opacity:0;margin-top:0}
+}
+@media(max-width:860px) and (prefers-reduced-motion:reduce){
+  #fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{opacity:1;transform:none}
+}
+
+/* ===== 02 ordinateur : le meme coverflow (choix du 12/10) ===== */
+@media(min-width:861px){
+  #fp-2 h3{margin-bottom:5vh !important;max-width:15ch !important;position:static !important}
+  #fp-2 .cards{display:flex !important;grid-template-columns:none !important;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;position:relative;gap:0 !important;
+    padding:2vh 30vw 4px !important;scroll-padding:0 30vw !important;margin:0 calc(-1 * var(--pad)) !important;perspective:1400px;align-items:start !important}
+  #fp-2 .cards::-webkit-scrollbar{display:none}
+  #fp-2 .card,#fp-2 .card.wide,#fp-2 .card:not(.wide){flex:0 0 40vw !important;display:block !important;grid-column:auto !important;grid-row:auto !important;padding:0 !important;border:0 !important;
+    scroll-snap-align:center;transform-origin:50% 40%;will-change:transform;position:relative;cursor:pointer}
+  #fp-2 .card:not(:last-child){margin-right:-8vw}
+  #fp-2 .card .shot,#fp-2 .card.wide .shot,#fp-2 .card:not(.wide) .shot{width:100% !important;height:auto !important;aspect-ratio:16/10 !important;margin:0 0 2.4vh !important;border-radius:.75rem !important;box-shadow:0 18px 40px rgba(0,0,0,.14);transition:filter .3s ease}
+  #fp-2 .card.wide > div{max-width:none !important;width:auto !important}
+  #fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{opacity:0;transform:translateY(12px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+  #fp-2 .card.actif .idx,#fp-2 .card.actif h4,#fp-2 .card.actif p{opacity:1;transform:none}
+  #fp-2 .card.actif h4{transition-delay:.06s}#fp-2 .card.actif p{transition-delay:.12s}
+  #fp-2 .card:not(.wide) h4,#fp-2 .card h4{font-size:clamp(22px,1.9vw,32px) !important;margin-bottom:.4em}
+  #fp-2 .card p{max-width:46ch}
+  #fp-2 .points{display:flex;justify-content:center;gap:6px;margin-top:3vh}
+  #fp-2 .points i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.18;transition:opacity .3s ease,width .3s cubic-bezier(.16,1,.3,1)}
+  #fp-2 .points i.on{opacity:.8;width:18px;border-radius:3px}
+  #fp-2 .fleches2{display:flex;justify-content:center;gap:10px;margin-top:2vh}
+  #fp-2 .fleches2 button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center;cursor:pointer;transition:transform .16s cubic-bezier(.23,1,.32,1)}
+  #fp-2 .fleches2 button:active{transform:scale(.94)}
+  #fp-2 .fleches2 button::before{content:"";width:8px;height:8px;border-top:1px solid var(--ink);border-right:1px solid var(--ink);transform:rotate(45deg) translate(-1px,1px)}
+  #fp-2 .fleches2 .prec::before{transform:rotate(-135deg) translate(-1px,1px)}
+  #fp-2 .note{max-height:5em;overflow:hidden;text-align:center;transition:max-height .45s cubic-bezier(.16,1,.3,1),opacity .3s ease}
+  #fp-2 .note.cachee{max-height:0;opacity:0;margin-top:0}
+}
+@media(min-width:861px) and (prefers-reduced-motion:reduce){#fp-2 .card .idx,#fp-2 .card h4,#fp-2 .card p{opacity:1;transform:none}}
+
+/* ===== 02 : fin de glissement sans a-coup (12/10) =====
+   la fin du glissement (aimantation de la carte) envoie peu d'evenements de defilement sur iPhone :
+   on lisse donc l'inclinaison et le leger decalage de la photo au lieu de les appliquer d'un coup */
+@media(prefers-reduced-motion:reduce){#fp-2 .card{transition:none !important}}
+
+/* ===== 02 : coverflow pilote par le site (13/10) ===== */
+#fp-2 .cards.pilote{overflow:hidden !important;scroll-snap-type:none !important;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+#fp-2 .cards.pilote:active{cursor:grabbing}
+#fp-2 .cards.pilote img{pointer-events:none;-webkit-user-drag:none}
+
+/* ================= v3 (18/10) ================= */
+/* --- 01 La maison : la photo devient le fond, texte blanc par-dessus --- */
+#fp-1.photo-fond{position:relative;overflow:hidden;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;background:#1A1918 !important;color:#fff !important;
+  padding-top:calc(var(--navh,64px) + 6vh) !important;padding-bottom:calc(7vh + env(safe-area-inset-bottom,0px)) !important}
+#fp-1.photo-fond .split{display:block !important;position:static}
+#fp-1.photo-fond .split-media{position:absolute !important;inset:0;margin:0 !important;max-width:none !important;z-index:0}
+#fp-1.photo-fond .split-media .cadre{position:absolute;inset:-32px;border-radius:0 !important;background:#2a2826 !important}
+#fp-1.photo-fond .split-media img{width:100% !important;height:100% !important;aspect-ratio:auto !important;object-fit:cover;object-position:50% 40%}
+#fp-1.photo-fond .split-media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(10,10,10,.45) 0%,rgba(10,10,10,.15) 18%,rgba(10,10,10,.62) 38%,rgba(10,10,10,.82) 60%,rgba(10,10,10,.9) 100%)}
+@media(min-width:861px){#fp-1.photo-fond .split-media::after{background:linear-gradient(to right,rgba(10,10,10,.78) 0%,rgba(10,10,10,.55) 38%,rgba(10,10,10,.12) 70%,rgba(10,10,10,0) 100%),linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 25%,rgba(10,10,10,0) 60%,rgba(10,10,10,.55) 100%)}}
+#fp-1.photo-fond .label,#fp-1.photo-fond .split-body{position:relative;z-index:2}
+#fp-1.photo-fond .split-body{max-width:44rem;padding:0 !important}
+#fp-1.photo-fond .label .lb{color:rgba(255,255,255,.78) !important;opacity:1 !important}
+#fp-1.photo-fond h3{color:rgba(255,255,255,.66) !important;text-shadow:0 1px 24px rgba(0,0,0,.25);margin-bottom:3vh !important}
+#fp-1.photo-fond h3 em,#fp-1.photo-fond .lead em{color:#fff !important}
+#fp-1.photo-fond .lead{color:rgba(255,255,255,.82) !important}
+#fp-1.photo-fond .lead strong{color:#fff !important}
+@media(max-width:860px){#fp-1.photo-fond h3{color:rgba(255,255,255,.8) !important}}
+@media(min-width:861px){#fp-1.photo-fond .split-media img{object-position:50% 45%}#fp-1.photo-fond .split-body{max-width:min(46rem,52vw)}}
+
+/* --- 02 Pour qui : meme mise en page que 04 Le loyer, texte seul --- */
+#fp-3.pq04{display:block}
+#fp-3.pq04 h3{font-size:calc(.891 * 34px) !important;line-height:.98 !important;max-width:14ch !important;margin-bottom:4vh !important}
+#fp-3.pq04 .personas{display:block !important;border:0 !important;padding:0 !important;margin:0 !important}
+#fp-3.pq04 .persona{display:block !important;position:static !important;min-height:0 !important;padding:2.8vh 0 !important;margin:0 !important;background:none !important;
+  border:0 !important;border-top:1px solid var(--line) !important;border-radius:0 !important;box-shadow:none !important;transform:none !important;overflow:visible !important}
+#fp-3.pq04 .persona:first-child{border-top:0 !important;padding-top:0 !important}
+#fp-3.pq04 .persona > *{max-width:none !important}
+#fp-3.pq04 .persona .idx{display:block !important;margin:0 0 .6em !important;font-size:12px !important;letter-spacing:0 !important;color:var(--muted) !important}
+#fp-3.pq04 .persona h4{font-size:clamp(20px,1.6vw,26px) !important;line-height:1.05 !important;margin:0 0 .5em !important}
+#fp-3.pq04 .persona p{font-size:14px !important;line-height:1.6 !important;color:var(--muted) !important}
+#fp-3.pq04 .persona .points{display:grid !important;gap:.45em !important;margin:1em 0 0 !important;padding:0 !important;border:0 !important;list-style:none}
+#fp-3.pq04 .persona .points li{display:flex !important;gap:.6em;align-items:flex-start;padding:0 !important;font-size:13.5px !important;line-height:1.4 !important;color:var(--ink) !important;opacity:1 !important}
+#fp-3.pq04 .persona .points li::before{display:block !important;position:static !important;content:"" !important;flex:none;width:15px !important;height:15px !important;margin-top:.12em;border-radius:50%;
+  background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 8.5l2.6 2.5L12 5.5'/%3E%3C/svg%3E") center/10px no-repeat !important;opacity:1 !important}
+#fp-3.pq04 .note{margin-top:3vh !important;font-size:14px !important;color:var(--muted) !important;max-width:46ch !important}
+#fp-3.pq04 .note em{color:var(--accent) !important}
+html.pq-sanspoints #fp-3.pq04 .persona .points{display:none !important}
+@media(min-width:861px){
+  #fp-3.pq04{display:grid !important;grid-template-columns:minmax(0,7fr) minmax(0,4fr);grid-template-rows:auto auto 1fr;column-gap:8vw;align-items:start}
+  #fp-3.pq04 .label{grid-column:1 / -1}
+  #fp-3.pq04 h3{grid-column:1;grid-row:2;font-size:calc(.891 * clamp(34px,6vw,104px)) !important;line-height:.95 !important;margin-bottom:0 !important;position:sticky;top:12vh}
+  #fp-3.pq04 .note{grid-column:1;grid-row:3;align-self:end;margin-top:4vh !important}
+  #fp-3.pq04 .personas{grid-column:2;grid-row:2 / span 2;padding-top:.6vh !important}
+  #fp-3.pq04 .persona{padding:3vh 0 !important}
+  #fp-3.pq04 .persona:first-child{padding-top:0 !important}
+}
+/* variante sombre, a l'identique de 04 */
+html.pq-sombre #fp-3.pq04{background:var(--ink) !important;color:#F9F9F9 !important}
+html.pq-sombre #fp-3.pq04 h3{color:#8F8F8F !important}
+html.pq-sombre #fp-3.pq04 .persona{border-top-color:rgba(255,255,255,.14) !important}
+html.pq-sombre #fp-3.pq04 .persona h4{color:#F9F9F9 !important}
+html.pq-sombre #fp-3.pq04 .persona p,html.pq-sombre #fp-3.pq04 .note{color:#A9A9A9 !important}
+html.pq-sombre #fp-3.pq04 .persona .idx,html.pq-sombre #fp-3.pq04 .label .lb{color:#9B9B9B !important}
+html.pq-sombre #fp-3.pq04 .persona .points li{color:#E9E9E9 !important}
+/* barre de choix de la page de test */
+#v3bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(20,20,20,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.3)}
+#v3bar a{color:#fff;font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif;padding:11px 12px;border-radius:999px;white-space:nowrap}
+#v3bar a.on{background:var(--accent)}
+
+/* ===== v3.1 (18/10) — marge basse reduite pour que le texte tienne dans le tiers bas */
+#fp-1.photo-fond{padding-bottom:calc(4.5vh + env(safe-area-inset-bottom,0px)) !important}
+/* ===== : texte de 01 dans le tiers bas de la photo ; Pour qui aux couleurs de 04 ===== */
+#fp-1.photo-fond .split-media::after{background:linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 18%,rgba(10,10,10,0) 50%,rgba(10,10,10,.55) 66%,rgba(10,10,10,.86) 100%) !important}
+#fp-1.photo-fond .split-media img{object-position:50% 30% !important}
+#fp-1.photo-fond h3{font-size:clamp(24px,6.6vw,30px) !important;line-height:1.02 !important;margin-bottom:1.4vh !important;max-width:18ch !important;color:rgba(255,255,255,.72) !important}
+#fp-1.photo-fond .lead{font-size:14px !important;line-height:1.45 !important;margin-bottom:0 !important;max-width:40ch !important}
+@media(min-width:861px){
+  #fp-1.photo-fond .split-media::after{background:linear-gradient(to right,rgba(10,10,10,.5) 0%,rgba(10,10,10,.2) 45%,rgba(10,10,10,0) 70%),linear-gradient(to bottom,rgba(10,10,10,.4) 0%,rgba(10,10,10,0) 18%,rgba(10,10,10,0) 55%,rgba(10,10,10,.5) 70%,rgba(10,10,10,.85) 100%) !important}
+  #fp-1.photo-fond .split-media img{object-position:50% 40% !important}
+  #fp-1.photo-fond .split-body{max-width:min(40rem,46vw) !important}
+  #fp-1.photo-fond h3{font-size:clamp(30px,2.9vw,46px) !important;max-width:20ch !important}
+  #fp-1.photo-fond .lead{font-size:15px !important}
+}
+
+/* ===== v3.2 (19/10) : Pour qui sans les points ni filets, 01 sans les chiffres ===== */
+#fp-3.pq04 .persona,html.pq-sombre #fp-3.pq04 .persona{border-top:0 !important}
+#fp-3.pq04 .persona{padding:2.2vh 0 !important}
+#fp-3.pq04 .persona:first-child{padding-top:0 !important}
+@media(min-width:861px){#fp-3.pq04 .persona{padding:2.6vh 0 !important}#fp-3.pq04 .persona:first-child{padding-top:0 !important}}
+#fp-1.photo-fond .lead{margin-bottom:0 !important}
+/* barre sous « Tu t'y retrouves ? », comme sous le titre de 04 */
+#fp-3.pq04 .personas{border-top:1px solid rgba(255,255,255,.18) !important;padding-top:3.2vh !important}
+@media(min-width:861px){
+  #fp-3.pq04 .personas{border-top:0 !important;padding-top:.6vh !important}
+  #fp-3.pq04 h3{max-width:none !important;padding-bottom:3.2vh !important;border-bottom:1px solid rgba(255,255,255,.18) !important}
+}
 </style>
+<script>document.documentElement.classList.add('pq-sombre');</script>
 </head>
 <body>
 <div class="m52">
@@ -527,7 +717,7 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
 </div>
 
 <div class="snapwrap">
-<section class="fullpage" id="fp-1">
+<section class="fullpage photo-fond" id="fp-1">
   <div class="label caps"><span class="tag">01</span><span class="lb">La maison</span></div>
   <div class="split">
     <div class="split-media">
@@ -535,20 +725,42 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
     </div>
     <div class="split-body">
       <h3 class="serif">Une maison de maître rénovée pour vivre et <em>travailler</em>.</h3>
-      <p class="lead"><strong>310 m², six chambres, un grand bureau, un jardin.</strong> À <em>dix minutes de Louvain-la-Neuve</em>, avec des matériaux durables.</p>
-      <div class="stats">
-        <div class="stat"><div class="n">310<small> m²</small></div><div class="l">Surface</div></div>
-        <div class="stat"><div class="n">6</div><div class="l">Chambres</div></div>
-        <div class="stat"><div class="n">4<small> a</small></div><div class="l">Jardin</div></div>
-        <div class="stat"><div class="n">10<small> min</small></div><div class="l">LLN</div></div>
-      </div>
+      <p class="lead"><strong>310 m², six chambres, un grand bureau, un jardin.</strong> À <em>dix minutes de Louvain-la-Neuve</em>.</p>
     </div>
   </div>
 </section>
 </div>
 
+<section class="fullpage pq04" id="fp-3">
+  <div class="label caps"><span class="tag">02</span><span class="lb">Pour qui</span></div>
+  <h3 class="serif">Tu t'y retrouves ?</h3>
+  <div class="personas">
+    <article class="persona">
+      <span class="idx caps">Fondateur</span>
+      <h4>Tu lances ta boîte</h4>
+      <p>Tout repose sur toi. Ici tu gardes un cadre : des horaires, un bureau, et des gens à qui parler du problème du jour.</p>
+    </article>
+    <article class="persona">
+      <span class="idx caps">Indépendant</span>
+      <h4>Tu travailles pour toi</h4>
+      <p>Freelance, consultant, créatif : tu veux séparer la vie et le travail sans payer un espace vide.</p>
+    </article>
+    <article class="persona">
+      <span class="idx caps">Étudiant-entrepreneur</span>
+      <h4>Tu construis en parallèle</h4>
+      <p>Près du campus, sans retomber dans un kot où personne ne construit rien.</p>
+    </article>
+    <article class="persona">
+      <span class="idx caps">En transition</span>
+      <h4>Tu prépares ton saut</h4>
+      <p>Encore salarié, mais un projet sérieux le soir et le week-end. Un endroit qui pousse à passer le cap.</p>
+    </article>
+  </div>
+  <p class="note">On ne cherche pas des profils identiques : un groupe se construit avec des parcours différents. <em>On cherche surtout des gens motivés.</em></p>
+</section>
+
 <section class="fullpage" id="fp-2">
-  <div class="label caps"><span class="tag">02</span><span class="lb">La vie au 52</span></div>
+  <div class="label caps"><span class="tag">03</span><span class="lb">La vie au 52</span></div>
   <h3 class="serif">Une maison pensée pour les journées de travail.</h3>
   <div class="cards">
     <article class="card wide">
@@ -563,7 +775,7 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
       <div class="shot"><img src="./m52-chambre.jpg" alt="Chambre lumineuse de la colocation à Court-Saint-Étienne" loading="lazy" width="1280" height="960"></div>
       <span class="idx caps">Ta chambre</span>
       <h4>Un vrai cocon</h4>
-      <p>Des chambres magnifiques, tout juste rénovées, lumineuses et calmes. Tu les aménages comme tu veux : quand on construit un projet, avoir un endroit à soi où vraiment se reposer n'est pas un luxe, c'est ce qui tient la distance.</p>
+      <p>Des chambres magnifiques, tout juste rénovées, lumineuses et calmes. Tu les aménages comme tu veux : quand on construit un projet, avoir un endroit à soi où vraiment se reposer n'est pas un luxe.</p>
     </article>
     <article class="card">
       <div class="shot"><img src="./m52-cuisine.jpg" alt="Cuisine équipée partagée du coliving près d'Ottignies" loading="lazy" width="1280" height="960"></div>
@@ -587,57 +799,15 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
   <p class="note">Les meubles visibles ne font pas partie de la location.</p>
 </section>
 
-<section class="fullpage" id="fp-3">
-  <div class="label caps"><span class="tag">03</span><span class="lb">Pour qui</span></div>
-  <h3 class="serif">Tu t'y retrouves ?</h3>
-  <div class="personas">
-    <article class="persona">
-      <span class="idx caps">Fondateur</span>
-      <h4>Tu lances ta boîte</h4>
-      <p>Tout repose sur toi. Ici tu gardes un cadre : des horaires, un bureau, et des gens à qui parler du problème du jour.</p>
-      <ul class="points">
-        <li>Un poste de travail disponible quand tu veux</li>
-        <li>Des voisins qui comprennent ce que « ça n'avance pas » veut dire</li>
-      </ul>
-    </article>
-    <article class="persona">
-      <span class="idx caps">Indépendant</span>
-      <h4>Tu travailles pour toi</h4>
-      <p>Freelance, consultant, créatif : tu veux séparer la vie et le travail sans payer un espace vide.</p>
-      <ul class="points">
-        <li>Un endroit calme pour tes appels et tes visios</li>
-        <li>Un rythme régulier, donné par la maison</li>
-      </ul>
-    </article>
-    <article class="persona">
-      <span class="idx caps">Étudiant-entrepreneur</span>
-      <h4>Tu construis en parallèle</h4>
-      <p>Près du campus, sans retomber dans un kot où personne ne construit rien.</p>
-      <ul class="points">
-        <li>Dix minutes de Louvain-la-Neuve, train direct depuis la gare</li>
-        <li>Un environnement qui rend les semaines productives</li>
-      </ul>
-    </article>
-    <article class="persona">
-      <span class="idx caps">En transition</span>
-      <h4>Tu prépares ton saut</h4>
-      <p>Encore salarié, mais un projet sérieux le soir et le week-end. Un endroit qui pousse à passer le cap.</p>
-      <ul class="points">
-        <li>Un bureau disponible dès que tu rentres</li>
-        <li>Des retours francs sur ton projet, sans complaisance</li>
-      </ul>
-    </article>
-  </div>
-  <p class="note">On ne cherche pas des profils identiques : un groupe se construit avec des parcours différents. <em>On cherche surtout des gens motivés.</em></p>
-</section>
+
 
 <section class="fullpage" id="fp-invest">
   <div class="label caps"><span class="tag">04</span><span class="lb">Le loyer</span></div>
   <h3 class="serif invest-title">Ton loyer n'est plus une charge, c'est un <em>investissement</em> dans ton projet et dans toi.</h3>
   <div class="invest-grid">
     <div class="invest-item"><h4>Un seul montant, tout dedans</h4><p>Logement et espace de travail au même endroit : tu ne paies pas un kot d'un côté et un bureau de l'autre.</p></div>
-    <div class="invest-item"><h4>Du temps rendu</h4><p>Pas de trajet, pas d'installation, pas d'électroménager à acheter. Le temps gagné retourne dans ton projet.</p></div>
-    <div class="invest-item"><h4>Un entourage qui vaut cher</h4><p>Des voisins qui construisent aussi : des conseils, des contacts et des coups de main que personne ne facture.</p></div>
+    <div class="invest-item"><h4>Du temps rendu</h4><p>Pas de trajet, pas d'installation. Le temps gagné retourne dans ton projet.</p></div>
+    <div class="invest-item"><h4>Un entourage qui vaut cher</h4><p>Des colocataires qui construisent aussi : des conseils, des contacts et des coups de main que personne ne facture.</p></div>
     <div class="invest-item"><h4>Un cadre qui te tient</h4><p>Un rythme, un vrai bureau et un endroit à toi pour récupérer. C'est ce qui fait tenir un projet sur la durée.</p></div>
   </div>
 </section>
@@ -994,7 +1164,7 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
 <script>(function(){var t=document.querySelector('.marquee .track');if(!t)return;var c=t.cloneNode(true);c.classList.add('rev');t.parentNode.appendChild(c);})();</script>
 <script>(function(){
   /* le menu passe en clair quand une section sombre passe derriere lui */
-  var sombres=[document.getElementById('fp-invest'),document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
+  var sombres=[document.getElementById('fp-1'),document.getElementById('fp-invest'),document.getElementById('fp-3'),document.getElementById('outro-video'),document.getElementById('hero')].filter(Boolean);
   function tone(){
     var h=document.querySelector('nav').getBoundingClientRect().height||70;
     var clair=sombres.some(function(s){var r=s.getBoundingClientRect();return r.top<=h*0.6 && r.bottom>=h*0.6;});
@@ -1002,5 +1172,57 @@ nav .links a.cta:active,#s-candidater button:active{transform:scale(.97)}
   }
   addEventListener('scroll',tone,{passive:true}); addEventListener('resize',tone); setInterval(tone,300); tone();
 })();</script>
+<script>
+/* 02 : coverflow pilote par le site (13/10) — la carte du centre est de face, les voisines inclinees et chevauchees.
+   Plus de defilement natif ni d'aimantation du navigateur (Safari depassait puis recentrait) :
+   le doigt deplace les cartes, puis un ressort amorti les pose pile au centre, sans rebond. */
+(function(){document.addEventListener('DOMContentLoaded',function(){
+  var cards=document.querySelector('#fp-2 .cards');if(!cards)return;
+  var items=[].slice.call(cards.querySelectorAll('.card')),note=document.querySelector('#fp-2 .note');
+  var reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cards.classList.add('pilote');
+  var pts=document.createElement('div');pts.className='points';pts.setAttribute('aria-hidden','true');
+  items.forEach(function(){pts.appendChild(document.createElement('i'))});cards.after(pts);
+  var x=0,v=0,cible=0,actif=-1,anim=0;
+  function centre(i){var c=items[i];return c.offsetLeft+c.offsetWidth/2-cards.clientWidth/2}
+  function bornes(){return [centre(0),centre(items.length-1)]}
+  function maj(){var milieu=x+cards.clientWidth/2,best=0,bd=1e9;
+    items.forEach(function(c,i){var d=(c.offsetLeft+c.offsetWidth/2-milieu)/c.offsetWidth;
+      if(Math.abs(d)<bd){bd=Math.abs(d);best=i}
+      var k=Math.max(-1.4,Math.min(1.4,d)),t='translate3d('+(-x)+'px,0,0)';
+      if(!reduit&&Math.abs(k)>=.002)t+=' rotateY('+(-k*62)+'deg) scale('+(1-Math.abs(k)*.12)+')';
+      c.style.transform=t;c.style.zIndex=100-Math.round(Math.abs(k)*10);
+      var sh=c.querySelector('.shot');if(sh)sh.style.filter=(reduit||Math.abs(k)<.002)?'':'brightness('+(1-Math.abs(k)*.18)+')';});
+    if(best!==actif){actif=best;items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
+      [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});if(note)note.classList.toggle('cachee',best>0);}}
+  /* ressort critique : arrive vite, ralentit, s'arrete sans depasser */
+  function ressort(){var dt=1/60,w=reduit?60:15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
+    if(Math.abs(cible-x)<.3&&Math.abs(v)<5){x=cible;v=0;maj();anim=0;return}
+    maj();anim=requestAnimationFrame(ressort);}
+  function aller(i){i=Math.max(0,Math.min(items.length-1,i));cible=centre(i);if(!anim)anim=requestAnimationFrame(ressort);}
+  /* glissement au doigt (ou a la souris) */
+  var debut=null,x0=0,dernier=[],sens=null;
+  cards.addEventListener('pointerdown',function(e){debut={x:e.clientX,y:e.clientY};x0=x;sens=null;dernier=[[performance.now(),e.clientX]];
+    cancelAnimationFrame(anim);anim=0;v=0;});
+  addEventListener('pointermove',function(e){if(!debut)return;var dx=e.clientX-debut.x,dy=e.clientY-debut.y;
+    if(!sens){if(Math.abs(dx)<6&&Math.abs(dy)<6)return;sens=Math.abs(dx)>Math.abs(dy)?'h':'v';if(sens==='h')cards.setPointerCapture&&cards.setPointerCapture(e.pointerId)}
+    if(sens!=='h')return;var b=bornes(),nx=x0-dx;
+    if(nx<b[0])nx=b[0]-(b[0]-nx)*.35;if(nx>b[1])nx=b[1]+(nx-b[1])*.35;   /* resistance aux extremites */
+    x=nx;maj();dernier.push([performance.now(),e.clientX]);if(dernier.length>6)dernier.shift();},{passive:true});
+  function lacher(){if(!debut)return;var etaitH=sens==='h';debut=null;if(!etaitH){aller(actif);return}
+    var a=dernier[0],z=dernier[dernier.length-1],vit=(z[0]-a[0])>0?(z[1]-a[1])/(z[0]-a[0]):0;   /* px par ms */
+    var w=items[0].offsetWidth,proj=x-vit*180,i=Math.round((proj-centre(0))/(centre(1)-centre(0)));
+    if(Math.abs(vit)>.35)i=Math.max(Math.min(i,actif+1),actif-1);   /* un geste vif avance d'une carte */
+    aller(i);}
+  addEventListener('pointerup',lacher);addEventListener('pointercancel',lacher);
+  cards.addEventListener('click',function(e){if(Math.abs(x-x0)>4){e.preventDefault();e.stopPropagation()}},true);
+  items.forEach(function(c,i){c.addEventListener('click',function(){if(i!==actif)aller(i)})});
+  if(innerWidth>860){var f=document.createElement('div');f.className='fleches2';f.innerHTML='<button class="prec" aria-label="Précédent"></button><button class="suiv" aria-label="Suivant"></button>';
+    pts.after(f);f.querySelector('.prec').onclick=function(){aller(actif-1)};f.querySelector('.suiv').onclick=function(){aller(actif+1)};}
+  cards.tabIndex=0;cards.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();aller(actif+1)}if(e.key==='ArrowLeft'){e.preventDefault();aller(actif-1)}});
+  addEventListener('resize',function(){x=cible=centre(Math.max(0,actif));maj()});
+  x=cible=centre(0);maj();
+});})();
+</script>
 </body>
 </html>
