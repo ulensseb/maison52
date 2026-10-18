@@ -1,0 +1,9 @@
+/* V4 « Nuit » : fond noir, la video dans les lettres blanches (multiply). */
+html.h3-v4 #intro{will-change:opacity}
+/* le mot grandit puis se fond dans l'image : deux proprietes animees, rien d'autre */
+html.h3-v4 #intro .mot{will-change:transform,opacity}
+/* voile du meme noir que le cache de depart : le passage cache -> calque ne se voit pas,
+   puis il se dissipe et les lettres sortent de la nuit */
+#v4voile{position:fixed;inset:0;z-index:151;background:#0E0E0D;pointer-events:none;will-change:opacity}
+/* le titre du site se leve avec la lumiere au lieu d'apparaitre d'un coup */
+html.h3-v4 #hero-ui h1{transition:opacity .5s cubic-bezier(.33,0,.2,1)}
