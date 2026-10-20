@@ -1,0 +1,41 @@
+/* Proposition 3 « Avec photo » : la phrase sur fond clair, puis la grande table de la salle a manger.
+   La photo arrive en retrait (alignee sur la colonne du texte), s'ouvre bord a bord en montant
+   pendant que l'image recule, se pose plein ecran, puis 01 La maison glisse dessus.
+   Les valeurs qui bougent sont posees en JS. */
+
+/* la phrase : « te ressemble » reste sur une seule ligne (plus de « te » orphelin en bout de ligne) */
+html.ph-p3 #statement h2 em{white-space:nowrap}
+/* un peu moins d'air dessous, la photo vient s'y accrocher */
+html.ph-p3 #statement{padding-bottom:7vh}
+
+/* la scene : deux hauteurs d'ecran ; la seconde est recouverte par 01 (marge negative plus bas) */
+html.ph-p3 #p3-scene{position:relative;z-index:1;height:200vh;height:200lvh;background:var(--bg)}
+html.ph-p3 .p3-collant{position:sticky;top:0;z-index:0;height:100vh;height:100lvh;overflow:hidden}
+html.ph-p3 .p3-photo{position:absolute;inset:0;margin:0;overflow:hidden;background:#D9D6D2;
+  clip-path:inset(0 var(--pad) 0 var(--pad));-webkit-clip-path:inset(0 var(--pad) 0 var(--pad));will-change:transform}
+html.ph-p3 .p3-photo img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:42% 50%;
+  transform:scale(1.2);transform-origin:50% 100%;will-change:transform;color:transparent}
+/* l'ombre portee par 01 : collee juste au-dessus de son bord haut, elle monte avec lui (defilement natif,
+   aucun decalage possible) ; seule son opacite est pilotee en JS */
+html.ph-p3 .p3-ombre{position:absolute;left:0;right:0;z-index:1;bottom:100vh;bottom:100lvh;height:34vh;pointer-events:none;opacity:0;
+  background:linear-gradient(to bottom,rgba(10,10,10,0) 0%,rgba(10,10,10,.12) 50%,rgba(10,10,10,.42) 100%)}
+/* 01 remonte d'un ecran et glisse par-dessus la photo posee */
+html.ph-p3 #p3-scene + .snapwrap{margin-top:-100vh;margin-top:-100lvh}
+
+@media(min-width:861px){
+  html.ph-p3 #statement{padding-bottom:10vh}
+  html.ph-p3 .p3-photo img{object-position:50% 62%;transform:scale(1.16)}
+}
+
+/* « Reduire les animations » : rien ne bouge au defilement. La photo est simplement posee bord a bord,
+   un ecran de haut, entre la phrase et 01, et apparait en fondu la premiere fois qu'on l'atteint */
+@media(prefers-reduced-motion:reduce){
+  html.ph-p3 #p3-scene{height:auto}
+  html.ph-p3 .p3-collant{position:relative;height:100vh;height:100svh}
+  html.ph-p3 .p3-photo{clip-path:none !important;-webkit-clip-path:none !important;transform:none !important;will-change:auto;
+    opacity:0;transition:opacity .9s cubic-bezier(.4,0,.2,1)}
+  html.ph-p3 .p3-photo.vu{opacity:1}
+  html.ph-p3 .p3-photo img{transform:none !important;will-change:auto}
+  html.ph-p3 .p3-ombre{display:none}
+  html.ph-p3 #p3-scene + .snapwrap{margin-top:0}
+}
