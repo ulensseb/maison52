@@ -1,0 +1,68 @@
+/* Propositions 4 « Photos moyennes » et 5 « Photos basses » (base commune, classe html.bande posee en JS).
+   Le meme geste que la 3, deux fois et sans plein ecran :
+   phrase -> photo de la table -> texte de 01 sur fond clair -> photo de la facade -> 02 Pour qui.
+   Chaque photo arrive en retrait (alignee sur la colonne du texte), s'ouvre bord a bord en montant
+   pendant que l'image recule. Le bas de la facade se fond dans le noir de 02. Les valeurs qui bougent sont posees en JS.
+   Reglages (la 5 ne change que ces variables) :
+   --bd-r / --bd-max     format et plafond de hauteur sur telephone
+   --bd-rd / --bd-maxd   format et plafond de hauteur sur ordinateur
+   --bd-fac / --bd-facd  cadrage vertical de la facade (telephone / ordinateur)
+   --bd-tabd             cadrage vertical de la table sur ordinateur (jamais la lampe coupee en deux) */
+html.bande{--bd-r:1/1;--bd-max:45vh;--bd-rd:4/3;--bd-maxd:75vh;--bd-fac:34%;--bd-facd:66%;--bd-tabd:82%}
+
+/* la phrase : comme la 3 */
+html.bande #statement h2 em{white-space:nowrap}
+html.bande #statement{padding-bottom:7vh}
+
+/* une bande photo : pleine largeur, format paysage, plafonnee en hauteur (jamais plein ecran) */
+html.bande .bd-bande{position:relative;z-index:1}
+html.bande .bd-photo{position:relative;display:block;width:100%;aspect-ratio:var(--bd-r);max-height:var(--bd-max);margin:0;overflow:hidden;
+  background:#D9D6D2;clip-path:inset(0 var(--pad) 0 var(--pad));-webkit-clip-path:inset(0 var(--pad) 0 var(--pad))}
+html.bande .bd-photo img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;
+  transform:scale(1.2);transform-origin:50% 100%;will-change:transform;color:transparent}
+/* cadrages : la table au centre ; la facade avec le balcon et la porte toujours dans le cadre */
+html.bande .bd-table img{object-position:52% 58%}
+html.bande .bd-facade img{object-position:50% var(--bd-fac)}
+
+/* 01 La maison : plus de photo en fond (classe photo-fond retiree en JS). Meme mise en page que la phrase :
+   fond clair, titre a gauche, phrase en encre poussee a droite, puis la facade bord a bord */
+html.bande #fp-1.bd-01{display:block;min-height:0;background:var(--bg) !important;color:var(--ink);overflow:visible;
+  padding:11vh var(--pad) 0 !important}
+html.bande #fp-1.bd-01 .split{display:block}
+html.bande #fp-1.bd-01 .split-media{display:none}
+html.bande #fp-1.bd-01 .split-body{padding:0;max-width:none}
+html.bande #fp-1.bd-01 h3{margin-bottom:0;max-width:15ch}
+html.bande #fp-1.bd-01 .lead{max-width:34ch;margin:5vh 0 0 auto;font-size:18px;line-height:1.35;color:var(--ink)}
+/* le gras du site (600) n'existe pas dans la police : on prend la vraie graisse 500, pas un gras simule */
+html.bande #fp-1.bd-01 .lead strong{font-weight:500}
+/* la facade : sous le texte, bord a bord ; son bord bas touche 02 (la photo fait la porte vers la page sombre) */
+html.bande #fp-1.bd-01 .bd-facade{margin:7vh calc(-1 * var(--pad)) 0}
+/* ...et s'y fond : le bas de la photo (la haie) descend en douceur vers le noir de 02, sans couture.
+   Fondu pose sur le cadre (pas sur l'image qui bouge) : sa derniere ligne est exactement le fond de 02 */
+html.bande .bd-facade .bd-photo::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:24%;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(26,25,24,0) 0%,rgba(26,25,24,.04) 18%,rgba(26,25,24,.14) 36%,rgba(26,25,24,.32) 54%,rgba(26,25,24,.56) 72%,rgba(26,25,24,.82) 88%,#1A1918 100%)}
+
+@media(min-width:861px){
+  html.bande #statement{padding-bottom:10vh}
+  html.bande .bd-photo{aspect-ratio:var(--bd-rd);max-height:var(--bd-maxd)}
+  html.bande .bd-photo img{transform:scale(1.16)}
+  html.bande .bd-facade img{object-position:50% var(--bd-facd)}
+  html.bande .bd-table img{object-position:52% var(--bd-tabd)}
+  html.bande .bd-facade .bd-photo::after{height:16%}
+  html.bande #fp-1.bd-01{padding-top:14vh !important}
+  html.bande #fp-1.bd-01 .bd-facade{margin-top:10vh}
+}
+
+/* menu : 01 n'est plus une page sombre (le site le compte encore comme tel) -> menu fonce par-dessus */
+html.bd-navfonce body.nav-clair nav .brand .caps{color:var(--ink) !important}
+html.bd-navfonce body.nav-clair nav .brand .muted{color:var(--muted) !important}
+html.bd-navfonce body.nav-clair nav .links a:not(.cta){color:var(--muted) !important}
+html.bd-navfonce body.nav-clair nav .links a.cta{background:var(--ink) !important;color:#fff !important}
+
+/* « Reduire les animations » : rien ne bouge au defilement. Les photos sont simplement posees bord a bord,
+   a la meme hauteur, et apparaissent en fondu la premiere fois qu'on les atteint */
+@media(prefers-reduced-motion:reduce){
+  html.bande .bd-photo{clip-path:none !important;-webkit-clip-path:none !important;opacity:0;transition:opacity .9s cubic-bezier(.4,0,.2,1)}
+  html.bande .bd-photo.vu{opacity:1}
+  html.bande .bd-photo img{transform:none !important;will-change:auto}
+}

@@ -1,0 +1,5 @@
+/* Proposition 5 « Photos basses » : tout le reste vient de phrase-p4.css (charge par phrase-p5.js).
+   Seule la hauteur des photos change (bandeau panoramique), et les cadrages suivent :
+   sur telephone le balcon et la porte restent dans la bande ; sur ordinateur la bande est trop basse
+   pour tout garder, on garde la porte et la haie (qui se fond dans 02). */
+html.bande.bande-basse{--bd-r:16/9;--bd-max:30vh;--bd-rd:16/9;--bd-maxd:52vh;--bd-fac:70%;--bd-facd:72%;--bd-tabd:58%}

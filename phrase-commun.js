@@ -3,7 +3,7 @@
    window.PH = { actif, p, reduit, quandDom(fn) } */
 (function(){
   var q=new URLSearchParams(location.search),p=q.get('p')||'1',R=document.documentElement;
-  var LISTE=[['0','Actuel'],['1','Sur la vidéo'],['2','Mot à mot'],['3','Avec photo']];
+  var LISTE=[['0','Actuel'],['1','Sur la vidéo'],['2','Mot à mot'],['3','Avec photo'],['4','Photos moyennes'],['5','Photos basses']];
   var nom='';LISTE.forEach(function(o){if(o[0]===p)nom=o[1]});
   var actif=p!=='0'&&!!nom,reduit=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var V=(document.currentScript&&document.currentScript.src.split('v=')[1])||'1';
