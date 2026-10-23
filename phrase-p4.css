@@ -2,7 +2,8 @@
    Le meme geste que la 3, deux fois et sans plein ecran :
    phrase -> photo de la table -> texte de 01 sur fond clair -> photo de la facade -> 02 Pour qui.
    Chaque photo arrive en retrait (alignee sur la colonne du texte), s'ouvre bord a bord en montant
-   pendant que l'image recule. Le bas de la facade se fond dans le noir de 02. Les valeurs qui bougent sont posees en JS.
+   pendant que l'image recule. Les valeurs qui bougent sont posees en JS.
+   Tout en clair (22/10) : 02 Pour qui et 04 Le loyer quittent le fond sombre (bloc en bas du fichier).
    Reglages (la 5 ne change que ces variables) :
    --bd-r / --bd-max     format et plafond de hauteur sur telephone
    --bd-rd / --bd-maxd   format et plafond de hauteur sur ordinateur
@@ -35,12 +36,9 @@ html.bande #fp-1.bd-01 h3{margin-bottom:0;max-width:15ch}
 html.bande #fp-1.bd-01 .lead{max-width:34ch;margin:5vh 0 0 auto;font-size:18px;line-height:1.35;color:var(--ink)}
 /* le gras du site (600) n'existe pas dans la police : on prend la vraie graisse 500, pas un gras simule */
 html.bande #fp-1.bd-01 .lead strong{font-weight:500}
-/* la facade : sous le texte, bord a bord ; son bord bas touche 02 (la photo fait la porte vers la page sombre) */
+/* la facade : sous le texte, bord a bord ; son bord bas touche 02 (la photo fait la porte vers la page suivante).
+   Plus de fondu vers le noir : 02 est clair, la photo s'arrete net sur son fond, comme la table sur 01 */
 html.bande #fp-1.bd-01 .bd-facade{margin:7vh calc(-1 * var(--pad)) 0}
-/* ...et s'y fond : le bas de la photo (la haie) descend en douceur vers le noir de 02, sans couture.
-   Fondu pose sur le cadre (pas sur l'image qui bouge) : sa derniere ligne est exactement le fond de 02 */
-html.bande .bd-facade .bd-photo::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:24%;z-index:1;pointer-events:none;
-  background:linear-gradient(to bottom,rgba(26,25,24,0) 0%,rgba(26,25,24,.04) 18%,rgba(26,25,24,.14) 36%,rgba(26,25,24,.32) 54%,rgba(26,25,24,.56) 72%,rgba(26,25,24,.82) 88%,#1A1918 100%)}
 
 @media(min-width:861px){
   html.bande #statement{padding-bottom:10vh}
@@ -48,16 +46,45 @@ html.bande .bd-facade .bd-photo::after{content:"";position:absolute;left:0;right
   html.bande .bd-photo img{transform:scale(1.16)}
   html.bande .bd-facade img{object-position:50% var(--bd-facd)}
   html.bande .bd-table img{object-position:52% var(--bd-tabd)}
-  html.bande .bd-facade .bd-photo::after{height:16%}
   html.bande #fp-1.bd-01{padding-top:14vh !important}
   html.bande #fp-1.bd-01 .bd-facade{margin-top:10vh}
 }
 
-/* menu : 01 n'est plus une page sombre (le site le compte encore comme tel) -> menu fonce par-dessus */
+/* menu : 01, 02 et 04 ne sont plus des pages sombres (le site les compte encore comme telles) -> menu fonce par-dessus.
+   Le menu ne passe plus en clair que sur les deux videos (ouverture et fin) */
 html.bd-navfonce body.nav-clair nav .brand .caps{color:var(--ink) !important}
 html.bd-navfonce body.nav-clair nav .brand .muted{color:var(--muted) !important}
 html.bd-navfonce body.nav-clair nav .links a:not(.cta){color:var(--muted) !important}
 html.bd-navfonce body.nav-clair nav .links a.cta{background:var(--ink) !important;color:#fff !important}
+
+/* ===== Tout en clair (22/10) : plus aucune page sombre entre les deux videos =====
+   Deux tons de papier qui alternent, sans contraste dur (comme le blanc / gris tres clair de Family Partners) :
+   01 clair (--bg) | facade | 02 gris tres clair | 03 clair | 04 gris tres clair | 05 clair.
+   Le fond sombre de 02 (classe pq-sombre, retiree en JS) et celui de 04 (ecrit en dur dans la page) sont neutralises ici.
+   --bd-t02 / --bd-t03 / --bd-t04 : fond de chaque section ; --bd-gris : gris du texte courant sur le ton gris
+   (un cran plus fonce que --muted pour garder un contraste suffisant sur le gris tres clair) */
+html.bande{--bd-t02:var(--tone-b);--bd-t03:var(--tone-a);--bd-t04:var(--tone-b);--bd-gris:#6B6B6B}
+
+/* 02 Pour qui */
+html.bande #fp-3.pq04{background:var(--bd-t02) !important;color:var(--ink) !important}
+html.bande #fp-3.pq04 h3{color:var(--muted) !important;border-bottom-color:var(--line) !important}
+html.bande #fp-3.pq04 .label .lb,html.bande #fp-3.pq04 .persona .idx{color:var(--bd-gris) !important}
+html.bande #fp-3.pq04 .persona h4{color:var(--ink) !important}
+html.bande #fp-3.pq04 .persona p,html.bande #fp-3.pq04 .note{color:var(--bd-gris) !important}
+html.bande #fp-3.pq04 .persona .points li{color:var(--ink) !important}
+html.bande #fp-3.pq04 .personas{border-top-color:var(--line) !important}
+
+/* 03 La vie au 52 : passe sur le ton clair, entre les deux gris (le rythme alterne) */
+html.bande #fp-2{background:var(--bd-t03)}
+
+/* 04 Le loyer : memes couleurs que les autres titres clairs (gris, mot fort en encre), filets clairs */
+html.bande #fp-invest{background:var(--bd-t04) !important;color:var(--ink) !important}
+html.bande #fp-invest h3.invest-title{color:var(--muted) !important}
+html.bande #fp-invest h3.invest-title em{color:var(--ink) !important}
+html.bande #fp-invest .label .lb{color:var(--bd-gris) !important;opacity:1}
+html.bande #fp-invest .invest-item h4{color:var(--ink)}
+html.bande #fp-invest .invest-item p{color:var(--bd-gris)}
+html.bande #fp-invest .invest-grid,html.bande #fp-invest .invest-item{border-top-color:var(--line)}
 
 /* « Reduire les animations » : rien ne bouge au defilement. Les photos sont simplement posees bord a bord,
    a la meme hauteur, et apparaissent en fondu la premiere fois qu'on les atteint */
@@ -65,4 +92,7 @@ html.bd-navfonce body.nav-clair nav .links a.cta{background:var(--ink) !importan
   html.bande .bd-photo{clip-path:none !important;-webkit-clip-path:none !important;opacity:0;transition:opacity .9s cubic-bezier(.4,0,.2,1)}
   html.bande .bd-photo.vu{opacity:1}
   html.bande .bd-photo img{transform:none !important;will-change:auto}
+  /* 03 : sans inclinaison, les cartes voisines se posent a plat sous celle du centre et leurs textes
+     se melangeaient au sien. Seul le texte de la carte du centre reste visible (simple fondu au changement) */
+  html.bande #fp-2 .card:not(.actif) .idx,html.bande #fp-2 .card:not(.actif) h4,html.bande #fp-2 .card:not(.actif) p{opacity:0}
 }

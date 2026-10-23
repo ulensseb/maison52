@@ -5,6 +5,8 @@
    clip-path et transform. Les positions sont mesurees au chargement et au redimensionnement seulement. */
 (function(){
 var R=document.documentElement;R.classList.add('bande');
+/* tout en clair : 02 Pour qui perd son fond sombre (la page pose pq-sombre avant ce fichier) */
+R.classList.remove('pq-sombre');
 PH.quandDom(function(){
   var st=document.getElementById('statement'),f1=document.getElementById('fp-1');
   if(!st||!f1||document.querySelector('.bd-bande'))return;
@@ -25,9 +27,10 @@ PH.quandDom(function(){
   f1.appendChild(facade);
   var figs=[table,facade].map(function(b){return b.firstChild});
 
-  /* menu : 01 est clair maintenant -> menu fonce tant que 01 passe dessous (le site le croit sombre) */
-  var nav=document.querySelector('nav'),navY=40,f1Haut=0,f1Bas=0,fonce=false;
-  function menu(y){var v=y+navY>=f1Haut&&y+navY<f1Bas;if(v!==fonce){fonce=v;R.classList.toggle('bd-navfonce',v);}}
+  /* menu : 01, 02 et 04 sont clairs maintenant, mais le site les croit sombres et passe le menu en clair.
+     Menu fonce de haut en bas de la zone 01 -> 04 (03, entre les deux, est deja vu comme clair par le site) */
+  var nav=document.querySelector('nav'),f4=document.getElementById('fp-invest')||f1,navY=40,f1Haut=0,f1Bas=0,fonce=false;
+  function menu(y){var v=y+navY>=f1Haut-2&&y+navY<=f1Bas+2;if(v!==fonce){fonce=v;R.classList.toggle('bd-navfonce',v);}}
 
   /* reduit : pas de mouvement lie au defilement, un seul fondu quand chaque photo arrive */
   if(PH.reduit){
@@ -54,10 +57,8 @@ PH.quandDom(function(){
     L.forEach(function(p){var r=p.f.getBoundingClientRect();p.haut=r.top+y;p.h=r.height||1;
       /* la photo est ouverte bord a bord quand son milieu arrive a 42 % de l'ecran */
       p.fin=Math.min(H*.42-p.h/2,H*.6);});
-    /* le menu repasse en clair des que le bas fondu de la facade (deja presque noir) passe dessous */
-    var fh=getComputedStyle(figs[1],'::after').height||'',fondu=parseFloat(fh)||0;
-    if(/%$/.test(fh))fondu=fondu/100*figs[1].offsetHeight;
-    var r1=f1.getBoundingClientRect();f1Haut=r1.top+y;f1Bas=r1.bottom+y-fondu*.9;
+    /* zone du menu fonce : du haut de 01 au bas de 04 */
+    f1Haut=f1.getBoundingClientRect().top+y;f1Bas=f4.getBoundingClientRect().bottom+y;
     navY=nav?nav.getBoundingClientRect().height*.6:40;}
   function tick(){attente=0;var y=scrollY;menu(y);if(PH.reduit)return;
     L.forEach(function(p){

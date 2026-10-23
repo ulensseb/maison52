@@ -1,0 +1,41 @@
+/* Bouton « Rejoindre » — proposition 3 « Cadre fin » (charge par phrase-commun.js avec ?b=3).
+   Un rectangle a angles droits, trait de 1 px, comme les boutons de contenu de Family Partners mais en fin.
+   Le fond est du papier depoli (flou leger) : le texte qui passe dessous s'efface au lieu de gener le mot.
+   Signature : la fleche glisse — elle sort a droite et revient par la gauche, au survol (souris)
+   et au toucher (bouton-v3.js pose .b3-glisse le temps du geste). */
+
+html.btn-v3 #nav{--b3:var(--ink);--b3f:rgba(249,249,249,.72)}
+html.btn-v3:not(.bd-navfonce) body.nav-clair #nav{--b3:#F9F9F9;--b3f:rgba(20,19,18,.16)}
+
+/* le cadre : 36 px de haut, Uncut Sans 500 12,5 px, fleche de 12 px a 10 px du mot */
+html.btn-v3 #nav .links a.cta{height:36px;padding:0 14px 0 16px;gap:10px;border:1px solid var(--b3);border-radius:0;
+  background:var(--b3f) !important;color:var(--b3) !important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
+  font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:12.5px;line-height:1;letter-spacing:.01em;text-transform:none;
+  transition:color .3s ease,border-color .3s ease,background-color .3s ease,transform .16s cubic-bezier(.23,1,.32,1)}
+/* zone tactile : mesuree depuis l'interieur du trait -> 34 + 2 x 6 = 46 px */
+html.btn-v3 #nav .links a.cta::before{inset:-6px -5px}
+
+/* la fleche : deux fois la fleche du site dans le meme masque, la seconde attend hors cadre a gauche */
+html.btn-v3 #nav .links a.cta::after{width:12px;height:12px;background:currentColor;
+  --fl:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='black' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.5 6h9M6.8 2.3 10.5 6l-3.7 3.7'/%3E%3C/svg%3E");
+  -webkit-mask:none;mask:none;
+  -webkit-mask-image:var(--fl),var(--fl);mask-image:var(--fl),var(--fl);
+  -webkit-mask-size:12px 12px;mask-size:12px 12px;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:0 0,-16px 0;mask-position:0 0,-16px 0;
+  transition:-webkit-mask-position .45s cubic-bezier(.77,0,.175,1),mask-position .45s cubic-bezier(.77,0,.175,1)}
+@keyframes b3-glisse{
+  from{-webkit-mask-position:0 0,-16px 0;mask-position:0 0,-16px 0}
+  to{-webkit-mask-position:16px 0,0 0;mask-position:16px 0,0 0}}
+html.btn-v3 #nav .links a.cta.b3-glisse::after{animation:b3-glisse .5s cubic-bezier(.77,0,.175,1)}
+/* appui : le cadre s'enfonce a peine */
+html.btn-v3 #nav .links a.cta:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  html.btn-v3 #nav .links a.cta:hover::after{-webkit-mask-position:16px 0,0 0;mask-position:16px 0,0 0}
+}
+@media (prefers-reduced-motion:reduce){
+  html.btn-v3 #nav .links a.cta{transition:color .3s ease,border-color .3s ease,background-color .3s ease}
+  html.btn-v3 #nav .links a.cta::after{transition:none}
+  html.btn-v3 #nav .links a.cta.b3-glisse::after{animation:none}
+  html.btn-v3 #nav .links a.cta:active{transform:none;opacity:.7}
+}

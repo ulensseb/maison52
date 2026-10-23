@@ -1,0 +1,31 @@
+/* Bouton « Rejoindre » — proposition 4 « Plein, pastille orange » (charge par phrase-commun.js avec ?b=4).
+   Le bouton plein d'aujourd'hui, refait aux bonnes proportions : une pilule de 38 px, le mot en 13 px,
+   et au bout, une pastille ronde a l'orange du logo qui porte la fleche (un bouton dans le bouton).
+   Encre sur les pages claires, papier sur les videos. Au survol (souris) la fleche avance dans sa pastille. */
+
+html.btn-v4 #nav{--b4:var(--ink);--b4t:#F9F9F9;--b4o:none}
+html.btn-v4:not(.bd-navfonce) body.nav-clair #nav{--b4:#F9F9F9;--b4t:var(--ink);--b4o:0 6px 24px -10px rgba(0,0,0,.45)}
+
+/* la pilule : 38 px, 17 px de marge a gauche ; la pastille de 28 px se pose a 5 px du bord droit (cercles concentriques) */
+html.btn-v4 #nav .links a.cta{height:38px;padding:0 5px 0 17px;gap:11px;border:0;border-radius:999px;
+  background:var(--b4) !important;color:var(--b4t) !important;box-shadow:var(--b4o);
+  font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:13px;line-height:1;letter-spacing:0;text-transform:none;
+  transition:background-color .3s ease,color .3s ease,box-shadow .3s ease,transform .16s cubic-bezier(.23,1,.32,1)}
+/* zone tactile : 38 + 2 x 4 = 46 px */
+html.btn-v4 #nav .links a.cta::before{inset:-4px -4px}
+
+/* la pastille : orange du logo, fleche blanche de 12 px (meme dessin que la fleche du site) */
+html.btn-v4 #nav .links a.cta::after{width:28px;height:28px;border-radius:50%;-webkit-mask:none;mask:none;
+  background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='white' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.5 6h9M6.8 2.3 10.5 6l-3.7 3.7'/%3E%3C/svg%3E") 50% 50%/12px 12px no-repeat;
+  transition:background-position .35s cubic-bezier(.23,1,.32,1),transform .35s cubic-bezier(.23,1,.32,1)}
+/* appui : la pilule s'enfonce a peine */
+html.btn-v4 #nav .links a.cta:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){
+  html.btn-v4 #nav .links a.cta:hover::after{background-position:calc(50% + 2px) 50%;transform:scale(1.06)}
+}
+@media (prefers-reduced-motion:reduce){
+  html.btn-v4 #nav .links a.cta{transition:background-color .3s ease,color .3s ease,box-shadow .3s ease}
+  html.btn-v4 #nav .links a.cta::after{transition:none}
+  html.btn-v4 #nav .links a.cta:hover::after{background-position:50% 50%;transform:none}
+  html.btn-v4 #nav .links a.cta:active{transform:none;opacity:.8}
+}

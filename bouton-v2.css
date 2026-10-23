@@ -1,0 +1,46 @@
+/* Bouton « Rejoindre » — proposition 2 « Lien souligne » (charge par phrase-commun.js avec ?b=2).
+   Plus de bouton du tout : le mot, un trait fin dessous et une fleche dessinee, comme un lien de magazine.
+   Au survol (souris) le trait s'efface vers la droite et se redessine depuis la gauche, la fleche avance.
+   Sans fond, le mot flotterait sur le texte : des qu'on quitte la video, un fondu couleur papier
+   descend du haut de l'ecran sous le menu (le texte s'y efface au lieu de passer sous le mot).
+   bouton-v2.js met le mot dans un <span class="b2-mot"> (le trait se pose sous le mot, pas sous la fleche). */
+
+html.btn-v2 #nav{--b2:var(--ink)}
+html.btn-v2:not(.bd-navfonce) body.nav-clair #nav{--b2:#F9F9F9;--b2o:drop-shadow(0 0 1px rgba(0,0,0,.2)) drop-shadow(0 2px 14px rgba(0,0,0,.4))}
+
+/* le fondu sous le menu : couleur du papier, plein en haut, transparent 12 px sous le menu (les etiquettes 0N restent nettes quand on arrive sur une section) */
+html.btn-v2 #nav::before{content:"";position:absolute;left:0;right:0;top:0;bottom:-12px;z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom,var(--bg) 0%,var(--bg) 62%,rgba(249,249,249,.8) 78%,rgba(249,249,249,0) 100%);
+  opacity:0;transition:opacity .45s ease}
+html.btn-v2 body.scrolled:not(.nav-clair) #nav::before,
+html.btn-v2.bd-navfonce body.scrolled #nav::before{opacity:1}
+
+/* le lien : Uncut Sans 500, 13 px, a la casse du site ; la fleche dessinee du site, a 7 px du mot */
+html.btn-v2 #nav .links a.cta{height:auto;padding:0;gap:7px;border:0;border-radius:0;background:transparent !important;color:var(--b2) !important;
+  font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:13px;line-height:1;letter-spacing:0;text-transform:none;filter:var(--b2o,none);
+  transition:color .3s ease,opacity .2s ease}
+html.btn-v2 #nav .links a.cta::after{width:11px;height:11px;transition:transform .35s cubic-bezier(.23,1,.32,1)}
+/* zone tactile : 13 + 2 x 16 = 45 px de haut, 10 px de plus de chaque cote */
+html.btn-v2 #nav .links a.cta::before{inset:-16px -10px}
+/* le trait : 1 px, 4 px sous la boite du mot, sous le mot seulement */
+html.btn-v2 #nav .b2-mot{position:relative;display:inline-block}
+html.btn-v2 #nav .b2-mot::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;
+  transform-origin:100% 50%}
+/* appui : le mot palit un instant, la fleche avance d'un cran */
+html.btn-v2 #nav .links a.cta:active{opacity:.55;transition-duration:0s}
+html.btn-v2 #nav .links a.cta:active::after{transform:translateX(2px)}
+@keyframes b2-trait{
+  0%{transform:scaleX(1);transform-origin:100% 50%;animation-timing-function:cubic-bezier(.55,0,.75,.2)}
+  44%{transform:scaleX(0);transform-origin:100% 50%}
+  45%{transform:scaleX(0);transform-origin:0 50%;animation-timing-function:cubic-bezier(.23,1,.32,1)}
+  100%{transform:scaleX(1);transform-origin:0 50%}}
+@media (hover:hover) and (pointer:fine){
+  html.btn-v2 #nav .links a.cta:hover .b2-mot::after{animation:b2-trait .75s both}
+  html.btn-v2 #nav .links a.cta:hover::after{transform:translateX(3px)}
+}
+@media (prefers-reduced-motion:reduce){
+  html.btn-v2 #nav .links a.cta::after{transition:none}
+  html.btn-v2 #nav .links a.cta:active::after,html.btn-v2 #nav .links a.cta:hover::after{transform:none}
+  html.btn-v2 #nav .links a.cta:hover .b2-mot::after{animation:none}
+  html.btn-v2 #nav .links a.cta:hover{opacity:.65}
+}
