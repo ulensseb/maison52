@@ -1063,7 +1063,7 @@ PH.quandDom(function(){
 <script>
 /* finitions v7 : nouvelle echelle de texte et etiquettes en capitales espacees */
 (function(){var R=document.documentElement,q=new URLSearchParams(location.search);
-if(q.get('tailles')!=='0')R.classList.add('f7-tailles');if(q.get('etiq')!=='0')R.classList.add('f7-etiq');})();
+R.classList.add('f7-tailles','f7-etiq');})();
 </script>
 <style>
 /* ===== finitions v7, chantier a ===== */
@@ -1602,15 +1602,6 @@ document.addEventListener('DOMContentLoaded',function(){
   [].forEach.call(document.querySelectorAll('ul,ol'),function(l){var li=l.firstElementChild;
     if(!l.hasAttribute('role')&&(getComputedStyle(l).listStyleType==='none'||li&&getComputedStyle(li).listStyleType==='none'))l.setAttribute('role','list');});
 });
-</script>
-<script>
-/* page de test : comparer avant / apres (taille du texte, etiquettes) */
-document.addEventListener('DOMContentLoaded',function(){var q=new URLSearchParams(location.search),b=document.createElement('div');
-b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(20,20,20,.9);font:500 12px/1 -apple-system,Helvetica,Arial,sans-serif;white-space:nowrap';
-[['tailles','Textes'],['etiq','Étiquettes']].forEach(function(o){var on=q.get(o[0])!=='0',a=document.createElement('a');
-a.textContent=o[1]+(on?' : nouveaux':' : avant');var n=new URLSearchParams(location.search);n.set(o[0],on?'0':'1');n.set('v',String(+new Date()%100000));
-a.href='?'+n.toString()+location.hash;a.style.cssText='color:#fff;padding:10px 12px;border-radius:999px;text-decoration:none'+(on?';background:#E26A3E':'');b.appendChild(a);});
-document.body.appendChild(b);});
 </script>
 </head>
 <body>
