@@ -1062,7 +1062,7 @@ PH.quandDom(function(){
 </script>
 <script>
 /* page de test : comparer les 3 textes sous la phrase (?t=a|b|c) */
-(function(){var T={"a": "Un grand coworking et une salle de réunion, équipés comme un vrai bureau : ton environnement professionnel, à la maison.", "b": "Ton bureau est à la maison : un grand coworking et une salle de réunion, équipés de façon vraiment professionnelle.", "c": "Six chambres, un grand coworking et une salle de réunion équipés comme en entreprise : ton environnement pro, sans quitter la maison."},t=new URLSearchParams(location.search).get('t')||'a';if(!T[t])t='a';
+(function(){var T={"a": "Un grand coworking et un salon de réunion, équipés comme un vrai bureau : ton environnement professionnel, à la maison.", "b": "Ton bureau est à la maison : un grand coworking et un salon de réunion, équipés de façon vraiment professionnelle.", "c": "Six chambres, un grand coworking et un salon de réunion équipés comme en entreprise : ton environnement pro, sans quitter la maison."},t=new URLSearchParams(location.search).get('t')||'a';if(!T[t])t='a';
 document.addEventListener('DOMContentLoaded',function(){var p=document.querySelector('#statement p');if(p)p.textContent=T[t];
 var b=document.createElement('div');b.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(20,20,20,.9);font:500 13px/1 -apple-system,Helvetica,Arial,sans-serif';
 var n=document.createElement('span');n.textContent='Texte';n.style.cssText='color:#fff;opacity:.75;padding:10px 8px 0 10px';b.appendChild(n);
@@ -1107,7 +1107,7 @@ document.body.appendChild(b);});})();
   <div class="label caps"><span class="tag">01</span><span class="lb">La maison</span></div>
   <div class="sep" aria-hidden="true"></div>
   <h2 class="serif">Vis avec un entourage qui <em>te ressemble</em>.</h2>
-  <p>Un grand coworking et une salle de réunion, équipés comme un vrai bureau : ton environnement professionnel, à la maison.</p>
+  <p>Un grand coworking et un salon de réunion, équipés comme un vrai bureau : ton environnement professionnel, à la maison.</p>
 </div>
 
 <div class="snapwrap">
