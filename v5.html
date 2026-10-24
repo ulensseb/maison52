@@ -694,6 +694,7 @@ html.h3-v5 #intro{position:absolute;inset:0;will-change:opacity}
 /* deux copies posees pile sur le mot du calque (meme boite, meme centrage) :
    le trait d'ombre (texte transparent) puis les lettres blanches, le 52 en orange */
 #relais5,#trait5{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 var(--pad);pointer-events:none;opacity:0;will-change:opacity}
+html.h3-v5 #intro,#relais5,#trait5{bottom:auto;height:100vh;height:100lvh}
 #trait5{z-index:151}
 #trait5 .mot,#trait5 .r5{color:transparent}
 #relais5{z-index:152}
@@ -947,6 +948,10 @@ html.btn-v1 #nav .links a.cta:active{transform:scale(.97)}
 html.btn-v1 #nav .links a.cta{height:40px !important;padding:0 calc(20px - .14em) 0 20px !important;font-size:12.5px !important}
 html.btn-v1 #nav .links a.cta::before{inset:-3px -4px !important}
 @media(min-width:861px){html.btn-v1 #nav .links a.cta{height:44px !important;padding:0 calc(24px - .14em) 0 24px !important;font-size:13px !important}}
+
+/* liens du menu (ordinateur) : la barre est opaque. La section visee s'arrete 36 px plus bas (bande cachee sous la barre),
+   sinon son etiquette (01, 02, 07) se collait sous la barre (a 1024 x 768 : 02 et 07 touchaient le bord). */
+@media(min-width:861px){html.btn-v1 #fp-1,html.btn-v1 #fp-3,html.btn-v1 #fp-4{scroll-margin-top:36px}}
 </style>
 <script>
 /* Refonte du 23/10 : phrase + 01 avec photos qui s'elargissent, tout en tons clairs, bouton Rejoindre en pilule.
@@ -1567,7 +1572,7 @@ PH.quandDom(function(){
     if(best!==actif){actif=best;items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
       [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});if(note)note.classList.toggle('cachee',best>0);}}
   /* ressort critique : arrive vite, ralentit, s'arrete sans depasser */
-  function ressort(){var dt=1/60,w=reduit?60:15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
+  function ressort(){if(reduit){x=cible;v=0;maj();anim=0;return}var dt=1/60,w=15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
     if(Math.abs(cible-x)<.3&&Math.abs(v)<5){x=cible;v=0;maj();anim=0;return}
     maj();anim=requestAnimationFrame(ressort);}
   function aller(i){i=Math.max(0,Math.min(items.length-1,i));cible=centre(i);if(!anim)anim=requestAnimationFrame(ressort);}
