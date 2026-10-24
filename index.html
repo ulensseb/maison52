@@ -1602,6 +1602,79 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!l.hasAttribute('role')&&(getComputedStyle(l).listStyleType==='none'||li&&getComputedStyle(li).listStyleType==='none'))l.setAttribute('role','list');});
 });
 </script>
+<script>
+/* chantier d (25/10) : 01 a 04 alignees sur la fin de la page */
+(function(){var R=document.documentElement,q=new URLSearchParams(location.search);R.classList.add('f8-tailles');})();
+</script>
+<style>
+/* ===== chantier d ===== */
+/* Chantier d (25/10) : 01 a 04 alignees sur la fin de la page (05 a 07, refaites le 24/10).
+   Memes valeurs que v7/c.css (T-3, T-4, T-6) :
+   - texte courant 16 px, interligne 1,7, gris #6B6B6B ; intros 17 px ;
+   - sous-titres 18 px telephone / 21,6 px ordinateur (Syne, comme 04, 05 et les questions de 07) ;
+   - petites mentions 12 px ; etiquettes 12 px en capitales espacees (deja en place, chantier c) ;
+   - 68 px (8vh) en haut et en bas de chaque section sur telephone, 90 px (10vh) sur ordinateur ;
+   - apparition des titres : fondu + montee de 24 px, 500 ms, cubic-bezier(.16,1,.3,1) ; rien ne bouge en mode reduit.
+   Inchanges : polices, grands titres de section, phrase de 01 (« Vis avec un entourage… »), etiquettes, photos.
+   Toutes les regles sont prefixees par html.f8-tailles : ?tailles=0 sur la page de test montre l'etat d'avant. */
+
+/* ---------- gris du texte : #6B6B6B partout (02 et 04 l'avaient deja ; 03 etait en #787878).
+   Le grand titre gris de 03 garde son gris (#787878), comme ceux de 05 a 07 ---------- */
+html.f8-tailles #fp-2{--muted:#6B6B6B}
+html.f8-tailles #fp-2 h3{--muted:#787878}
+
+/* ---------- 01 La maison : la sous-phrase devient une intro (17 px, interligne 1,7), toujours en encre ---------- */
+html.f8-tailles #statement p{font-size:17px;line-height:1.7}
+
+/* ---------- 02 Pour qui ---------- */
+/* sous-titres : 20 -> 18 px (telephone), 23 -> 21,6 px (ordinateur), interligne de 04 */
+html.f8-tailles #fp-3.pq04 .persona h4{font-size:clamp(18px,1.5vw,26px) !important;line-height:1.35 !important}
+/* texte courant : 14 -> 16 px */
+html.f8-tailles #fp-3.pq04 .persona p,
+html.f8-tailles #fp-3.pq04 .note{font-size:16px !important;line-height:1.7 !important}
+
+/* ---------- 03 La vie au 52 (cartes) ---------- */
+/* sous-titres des cartes : 22 -> 18 px (telephone), 27,4 -> 21,6 px (ordinateur) */
+html.f8-tailles #fp-2 .card h4{font-size:clamp(18px,1.5vw,26px) !important;line-height:1.35}
+/* texte des cartes : 13,5 px (telephone) et 14-14,5 px (ordinateur) -> 16 px */
+html.f8-tailles #fp-2 .card p{font-size:16px !important;line-height:1.7}
+/* « Les meubles visibles… » : petite mention, comme la phrase sur les donnees de 06 (12 px) */
+html.f8-tailles #fp-2 .note{font-size:12px;line-height:1.6}
+
+/* ---------- 04 Le loyer ---------- */
+/* sous-titres deja a 18 / 21,6 px ; texte courant : 14 -> 16 px */
+html.f8-tailles #fp-invest .invest-item p{font-size:16px;line-height:1.7}
+
+/* ---------- marges de section : 68 px (telephone) / 90 px (ordinateur), en haut et en bas.
+   02 et 03 y sont deja. 01 : 135 / 59 px (telephone), 144 / 90 px (ordinateur). 04 : 76 / 108 px en haut.
+   Pour 01, le bas = l'espace entre la sous-phrase et la photo de la table ---------- */
+html.f8-tailles #statement,
+html.f8-tailles #fp-invest{padding-top:10vh;padding-bottom:10vh}
+@media(max-width:860px){
+  html.f8-tailles #statement,
+  html.f8-tailles #fp-invest{padding-top:8vh;padding-bottom:8vh}
+}
+
+/* ---------- apparitions : le meme geste que 05 a 07 ----------
+   Les titres de 02, 03, 04 et la phrase de 01 : fondu + montee de 24 px en 500 ms (avant : fondu seul, 450 ms).
+   Le bloc 01 (etiquette, phrase, sous-phrase) : fondu seul en 500 ms (avant : montee de 3vh en 900 ms) ;
+   seule la phrase monte, comme les titres des autres sections (sinon elle monterait deux fois). */
+html.f8-tailles #statement{transform:none;transition:opacity .5s var(--ease)}
+html.f8-tailles :is(#statement,#fp-3,#fp-2,#fp-invest) .wsplit{
+  transform:translateY(24px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+html.f8-tailles :is(#statement,#fp-3,#fp-2,#fp-invest) .wsplit.in{transform:none}
+/* « Reduire les animations » : simple fondu, rien ne bouge (deja garanti par le chantier c, repete ici) */
+@media(prefers-reduced-motion:reduce){
+  html.f8-tailles #statement,
+  html.f8-tailles :is(#statement,#fp-3,#fp-2,#fp-invest) .wsplit{transform:none !important}
+}
+
+/* 25/10 : photo du parc de Wisterzee (05) sur ordinateur, colonne en portrait : le chateau et l'etang restent dans le cadre */
+@media(min-width:861px){#fp-5 .sideshot img{object-position:40% 50% !important}}
+</style>
+<script>
+
+</script>
 </head>
 <body>
 <div class="m52">
@@ -1733,7 +1806,7 @@ document.addEventListener('DOMContentLoaded',function(){
   <div class="label caps"><span class="tag">05</span><span class="lb">Le quartier</span></div>
   <div class="quartier">
     <figure class="sideshot">
-      <img src="./m52-salon.jpg" alt="Séjour partagé de la colocation d'entrepreneurs près de LLN" loading="lazy" width="1280" height="960">
+      <img src="./quartier-wisterzee.jpg" alt="Le parc de Wisterzée à Court-Saint-Étienne : un étang, de grands arbres et le château au fond" loading="lazy" width="1800" height="1350">
     </figure>
     <div class="quartier-body">
       <h3 class="serif">Une adresse où tu n'as besoin de <em>rien planifier.</em></h3>
@@ -1823,9 +1896,10 @@ document.addEventListener('DOMContentLoaded',function(){
       <div style="text-align:right"><span class="caps muted">Une question ?</span><br><a class="caps" href="mailto:hello@maison52.be">hello@maison52.be</a></div>
     </div>
     <p class="legal">Mentions légales : Maison 52, Court-Saint-Étienne (1490), Belgique · contact : hello@maison52.be.
-    Confidentialité : les données transmises via le formulaire sont utilisées exclusivement pour le traitement des demandes de contact,
-    jamais partagées ni utilisées à des fins commerciales, et supprimées après traitement. Ce site n'utilise aucun cookie ni outil
-    de suivi.</p>
+    Confidentialité : les données transmises via le formulaire sont utilisées exclusivement pour le traitement des demandes de contact.
+    Elles transitent par le service d'envoi Web3Forms, ne sont jamais revendues ni utilisées à des fins commerciales, et sont supprimées après traitement. Ce site n'utilise aucun cookie ni outil
+    de suivi.
+    Photo du parc : <a href="https://commons.wikimedia.org/wiki/File:Belgique_-_Parc_de_Wisterz%C3%A9e_-_02.jpg" rel="noopener">EmDee (Wikimedia Commons)</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.fr" rel="noopener">CC BY-SA 3.0</a>, recadrée.</p>
   </footer>
 </div>
 
