@@ -1,9 +1,0 @@
-/* V6 « Iris » : MAISON 52 en grand, la video dans les lettres, puis un cercle s'ouvre depuis le O
-   comme un diaphragme et avale le calque jusqu'au plein ecran. */
-/* l'iris : disque noir au bord net dans le calque clair (noir + screen = la video telle quelle), agrandi par transform */
-#h3-iris{position:absolute;z-index:1;border-radius:50%;background:radial-gradient(closest-side,#000 calc(100% - 1.5px),rgba(0,0,0,0) 100%);transform:scale(0);will-change:transform;pointer-events:none}
-/* le titre du site arrive en fondu une fois l'iris ouvert (au lieu d'apparaitre d'un coup) */
-html.h3-v6 #hero-ui h1{transition:opacity .8s cubic-bezier(.16,1,.3,1)}
-@media (prefers-reduced-motion:reduce){html.h3-v6 #hero-ui h1{transition-duration:.45s}}
-/* le calque a deja sa couche (mix-blend + enfants animes) : on le dit au navigateur pour que le fondu final ne cree rien en cours de route */
-html.h3-v6 #intro{will-change:opacity}
