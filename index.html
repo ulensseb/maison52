@@ -693,6 +693,7 @@ html.h3-v5 #intro{position:absolute;inset:0;will-change:opacity}
 /* deux copies posees pile sur le mot du calque (meme boite, meme centrage) :
    le trait d'ombre (texte transparent) puis les lettres blanches, le 52 en orange */
 #relais5,#trait5{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 var(--pad);pointer-events:none;opacity:0;will-change:opacity}
+html.h3-v5 #intro,#relais5,#trait5{bottom:auto;height:100vh;height:100lvh}
 #trait5{z-index:151}
 #trait5 .mot,#trait5 .r5{color:transparent}
 #relais5{z-index:152}
@@ -806,6 +807,258 @@ function titre5(h1){h1.style.transition='opacity .35s '+DOUX;H3.pret();
   setTimeout(function(){h1.style.transition='';},450);}
 })();
 </script>
+<style>
+/* Propositions 4 « Photos moyennes » et 5 « Photos basses » (base commune, classe html.bande posee en JS).
+   Le meme geste que la 3, deux fois et sans plein ecran :
+   phrase -> photo de la table -> texte de 01 sur fond clair -> photo de la facade -> 02 Pour qui.
+   Chaque photo arrive en retrait (alignee sur la colonne du texte), s'ouvre bord a bord en montant
+   pendant que l'image recule. Les valeurs qui bougent sont posees en JS.
+   Tout en clair (22/10) : 02 Pour qui et 04 Le loyer quittent le fond sombre (bloc en bas du fichier).
+   Reglages (la 5 ne change que ces variables) :
+   --bd-r / --bd-max     format et plafond de hauteur sur telephone
+   --bd-rd / --bd-maxd   format et plafond de hauteur sur ordinateur
+   --bd-fac / --bd-facd  cadrage vertical de la facade (telephone / ordinateur)
+   --bd-tabd             cadrage vertical de la table sur ordinateur (jamais la lampe coupee en deux) */
+html.bande{--bd-r:1/1;--bd-max:45vh;--bd-rd:4/3;--bd-maxd:75vh;--bd-fac:34%;--bd-facd:66%;--bd-tabd:82%}
+
+/* la phrase : comme la 3 */
+html.bande #statement h2 em{white-space:nowrap}
+html.bande #statement{padding-bottom:7vh}
+
+/* une bande photo : pleine largeur, format paysage, plafonnee en hauteur (jamais plein ecran) */
+html.bande .bd-bande{position:relative;z-index:1}
+html.bande .bd-photo{position:relative;display:block;width:100%;aspect-ratio:var(--bd-r);max-height:var(--bd-max);margin:0;overflow:hidden;
+  background:#D9D6D2;clip-path:inset(0 var(--pad) 0 var(--pad));-webkit-clip-path:inset(0 var(--pad) 0 var(--pad))}
+html.bande .bd-photo img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;
+  transform:scale(1.2);transform-origin:50% 100%;will-change:transform;color:transparent}
+/* cadrages : la table au centre ; la facade avec le balcon et la porte toujours dans le cadre */
+html.bande .bd-table img{object-position:52% 58%}
+html.bande .bd-facade img{object-position:50% var(--bd-fac)}
+
+/* 01 La maison : plus de photo en fond (classe photo-fond retiree en JS). Meme mise en page que la phrase :
+   fond clair, titre a gauche, phrase en encre poussee a droite, puis la facade bord a bord */
+html.bande #fp-1.bd-01{display:block;min-height:0;background:var(--bg) !important;color:var(--ink);overflow:visible;
+  padding:11vh var(--pad) 0 !important}
+html.bande #fp-1.bd-01 .split{display:block}
+html.bande #fp-1.bd-01 .split-media{display:none}
+html.bande #fp-1.bd-01 .split-body{padding:0;max-width:none}
+html.bande #fp-1.bd-01 h3{margin-bottom:0;max-width:15ch}
+html.bande #fp-1.bd-01 .lead{max-width:34ch;margin:5vh 0 0 auto;font-size:18px;line-height:1.35;color:var(--ink)}
+/* le gras du site (600) n'existe pas dans la police : on prend la vraie graisse 500, pas un gras simule */
+html.bande #fp-1.bd-01 .lead strong{font-weight:500}
+/* la facade : sous le texte, bord a bord ; son bord bas touche 02 (la photo fait la porte vers la page suivante).
+   Plus de fondu vers le noir : 02 est clair, la photo s'arrete net sur son fond, comme la table sur 01 */
+html.bande #fp-1.bd-01 .bd-facade{margin:7vh calc(-1 * var(--pad)) 0}
+
+@media(min-width:861px){
+  html.bande #statement{padding-bottom:10vh}
+  html.bande .bd-photo{aspect-ratio:var(--bd-rd);max-height:var(--bd-maxd)}
+  html.bande .bd-photo img{transform:scale(1.16)}
+  html.bande .bd-facade img{object-position:50% var(--bd-facd)}
+  html.bande .bd-table img{object-position:52% var(--bd-tabd)}
+  html.bande #fp-1.bd-01{padding-top:14vh !important}
+  html.bande #fp-1.bd-01 .bd-facade{margin-top:10vh}
+}
+
+/* menu : 01, 02 et 04 ne sont plus des pages sombres (le site les compte encore comme telles) -> menu fonce par-dessus.
+   Le menu ne passe plus en clair que sur les deux videos (ouverture et fin) */
+html.bd-navfonce body.nav-clair nav .brand .caps{color:var(--ink) !important}
+html.bd-navfonce body.nav-clair nav .brand .muted{color:var(--muted) !important}
+html.bd-navfonce body.nav-clair nav .links a:not(.cta){color:var(--muted) !important}
+html.bd-navfonce body.nav-clair nav .links a.cta{background:var(--ink) !important;color:#fff !important}
+
+/* ===== Tout en clair (22/10) : plus aucune page sombre entre les deux videos =====
+   Deux tons de papier qui alternent, sans contraste dur (comme le blanc / gris tres clair de Family Partners) :
+   01 clair (--bg) | facade | 02 gris tres clair | 03 clair | 04 gris tres clair | 05 clair.
+   Le fond sombre de 02 (classe pq-sombre, retiree en JS) et celui de 04 (ecrit en dur dans la page) sont neutralises ici.
+   --bd-t02 / --bd-t03 / --bd-t04 : fond de chaque section ; --bd-gris : gris du texte courant sur le ton gris
+   (un cran plus fonce que --muted pour garder un contraste suffisant sur le gris tres clair) */
+html.bande{--bd-t02:var(--tone-b);--bd-t03:var(--tone-a);--bd-t04:var(--tone-b);--bd-gris:#6B6B6B}
+
+/* 02 Pour qui */
+html.bande #fp-3.pq04{background:var(--bd-t02) !important;color:var(--ink) !important}
+html.bande #fp-3.pq04 h3{color:var(--muted) !important;border-bottom-color:var(--line) !important}
+html.bande #fp-3.pq04 .label .lb,html.bande #fp-3.pq04 .persona .idx{color:var(--bd-gris) !important}
+html.bande #fp-3.pq04 .persona h4{color:var(--ink) !important}
+html.bande #fp-3.pq04 .persona p,html.bande #fp-3.pq04 .note{color:var(--bd-gris) !important}
+html.bande #fp-3.pq04 .persona .points li{color:var(--ink) !important}
+html.bande #fp-3.pq04 .personas{border-top-color:var(--line) !important}
+
+/* 03 La vie au 52 : passe sur le ton clair, entre les deux gris (le rythme alterne) */
+html.bande #fp-2{background:var(--bd-t03)}
+
+/* 04 Le loyer : memes couleurs que les autres titres clairs (gris, mot fort en encre), filets clairs */
+html.bande #fp-invest{background:var(--bd-t04) !important;color:var(--ink) !important}
+html.bande #fp-invest h3.invest-title{color:var(--muted) !important}
+html.bande #fp-invest h3.invest-title em{color:var(--ink) !important}
+html.bande #fp-invest .label .lb{color:var(--bd-gris) !important;opacity:1}
+html.bande #fp-invest .invest-item h4{color:var(--ink)}
+html.bande #fp-invest .invest-item p{color:var(--bd-gris)}
+html.bande #fp-invest .invest-grid,html.bande #fp-invest .invest-item{border-top-color:var(--line)}
+
+/* « Reduire les animations » : rien ne bouge au defilement. Les photos sont simplement posees bord a bord,
+   a la meme hauteur, et apparaissent en fondu la premiere fois qu'on les atteint */
+@media(prefers-reduced-motion:reduce){
+  html.bande .bd-photo{clip-path:none !important;-webkit-clip-path:none !important;opacity:0;transition:opacity .9s cubic-bezier(.4,0,.2,1)}
+  html.bande .bd-photo.vu{opacity:1}
+  html.bande .bd-photo img{transform:none !important;will-change:auto}
+  /* 03 : sans inclinaison, les cartes voisines se posent a plat sous celle du centre et leurs textes
+     se melangeaient au sien. Seul le texte de la carte du centre reste visible (simple fondu au changement) */
+  html.bande #fp-2 .card:not(.actif) .idx,html.bande #fp-2 .card:not(.actif) h4,html.bande #fp-2 .card:not(.actif) p{opacity:0}
+}
+/* Bouton « Rejoindre » — proposition 1 « Pilule fine » (charge par phrase-commun.js avec ?b=1).
+   D'apres le bouton CONTACT de Family Partners : une pilule a contour fin, le mot en capitales espacees,
+   pas de fleche. Le menu devient une vraie barre des qu'on quitte la video (fond clair + ombre tres douce) :
+   le nom reste a gauche, le bouton ne flotte plus jamais sur le texte.
+   Deux tons, poses sur #nav : --b1 (trait et texte) et --b1i (texte quand la pilule se remplit). */
+
+html.btn-v1 #nav{--b1:var(--ink);--b1i:#F9F9F9;
+  transition:background-color .6s cubic-bezier(.4,0,.2,1),box-shadow .6s cubic-bezier(.4,0,.2,1)}
+/* menu clair : sur les deux videos (et sur les pages sombres de la page en ligne) */
+html.btn-v1:not(.bd-navfonce) body.nav-clair #nav{--b1:#F9F9F9;--b1i:var(--ink);--b1f:rgba(20,19,18,.14)}
+
+/* la barre : des qu'on a quitte la video et que le menu est fonce */
+html.btn-v1 body.scrolled:not(.nav-clair) #nav,
+html.btn-v1.bd-navfonce body.scrolled #nav{background-color:var(--bg);box-shadow:0 0 30px -15px rgba(0,0,0,.45)}
+/* avec une barre, le nom n'a plus de raison de disparaitre sur telephone */
+html.btn-v1 body.scrolled #nav .brand{opacity:1;pointer-events:auto}
+
+/* la pilule : 32 px de haut, contour 1 px, Syne en capitales espacees (la police des titres, comme chez eux) */
+html.btn-v1 #nav .links a.cta{height:32px;padding:0 calc(15px - .14em) 0 15px;gap:0;
+  border:1px solid var(--b1);border-radius:999px;background:var(--b1f,transparent) !important;color:var(--b1) !important;
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:'Syne',sans-serif;font-weight:500;font-size:11px;line-height:1;letter-spacing:.14em;text-transform:uppercase;
+  transition:color .3s ease,border-color .3s ease,background-color .3s ease,transform .16s cubic-bezier(.23,1,.32,1)}
+html.btn-v1 #nav .links a.cta::after{content:none;display:none}
+/* zone tactile : la pastille se mesure depuis l'interieur du trait -> 30 + 2 x 8 = 46 px de haut */
+html.btn-v1 #nav .links a.cta::before{inset:-8px -7px}
+/* appui : la pilule s'enfonce a peine */
+html.btn-v1 #nav .links a.cta:active{transform:scale(.97)}
+/* survol a la souris seulement : la pilule se remplit */
+@media (hover:hover) and (pointer:fine){
+  html.btn-v1 #nav .links a.cta:hover{background:var(--b1) !important;color:var(--b1i) !important}
+}
+@media (prefers-reduced-motion:reduce){
+  html.btn-v1 #nav .links a.cta{transition:color .3s ease,border-color .3s ease,background-color .3s ease}
+  html.btn-v1 #nav .links a.cta:active{transform:none;opacity:.7}
+}
+
+/* en plus grand (choisi le 23/10) : 40 px de haut sur telephone, 44 px sur ordinateur */
+html.btn-v1 #nav .links a.cta{height:40px !important;padding:0 calc(20px - .14em) 0 20px !important;font-size:12.5px !important}
+html.btn-v1 #nav .links a.cta::before{inset:-3px -4px !important}
+@media(min-width:861px){html.btn-v1 #nav .links a.cta{height:44px !important;padding:0 calc(24px - .14em) 0 24px !important;font-size:13px !important}}
+
+/* liens du menu (ordinateur) : la barre est opaque. La section visee s'arrete 36 px plus bas (bande cachee sous la barre),
+   sinon son etiquette (01, 02, 07) se collait sous la barre (a 1024 x 768 : 02 et 07 touchaient le bord). */
+@media(min-width:861px){html.btn-v1 #fp-1,html.btn-v1 #fp-3,html.btn-v1 #fp-4{scroll-margin-top:36px}}
+
+/* fusion du 24/10 : la phrase porte l'etiquette 01 La maison (meme style que les autres sections) */
+#statement .label{display:flex;gap:.7em;align-items:baseline;margin-bottom:5vh;color:var(--muted)}
+#statement .label .tag{color:var(--accent);font-size:12px;font-weight:500;letter-spacing:0;line-height:1}
+#statement .label .lb{color:var(--muted);font-size:12px;letter-spacing:0}
+@media(min-width:861px){html.btn-v1 #statement{scroll-margin-top:36px}}
+</style>
+<script>
+/* Refonte du 23/10 : phrase + 01 avec photos qui s'elargissent, tout en tons clairs, bouton Rejoindre en pilule.
+   (code issu des pages de test phrase-p4 et bouton-v1 ; PH = petits outils communs) */
+(function(){
+  document.documentElement.classList.add('btn-v1');
+  function quandDom(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn();}
+  window.PH={actif:true,p:'4',b:'1',reduit:matchMedia('(prefers-reduced-motion: reduce)').matches,quandDom:quandDom};
+})();
+/* Propositions 4 « Photos moyennes » et 5 « Photos basses » (la 5 charge ce fichier, avec html.bande-basse).
+   Deux photos en bande sous leur texte : la table sous la phrase, la facade sous 01.
+   Tout est calcule depuis la position de defilement, une fois par image (requestAnimationFrame) :
+   la decoupe laterale se referme (clip-path) pendant que l'image recule (scale). Rien d'autre que
+   clip-path et transform. Les positions sont mesurees au chargement et au redimensionnement seulement. */
+(function(){
+var R=document.documentElement;R.classList.add('bande');
+/* tout en clair : 02 Pour qui perd son fond sombre (la page pose pq-sombre avant ce fichier) */
+R.classList.remove('pq-sombre');
+PH.quandDom(function(){
+  var st=document.getElementById('statement'),f1=document.getElementById('fp-1');
+  /* 01 peut ne plus exister (fusionnee avec la phrase le 24/10) : la facade n'est alors pas posee */
+  if(!st||document.querySelector('.bd-bande'))return;
+  var ancienne=f1&&f1.querySelector('.split-media img');
+  /* une bande : figure > img */
+  function bande(cls,src,w,h,alt,paresseux){
+    var d=document.createElement('div');d.className='bd-bande '+cls;
+    d.innerHTML='<figure class="bd-photo"><img src="'+src+'" width="'+w+'" height="'+h+'" decoding="async"'+
+      (paresseux?' loading="lazy"':' fetchpriority="low"')+' alt=""></figure>';
+    d.querySelector('img').alt=alt;return d;}
+  /* 1. la table, juste sous la phrase (premiere image utile : pas de chargement differe) */
+  var table=bande('bd-table','demo-sam.jpg',1600,1200,'La salle à manger de la Maison 52 : une grande table en bois entourée de chaises blanches, une cheminée en marbre et un parquet en chevrons.',false);
+  st.parentNode.insertBefore(table,st.nextSibling);
+  /* 2. 01 sur fond clair, la facade dessous (meme photo, meme texte alternatif que le site) */
+  var facade=null;if(f1){f1.classList.remove('photo-fond');f1.classList.add('bd-01');
+  /* la photo de 01 d'aujourd'hui, partout (cadrage regle en CSS : balcon et porte dans la bande) */
+  facade=bande('bd-facade','m52-facade.jpg',1280,1600,ancienne&&ancienne.alt||'Façade de la Maison 52',true);
+  f1.appendChild(facade);}
+  var figs=[table,facade].filter(Boolean).map(function(b){return b.firstChild});
+
+  /* menu : 01, 02 et 04 sont clairs maintenant, mais le site les croit sombres et passe le menu en clair.
+     Menu fonce de haut en bas de la zone 01 -> 04 (03, entre les deux, est deja vu comme clair par le site) */
+  var z1=f1||document.getElementById('fp-3')||st,nav=document.querySelector('nav'),f4=document.getElementById('fp-invest')||z1,navY=40,f1Haut=0,f1Bas=0,fonce=false;
+  function menu(y){var v=y+navY>=f1Haut-2&&y+navY<=f1Bas+2;if(v!==fonce){fonce=v;R.classList.toggle('bd-navfonce',v);}}
+
+  /* reduit : pas de mouvement lie au defilement, un seul fondu quand chaque photo arrive */
+  if(PH.reduit){
+    figs.forEach(function(f){
+      if(!('IntersectionObserver' in window)){f.classList.add('vu');return;}
+      var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){f.classList.add('vu');io.disconnect();}},{threshold:.12});
+      io.observe(f);});
+  }
+
+  /* hauteur d'ecran stable (100lvh) : ne bouge pas quand la barre d'adresse de Safari se replie */
+  var sonde=document.createElement('div');sonde.setAttribute('aria-hidden','true');
+  sonde.style.cssText='position:absolute;top:0;left:0;width:1px;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.appendChild(sonde);
+  var H=0,m0=0,s0=1.2,attente=0,L=figs.map(function(f){return {f:f,img:f.querySelector('img'),haut:0,h:0,fin:0,der:{}}});
+  var h2=st.querySelector('h2');
+  function borne(x){return x<0?0:x>1?1:x}
+  /* entree et sortie douces (le debut et la pose ne donnent pas d'a-coup) */
+  function doux(x){return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}
+  function sin(x){return .5-Math.cos(Math.PI*x)/2}
+  function mesure(){
+    var y=scrollY;H=sonde.offsetHeight||innerHeight;s0=innerWidth>860?1.16:1.2;
+    /* le retrait de depart = la marge du texte : la photo commence dans la colonne de la phrase */
+    m0=h2?Math.max(0,Math.round(h2.getBoundingClientRect().left)):Math.round(innerWidth*.06);
+    L.forEach(function(p){var r=p.f.getBoundingClientRect();p.haut=r.top+y;p.h=r.height||1;
+      /* la photo est ouverte bord a bord quand son milieu arrive a 42 % de l'ecran */
+      p.fin=Math.min(H*.42-p.h/2,H*.6);});
+    /* zone du menu fonce : du haut de 01 au bas de 04 */
+    f1Haut=z1.getBoundingClientRect().top+y;f1Bas=f4.getBoundingClientRect().bottom+y;
+    navY=nav?nav.getBoundingClientRect().height*.6:40;}
+  function tick(){attente=0;var y=scrollY;menu(y);if(PH.reduit)return;
+    L.forEach(function(p){
+      var t=p.haut-y,der=p.der;
+      /* hors de l'ecran : on laisse l'etat deja ecrit */
+      if(t>H*1.2&&der.c)return;
+      /* 1. ouverture : la photo entre dans sa colonne, s'ouvre en montant, bord a bord a 42 % de l'ecran */
+      var a=doux(borne((H*.92-t)/(H*.92-p.fin)));
+      /* 2. recul de l'image : de son entree a l'ouverture (s0 -> 1,03), puis tres lent jusqu'a sa sortie (-> 1) */
+      var e=sin(borne((H-t)/(H-p.fin))),g=borne((p.fin-t)/(p.fin+p.h));
+      var mm=m0*(1-a);if(mm<.3)mm=0;
+      /* bord a bord : plus de decoupe du tout (moins de travail pour Safari) */
+      var c=mm?'inset(0 '+mm.toFixed(1)+'px 0 '+mm.toFixed(1)+'px)':'none';
+      var s='scale('+(1+(s0-1.03)*(1-e)+.03*(1-g)).toFixed(4)+')';
+      if(c!==der.c){der.c=c;p.f.style.clipPath=c;p.f.style.webkitClipPath=c;}
+      if(s!==der.s){der.s=s;p.img.style.transform=s;}
+    });
+  }
+  function demande(){if(!attente)attente=requestAnimationFrame(tick)}
+  function remesure(){mesure();L.forEach(function(p){p.der={}});demande()}
+  addEventListener('scroll',demande,{passive:true});
+  addEventListener('resize',remesure);
+  addEventListener('load',remesure);
+  addEventListener('pageshow',remesure);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(remesure);
+  /* la page change de hauteur (polices, images, sections plus bas) : on remesure, sans lecture a chaque image */
+  if('ResizeObserver' in window){var ro=new ResizeObserver(function(){remesure()});ro.observe(document.body);}
+  mesure();tick();
+});
+})();
+</script>
 </head>
 <body>
 <div class="m52">
@@ -824,7 +1077,7 @@ function titre5(h1){h1.style.transition='opacity .35s '+DOUX;H3.pret();
     <span class="caps muted">Court-Saint-Étienne</span>
   </div>
   <div class="links caps">
-    <a href="#" data-target="fp-1">La maison</a>
+    <a href="#" data-target="statement">La maison</a>
     <a href="#" data-target="fp-3">Pour qui</a>
     <a href="#" data-target="fp-4">FAQ</a>
     <a class="cta" href="#s-candidater">Rejoindre</a>
@@ -840,24 +1093,13 @@ function titre5(h1){h1.style.transition='opacity .35s '+DOUX;H3.pret();
 </div>
 
 <div id="statement">
+  <div class="label caps"><span class="tag">01</span><span class="lb">La maison</span></div>
   <div class="sep" aria-hidden="true"></div>
   <h2 class="serif">Vis avec un entourage qui <em>te ressemble</em>.</h2>
-  <p>Six chambres pour jeunes entrepreneurs, dans une maison de maître rénovée.</p>
+  <p>Un grand coworking et un salon de réunion, équipés comme un vrai bureau : ton environnement professionnel, à la maison.</p>
 </div>
 
 <div class="snapwrap">
-<section class="fullpage photo-fond" id="fp-1">
-  <div class="label caps"><span class="tag">01</span><span class="lb">La maison</span></div>
-  <div class="split">
-    <div class="split-media">
-      <div class="cadre"><img src="./m52-facade.jpg" alt="Façade de la Maison 52, colocation d'entrepreneurs à Court-Saint-Étienne près d'Ottignies" loading="lazy" width="1280" height="1600"></div>
-    </div>
-    <div class="split-body">
-      <h3 class="serif">Une maison de maître rénovée pour vivre et <em>travailler</em>.</h3>
-      <p class="lead"><strong>310 m², six chambres, un grand bureau, un jardin.</strong> À <em>dix minutes de Louvain-la-Neuve</em>.</p>
-    </div>
-  </div>
-</section>
 </div>
 
 <section class="fullpage pq04" id="fp-3">
@@ -1082,9 +1324,9 @@ function titre5(h1){h1.style.transition='opacity .35s '+DOUX;H3.pret();
   /* le hero demarre tout de suite */
   startVideo(document.getElementById('hero-video'));
 
-  /* le titre s'efface quand la camera franchit la porte de la cuisine,
+  /* le titre s'efface juste apres la porte d'entree (5,2 s, meme moment dans les deux videos),
      une seule fois : il ne revient pas quand la video recommence */
-  var FONDU_A = 8.0;
+  var FONDU_A = 5.2;
   var heroV = document.getElementById('hero-video');
   var titreBloc = document.querySelector('#hero-ui .titre-bloc');
   if (heroV && titreBloc){
@@ -1325,7 +1567,7 @@ function titre5(h1){h1.style.transition='opacity .35s '+DOUX;H3.pret();
     if(best!==actif){actif=best;items.forEach(function(c,i){c.classList.toggle('actif',i===best)});
       [].forEach.call(pts.children,function(p,k){p.classList.toggle('on',k===best)});if(note)note.classList.toggle('cachee',best>0);}}
   /* ressort critique : arrive vite, ralentit, s'arrete sans depasser */
-  function ressort(){var dt=1/60,w=reduit?60:15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
+  function ressort(){if(reduit){x=cible;v=0;maj();anim=0;return}var dt=1/60,w=15;var a=w*w*(cible-x)-2*w*v;v+=a*dt;x+=v*dt;
     if(Math.abs(cible-x)<.3&&Math.abs(v)<5){x=cible;v=0;maj();anim=0;return}
     maj();anim=requestAnimationFrame(ressort);}
   function aller(i){i=Math.max(0,Math.min(items.length-1,i));cible=centre(i);if(!anim)anim=requestAnimationFrame(ressort);}
