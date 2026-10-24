@@ -972,8 +972,9 @@ var R=document.documentElement;R.classList.add('bande');
 R.classList.remove('pq-sombre');
 PH.quandDom(function(){
   var st=document.getElementById('statement'),f1=document.getElementById('fp-1');
-  if(!st||!f1||document.querySelector('.bd-bande'))return;
-  var ancienne=f1.querySelector('.split-media img');
+  /* 01 peut ne plus exister (fusionnee avec la phrase le 24/10) : la facade n'est alors pas posee */
+  if(!st||document.querySelector('.bd-bande'))return;
+  var ancienne=f1&&f1.querySelector('.split-media img');
   /* une bande : figure > img */
   function bande(cls,src,w,h,alt,paresseux){
     var d=document.createElement('div');d.className='bd-bande '+cls;
@@ -984,15 +985,15 @@ PH.quandDom(function(){
   var table=bande('bd-table','demo-sam.jpg',1600,1200,'La salle à manger de la Maison 52 : une grande table en bois entourée de chaises blanches, une cheminée en marbre et un parquet en chevrons.',false);
   st.parentNode.insertBefore(table,st.nextSibling);
   /* 2. 01 sur fond clair, la facade dessous (meme photo, meme texte alternatif que le site) */
-  f1.classList.remove('photo-fond');f1.classList.add('bd-01');
+  var facade=null;if(f1){f1.classList.remove('photo-fond');f1.classList.add('bd-01');
   /* la photo de 01 d'aujourd'hui, partout (cadrage regle en CSS : balcon et porte dans la bande) */
-  var facade=bande('bd-facade','m52-facade.jpg',1280,1600,ancienne&&ancienne.alt||'Façade de la Maison 52',true);
-  f1.appendChild(facade);
-  var figs=[table,facade].map(function(b){return b.firstChild});
+  facade=bande('bd-facade','m52-facade.jpg',1280,1600,ancienne&&ancienne.alt||'Façade de la Maison 52',true);
+  f1.appendChild(facade);}
+  var figs=[table,facade].filter(Boolean).map(function(b){return b.firstChild});
 
   /* menu : 01, 02 et 04 sont clairs maintenant, mais le site les croit sombres et passe le menu en clair.
      Menu fonce de haut en bas de la zone 01 -> 04 (03, entre les deux, est deja vu comme clair par le site) */
-  var nav=document.querySelector('nav'),f4=document.getElementById('fp-invest')||f1,navY=40,f1Haut=0,f1Bas=0,fonce=false;
+  var z1=f1||document.getElementById('fp-3')||st,nav=document.querySelector('nav'),f4=document.getElementById('fp-invest')||z1,navY=40,f1Haut=0,f1Bas=0,fonce=false;
   function menu(y){var v=y+navY>=f1Haut-2&&y+navY<=f1Bas+2;if(v!==fonce){fonce=v;R.classList.toggle('bd-navfonce',v);}}
 
   /* reduit : pas de mouvement lie au defilement, un seul fondu quand chaque photo arrive */
@@ -1021,7 +1022,7 @@ PH.quandDom(function(){
       /* la photo est ouverte bord a bord quand son milieu arrive a 42 % de l'ecran */
       p.fin=Math.min(H*.42-p.h/2,H*.6);});
     /* zone du menu fonce : du haut de 01 au bas de 04 */
-    f1Haut=f1.getBoundingClientRect().top+y;f1Bas=f4.getBoundingClientRect().bottom+y;
+    f1Haut=z1.getBoundingClientRect().top+y;f1Bas=f4.getBoundingClientRect().bottom+y;
     navY=nav?nav.getBoundingClientRect().height*.6:40;}
   function tick(){attente=0;var y=scrollY;menu(y);if(PH.reduit)return;
     L.forEach(function(p){
