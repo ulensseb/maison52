@@ -1682,7 +1682,7 @@ html.f8-tailles :is(#statement,#fp-3,#fp-2,#fp-invest) .wsplit.in{transform:none
    Direction 3 « La planche » (25/10)
    Une planche d'architecte : grille stricte visible par ses alignements, photos de tailles
    differentes qui sortent du bord de l'ecran, texte cale contre elles comme des legendes,
-   grands numeros de planche.
+   noms de section sans numero (27/10 : trois structures, voir la fin).
    Marges = 6vw, exactement celles de la barre de menu et des sections 03, 06 et 07 (relecture : avant 16 / 48 px,
    le grand numero depassait de 7 px / 38 px a gauche du logo « Maison 52 »).
    Grille telephone : 6 colonnes, marges 6vw, goutieres 10 px (a 390 px : lignes a 23, 82, 141, 200, 259, 318 ; fin 367).
@@ -1703,20 +1703,10 @@ html.d3 .d3-planche{display:grid !important;grid-template-columns:calc(6vw - 10p
 html.d3 :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{grid-template-columns:calc(6vw - 10px) repeat(6,minmax(0,1fr)) calc(6vw - 10px);column-gap:10px;row-gap:0}
 html.d3 .d3-planche > *{min-width:0}
 
-/* ---------- etiquette = grand numero de planche + nom colle au chiffre (26/10, demande de Sebastien : « un peu plus a gauche »)
-   Le nom reste sur la LIGNE DE BASE des chiffres, comme avant (relecture DA du 26/10 : il avait ete monte en exposant ;
-   Sebastien demandait seulement de le rapprocher, et « 03 La vie au 52 » se lit d'un bloc sur la ligne de base).
-   Il se pose 12 px (telephone) / 14 px (ordinateur) apres l'ENCRE du dernier chiffre, pas apres sa boite :
-   --d3-ov = ecart mesure entre le bord droit de la boite du numero et le bord droit du dernier chiffre (Syne 500, lnum, -.06em) ; avec l'approche de la premiere lettre, l'ecart mesure d'encre a encre est de 13-14 px / 15-16 px.
-   01 -.033em, 02 -.015em, 03 +.026em, 04 +.018em, 05 +.001em, 06 +.013em, 07 +.040em (mesure : dispo/d3/encre.mjs). ---------- */
+/* ---------- etiquette (27/10) : plus de grand numero de planche (« les 01, 02, 03 font tres Claude ») ; il ne reste que le nom
+   de la section. Sa forme depend de la structure choisie (html.d3-s1 / d3-s2 / d3-s3, voir la fin du fichier). ---------- */
 html.d3 .d3-label{grid-column:2/8;grid-row:1;display:flex;flex-wrap:nowrap;align-items:baseline;margin:0;min-width:0}
-html.d3 .d3-num{flex:none;margin-right:var(--d3-ov,0em);font-family:'Syne',sans-serif;font-weight:500;font-size:96px;line-height:.8;letter-spacing:-.06em;color:var(--d3-enc);white-space:nowrap;font-variant-numeric:lining-nums}
-html.d3 #statement .d3-num{--d3-ov:-.033em}html.d3 #fp-3 .d3-num{--d3-ov:-.015em}html.d3 #fp-2 .d3-num{--d3-ov:.026em}html.d3 #fp-invest .d3-num{--d3-ov:.018em}
-html.d3 #fp-5 .d3-num{--d3-ov:.001em}html.d3 #s-candidater .d3-num{--d3-ov:.013em}html.d3 #fp-4 .d3-num{--d3-ov:.04em}
-
-/* Syne dessine par defaut des chiffres elzeviriens : le 3, le 4, le 5 et le 7 descendent sous la ligne de base (« 04 » boitait,
-   « min » paraissait trop haut a cote du 3 et du 5). lnum = chiffres alignes, tous poses sur la meme ligne. */
-html.d3 .d3-nom{flex:none;margin:0 0 0 12px;white-space:nowrap;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:13px;line-height:1;letter-spacing:0;color:var(--d3-enc)}
+html.d3 .d3-nom{flex:none;margin:0;white-space:nowrap;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:14px;line-height:1.2;letter-spacing:0;color:var(--d3-enc)}
 
 /* ---------- titres : encre, Syne 500, interligne 1, ajustes a la largeur de leur bloc (d3.js) ---------- */
 html.d3 .d3-planche .d3-t{grid-column:2/8;grid-row:2;margin:28px 0 0 !important;padding:0 !important;border:0 !important;max-width:none !important;position:static !important;
@@ -1787,11 +1777,11 @@ html.d3 #fp-3 .d3-note em{display:block;margin-top:12px;text-wrap:balance;font-f
    04 Le loyer : l'affiche et le tableau, sur une feuille plus grise
    ===================================================================== */
 html.d3 #fp-invest.d3-planche{background:#F1F1F1 !important}
-html.d3 #fp-invest .d3-t{font-size:28px;line-height:1.05 !important}
-html.d3 #fp-invest .d3-l4a,html.d3 #fp-invest .d3-l4b{display:block;text-wrap:balance}
-/* « Ton loyer n'est plus une charge, » sur une ligne (ajustee a la largeur, 30 px au plus), puis « c'est un » : la coupure suit la virgule */
-html.d3 #fp-invest .d3-l4x,html.d3 #fp-invest .d3-l4y{display:block;width:max-content;max-width:none;white-space:nowrap}
-html.d3 #fp-invest .d3-t .d3-fitl{line-height:1;font-size:13vw;margin:.02em 0 .06em;letter-spacing:-.03em !important}
+/* titre (27/10, « bizarre » en trois tailles) : UNE seule taille, a l'encre comme les autres titres, coupe par text-wrap:balance.
+   Telephone : 9,2vw ; la colonne fait 88vw et la plus longue ligne visee (« ton projet et dans toi. ») 9,26 em = 85vw : partout
+   de 320 a 860 px les memes 4 lignes « Ton loyer n'est plus / une charge, c'est un / investissement dans / ton projet et dans toi. »
+   (« c'est un » et « dans toi » sont lies par une espace insecable : jamais seuls sur une ligne). */
+html.d3 #fp-invest .d3-t{font-size:9.2vw;line-height:1.02 !important;text-wrap:balance}
 html.d3 #fp-invest .d3-tab{grid-column:2/8;grid-row:3;margin-top:44px}
 html.d3 #fp-invest .d3-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;align-items:start}
 html.d3 #fp-invest .d3-row + .d3-row{margin-top:28px}
@@ -1820,8 +1810,6 @@ html.d3 #fp-5 .d3-wz{grid-column:5/-1;grid-row:4;align-self:start;margin-top:36p
 @media(min-width:861px){
   html.d3 .d3-planche,html.d3 :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{grid-template-columns:calc(6vw - 24px) repeat(12,minmax(0,1fr)) calc(6vw - 24px);column-gap:24px;padding:112px 0 128px !important}
   html.d3 .d3-label{grid-column:2/14}
-  html.d3 .d3-num{font-size:200px}
-  html.d3 .d3-nom{margin:0 0 0 14px}
   html.d3 .d3-planche p{font-size:17px}
 
   /* 01 : rangee 1 = titre (col. 1-8) + salon (col. 9 -> bord) ; rangee 2 = table (bord -> col. 8) + legende (col. 9-11) */
@@ -1855,10 +1843,8 @@ html.d3 #fp-5 .d3-wz{grid-column:5/-1;grid-row:4;align-self:start;margin-top:36p
   html.d3 #fp-3 .d3-p p{margin-top:10px;font-size:16px;line-height:1.55}
 
   /* 04 : titre sur toute la grille, tableau col. 1-8, le palier col. 9-12 */
-  html.d3 #fp-invest .d3-t{grid-column:2/14;margin-top:48px !important;font-size:64px;line-height:1.02 !important}
-  html.d3 #fp-invest .d3-l4x,html.d3 #fp-invest .d3-l4y{display:block;width:max-content;white-space:nowrap}
-  html.d3 #fp-invest .d3-l4a,html.d3 #fp-invest .d3-l4b{text-wrap:nowrap;white-space:nowrap}
-  html.d3 #fp-invest .d3-t .d3-fitl{font-size:13.5vw;margin:.01em 0 .05em}
+  /* titre sur toute la grille (88vw) a 6vw : 3 lignes equilibrees, identiques de 861 a 1920 px */
+  html.d3 #fp-invest .d3-t{grid-column:2/14;margin-top:48px !important;font-size:6vw;line-height:1 !important}
   html.d3 #fp-invest .d3-tab{grid-column:2/10;grid-row:3;margin-top:80px}
   html.d3 #fp-invest .d3-row{grid-template-columns:repeat(8,minmax(0,1fr));column-gap:24px}
   html.d3 #fp-invest .d3-row h4{grid-column:1/4;font-size:26px !important;line-height:1.1 !important}
@@ -1977,11 +1963,121 @@ html.d3 .d3-pied footer .legal{grid-column:1/7;grid-row:2;margin-top:40px;max-wi
   html.d3 .d3-pied footer .top > div:last-child{grid-column:9/13}
   html.d3 .d3-pied footer .legal{grid-column:4/9;grid-row:1;margin-top:0}
 }
+
+/* =====================================================================
+   27/10 — TROIS STRUCTURES SANS NUMEROS, sur la meme page : ?s=1, ?s=2, ?s=3 (classe d3-s1 / d3-s2 / d3-s3 sur <html>, d3.js).
+   Sections : #statement La maison, #fp-3 Pour qui, #fp-2 La vie au 52, #fp-invest Le loyer, #fp-5 Le quartier,
+   #s-candidater Rejoindre, #fp-4 FAQ. Le carrousel de 03 et le formulaire de 06 ne sont pas touches.
+   ===================================================================== */
+
+/* ---------- elements propres a une structure : caches par defaut ---------- */
+html.d3 .d3-ouv{display:none}
+html.d3 .d3-toc{display:none}
+
+/* ---------- STRUCTURE 1 « Titre courant » ----------
+   Le nom de la section en cours remplace « Court-Saint-Etienne » dans la barre (fondu, d3.js) ; « Court-Saint-Etienne »
+   revient sur les deux videos et le pied de page. Dans la page : un vrai blanc entre les sections et, au debut de chacune,
+   le nom en petit au-dessus du titre (Uncut Sans 500 14 px, encre). */
+html.d3 #nav .brand{position:relative}
+html.d3 #nav .brand .d3-cur{position:absolute;left:0;bottom:0;margin:0;white-space:nowrap;transition:opacity .22s ease,color .2s ease}
+html.d3 #nav .brand .d3-cur.d3-cur-off{opacity:0}
+html.d3-s1 #nav .brand .muted:not(.d3-cur){transition:opacity .22s ease,color .2s ease}
+html.d3-s1.d3-cur-on #nav .brand .muted:not(.d3-cur){opacity:0}
+@media(prefers-reduced-motion:reduce){html.d3 #nav .brand .muted{transition:none !important}}
+
+html.d3-s1 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{padding-top:112px !important;scroll-margin-top:calc(var(--d3-bar) - 48px) !important}
+html.d3:is(.d3-s1,.d3-s2) :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:14px !important}
+
+/* ---------- STRUCTURE 2 « Ouvertures en photo » ----------
+   De 02 a 07, une bande photo bord a bord ouvre la section, le nom pose dessus en grand (Syne 500, blanc, leger voile en bas) ;
+   01 garde son ouverture (la video la precede) et le nom en petit au-dessus du titre. 07 : bande fine.
+   La bande occupe la rangee 1 de la grille (celle de l'etiquette, cachee ici) sur toute la largeur (pistes de marge comprises). */
+html.d3-s2 .d3-ouv{display:block;position:relative;grid-column:1/-1;grid-row:1;margin:0;height:45vh;height:45svh;min-height:250px;overflow:hidden;background:#D9D6D1}
+html.d3-s2 .d3-ouv.d3-ouv-07{height:22vh;height:22svh;min-height:150px}
+html.d3-s2 .d3-ouv picture{display:block;width:100%;height:100%}
+html.d3-s2 .d3-ouv img{display:block;width:100%;height:100%;object-fit:cover;border-radius:0;transform-origin:50% 60%}
+html.d3-s2 .d3-ouv::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(20,19,18,.44) 0%,rgba(20,19,18,.16) 40%,rgba(20,19,18,0) 66%)}
+html.d3-s2 .d3-ouv-nom{position:absolute;z-index:1;left:6vw;right:6vw;bottom:18px;color:#fff;font-family:'Syne',sans-serif;font-weight:500;font-size:15vw;line-height:1;letter-spacing:-.03em;white-space:nowrap;text-shadow:0 1px 28px rgba(0,0,0,.16)}
+html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{padding-top:0 !important;scroll-margin-top:var(--d3-bar) !important}
+html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4) .d3-label{display:none}
+html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:44px !important}
+/* mouvement : la photo se pose (leger recul de 7 %) et le nom apparait en fondu, une fois ; rien en « Reduire les animations » */
+html.d3-anim.d3-s2 .d3-ouv img{transform:scale(1.07);transition:transform 1.8s cubic-bezier(.2,.65,.25,1)}
+html.d3-anim.d3-s2 .d3-ouv.d3-vu img{transform:none}
+html.d3-anim.d3-s2 .d3-ouv .d3-ouv-nom{opacity:0;transition:opacity 1s cubic-bezier(.4,0,.2,1) .25s}
+html.d3-anim.d3-s2 .d3-ouv.d3-vu .d3-ouv-nom{opacity:1}
+
+/* ---------- STRUCTURE 3 « Cartouche d'architecte » ----------
+   A la place du numero, un cartouche ouvert : un filet sur toute la largeur de la grille, et dessous, sur une ligne,
+   « Maison 52 » (gris), le nom de la section (encre) cale sur la 3e colonne, « Court-Saint-Etienne » (gris) a droite ; puis le titre.
+   Ordinateur >= 1100 px : sommaire fixe dans la marge gauche (d3.js). */
+html.d3-s3 :is(#fp-3,#fp-2).d3-planche{padding-top:72px !important}
+html.d3-s3 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{scroll-margin-top:calc(var(--d3-bar) - 32px) !important}
+html.d3-s3 .d3-label{border-top:1px solid var(--d3-enc);padding-top:9px;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:12px;line-height:1.2;letter-spacing:0;color:var(--d3-gris)}
+html.d3-s3 .d3-label::before{content:"Maison 52";flex:none;white-space:nowrap;width:calc((100% - 50px) / 6 * 2 + 20px)}
+html.d3-s3 .d3-nom{font-size:12px;line-height:1.2;color:var(--d3-enc)}
+html.d3-s3 .d3-label::after{content:"Court-Saint-\00C9tienne";flex:none;margin-left:auto;padding-left:12px;white-space:nowrap}
+
+/* ---------- barre de bascule « Structure 1 2 3 » (au-dessus de la barre des propositions, meme style) ---------- */
+.d3-bascule{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(56px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(20,20,20,.9);font:500 12px/1 -apple-system,Helvetica,Arial,sans-serif;white-space:nowrap}
+.d3-bascule span{color:rgba(255,255,255,.62);padding:0 6px 0 11px}
+.d3-bascule a{color:#fff;padding:10px 13px;border-radius:999px;text-decoration:none}
+.d3-bascule a.on{background:#E26A3E}
+
+/* ---------- ordinateur ---------- */
+@media(min-width:861px){
+  /* 1 : blanc plus grand ; 05 (photo collee sur toute la hauteur) garde son haut a 0, l'espace passe dans sa colonne de texte */
+  html.d3-s1 :is(#fp-3,#fp-2,#fp-invest,#s-candidater,#fp-4).d3-planche{padding-top:176px !important;scroll-margin-top:calc(var(--d3-bar) - 96px) !important}
+  html.d3-s1 #fp-5.d3-planche{padding-top:0 !important;scroll-margin-top:var(--d3-bar) !important}
+  html.d3-s1 #fp-5 .d3-label{padding-top:176px}
+  html.d3:is(.d3-s1,.d3-s2) :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:20px !important}
+  html.d3:is(.d3-s1,.d3-s2) .d3-nom{font-size:14px}
+
+  /* 2 : bande de 60 vh ; titres (et formulaire, questions) a 96 px sous la bande ; la photo collee de 05 commence sous la bande */
+  html.d3-s2 .d3-ouv{height:60vh;min-height:380px;max-height:780px}
+  html.d3-s2 .d3-ouv.d3-ouv-07{height:30vh;min-height:200px;max-height:360px}
+  html.d3-s2 .d3-ouv-nom{font-size:8.5vw;bottom:36px}
+  html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:96px !important}
+  html.d3-s2 #s-candidater .d3-form{margin-top:96px}
+  html.d3-s2 #fp-4 .faq{margin-top:96px}
+  html.d3-s2 #fp-5 .d3-wz{grid-row:2/-1}
+
+  /* 3 : cartouche en 13 px, le nom cale sur la 4e colonne (comme le 2e profil de 02) ; 05 : dans sa colonne de texte */
+  html.d3-s3 :is(#fp-3,#fp-2).d3-planche{padding-top:112px !important}
+  html.d3-s3 :is(#fp-3,#fp-2,#fp-invest,#s-candidater,#fp-4).d3-planche{scroll-margin-top:calc(var(--d3-bar) - 56px) !important}
+  html.d3-s3 #fp-5.d3-planche{scroll-margin-top:var(--d3-bar) !important}
+  html.d3-s3 .d3-label{padding-top:11px;font-size:13px}
+  html.d3-s3 .d3-nom{font-size:13px}
+  html.d3-s3 .d3-label::before{width:calc((100% - 264px) / 12 * 3 + 72px)}
+  html.d3-s3 #fp-5 .d3-label{padding-top:11px;margin-top:112px}
+  html.d3-s3 #fp-5 .d3-label::before{width:calc((100% - 72px) / 4 + 24px)}
+}
+@media(min-width:861px) and (max-width:1199px){
+  html.d3-s3 #fp-5 .d3-label::before{width:calc((100% - 120px) / 6 * 2 + 48px)}
+}
+/* sommaire de la structure 3 : en colonne dans la marge gauche, ecrit a la verticale (la marge fait 6vw, 66 px a 1100 :
+   trop etroite pour « La vie au 52 » couche), centre sur 3vw ; visible seulement entre les deux videos (d3-toc-on) ;
+   le nom en cours a l'encre, les autres en gris ; en blanc quand il passe sur une photo (01 table, 03 cartes, 05 parc). */
+@media(min-width:1100px){
+  html.d3-s3 .d3-toc{display:flex;position:fixed;z-index:30;left:3vw;top:50%;transform:translate(-50%,-50%);writing-mode:vertical-rl;gap:24px;margin:0;padding:0;
+    width:max-content;height:max-content;pointer-events:none;  /* (sans max-content, la boite verticale prenait toute la largeur de l'ecran et captait les clics) */
+    opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
+  html.d3-s3 .d3-toc.d3-toc-on{opacity:1;visibility:visible;transition:opacity .4s ease}
+  html.d3-s3 .d3-toc:not(.d3-toc-on) a{pointer-events:none}
+  html.d3-s3 .d3-toc a{display:block;pointer-events:auto;padding:4px 2px;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:12px;line-height:1;letter-spacing:0;color:#9C9A96;text-decoration:none;white-space:nowrap;transition:color .25s ease}
+  html.d3-s3 .d3-toc a:hover,html.d3-s3 .d3-toc a.on{color:var(--d3-enc)}
+  html.d3-s3 .d3-toc a.clair{color:rgba(255,255,255,.7);text-shadow:0 1px 10px rgba(0,0,0,.3)}
+  html.d3-s3 .d3-toc a.clair.on,html.d3-s3 .d3-toc a.clair:hover{color:#fff}
+}
+@media(prefers-reduced-motion:reduce){html.d3-s3 .d3-toc,html.d3-s3 .d3-toc a{transition:none !important}}
 </style>
 <script>
 /* Direction 3 « La planche » : titres ajustes a la largeur de leur bloc, balayage des photos, fondu du texte. */
 (function(){
 var R=document.documentElement;R.classList.add('d3');
+/* 27/10 : trois structures sans numeros, sur la meme page : ?s=1 « Titre courant », ?s=2 « Ouvertures en photo »,
+   ?s=3 « Cartouche d'architecte » (defaut 1). Classe posee sur <html> avant le premier rendu (ce script est dans <head>). */
+var S=(/[?&]s=([123])(?:&|$)/.exec(location.search)||[0,'1'])[1];R.classList.add('d3-s'+S);
 var mq=matchMedia('(prefers-reduced-motion: reduce)');
 /* « Reduire les animations » : aucun etat cache, tout est visible d'emblee */
 if(!mq.matches)R.classList.add('d3-anim');
@@ -2015,12 +2111,7 @@ pret(function(){
     [].forEach.call(document.querySelectorAll('.d3-planche .d3-t[data-fit]'),function(t){
       var g=t.querySelectorAll('.d3-lg');
       ajuste(t,[].slice.call(g.length&&ordi()?g:t.querySelectorAll('.d3-l')),t.clientWidth)});
-    /* 04 : « investissement » seul a toute la largeur ; sur ordinateur, « Ton loyer n'est plus une charge, » aussi */
-    var t4=document.querySelector('#fp-invest .d3-t4');
-    if(t4){var w=t4.clientWidth,x=t4.querySelector('.d3-l4x'),f=t4.querySelector('.d3-fitl');
-      t4.style.removeProperty('font-size');
-      if(x){var px=ajuste(t4,[x],w),cap=ordi()?64:30;if(px>cap)taille(t4,cap)}
-      if(f)ajuste(f,[f],w)}
+    /* 04 (27/10) : le titre est un seul bloc a une seule taille (d3.css), coupe par text-wrap:balance : rien a ajuster ici */
     /* 02 telephone : 3 et 4 remontent a 40 px sous leur voisin du dessus (colonnes independantes, ordre du document inchange) */
     var ps=[1,2,3,4].map(function(i){return document.querySelector('#fp-3 .d3-p'+i)});
     if(ps[3]){ps[2].style.removeProperty('margin-top');ps[3].style.removeProperty('margin-top');
@@ -2044,8 +2135,10 @@ pret(function(){
       [].forEach.call(e.target.querySelectorAll('img[loading=lazy]'),function(i){i.loading='eager'});pre.unobserve(e.target)})},{rootMargin:'150% 0px 150% 0px'});
     [].forEach.call(document.querySelectorAll('.d3-planche .d3-ph'),function(f){pre.observe(f)})}
 
-  /* apparitions : une seule fois, quand l'element entre dans l'ecran */
-  var els=[].slice.call(document.querySelectorAll('.d3-planche .d3-tx,.d3-planche .d3-ph'));
+  structure();
+
+  /* apparitions : une seule fois, quand l'element entre dans l'ecran (bandes d'ouverture de la structure 2 comprises) */
+  var els=[].slice.call(document.querySelectorAll('.d3-planche .d3-tx,.d3-planche .d3-ph,.d3-planche .d3-ouv'));
   if(mq.matches||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('d3-vu')});return}
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('d3-vu');io.unobserve(e.target)}})},
     {rootMargin:'0px 0px -8% 0px',threshold:0});
@@ -2053,6 +2146,61 @@ pret(function(){
   /* si on bascule en « Reduire les animations » pendant la visite : tout apparait */
   if(mq.addEventListener)mq.addEventListener('change',function(){if(mq.matches){R.classList.remove('d3-anim');els.forEach(function(e){e.classList.add('d3-vu')})}});
 });
+
+/* =====================================================================
+   27/10 : les trois structures (section en cours, nom dans la barre, sommaire, barre de bascule)
+   ===================================================================== */
+function structure(){
+  var SEC=[['statement','La maison'],['fp-3','Pour qui'],['fp-2','La vie au 52'],['fp-invest','Le loyer'],['fp-5','Le quartier'],['s-candidater','Rejoindre'],['fp-4','FAQ']]
+    .map(function(x){return {id:x[0],nom:x[1],el:document.getElementById(x[0])}}).filter(function(x){return x.el});
+  var reduit=matchMedia('(prefers-reduced-motion: reduce)');
+  var ecoute=[];function annonce(id){ecoute.forEach(function(f){f(id)})}
+
+  /* section en cours : celle qui coupe une ligne fine a 40 % de la hauteur de l'ecran ; aucune (video d'ouverture,
+     video de fin, pied de page) -> null */
+  if('IntersectionObserver' in window&&SEC.length){var dans={},cour=undefined;
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){dans[e.target.id]=e.isIntersecting});
+      var c=null;SEC.forEach(function(x){if(dans[x.id])c=x.id});if(c!==cour){cour=c;annonce(c)}},{rootMargin:'-40% 0px -59% 0px',threshold:0});
+    SEC.forEach(function(x){io.observe(x.el)})}
+  function nomDe(id){for(var i=0;i<SEC.length;i++)if(SEC[i].id===id)return SEC[i].nom;return null}
+  function va(id){var e=document.getElementById(id);if(e)e.scrollIntoView({behavior:reduit.matches?'auto':'smooth',block:'start'})}
+
+  /* --- structure 1 : le nom de la section en cours remplace « Court-Saint-Etienne » dans la barre, en fondu --- */
+  if(S==='1'){var br=document.querySelector('#nav .brand');
+    if(br){var cur=document.createElement('span');cur.className='caps muted d3-cur';cur.setAttribute('aria-hidden','true');br.appendChild(cur);
+      var att=0,affiche=null;
+      ecoute.push(function(id){var n=nomDe(id);clearTimeout(att);
+        R.classList.toggle('d3-cur-on',!!n);
+        if(!n){cur.classList.add('d3-cur-off');affiche=null;return}
+        if(affiche===null||reduit.matches){cur.textContent=n;affiche=n;cur.classList.remove('d3-cur-off');return}
+        if(n===affiche)return;
+        cur.classList.add('d3-cur-off');affiche=n;
+        att=setTimeout(function(){cur.textContent=n;cur.classList.remove('d3-cur-off')},180)});
+      cur.classList.add('d3-cur-off')}}
+
+  /* --- structure 3 : sommaire dans la marge gauche (ordinateur >= 1100 px, regles dans d3.css) --- */
+  if(S==='3'){var toc=document.createElement('nav');toc.className='d3-toc';toc.setAttribute('aria-label','Sommaire');
+    var liens=SEC.map(function(x){var a=document.createElement('a');a.href='#'+x.id;a.textContent=x.nom;a.dataset.id=x.id;
+      a.addEventListener('click',function(ev){ev.preventDefault();va(x.id)});toc.appendChild(a);return a});
+    document.body.appendChild(toc);
+    ecoute.push(function(id){toc.classList.toggle('d3-toc-on',!!id);liens.forEach(function(a){a.classList.toggle('on',a.dataset.id===id)})});
+    /* un nom pose sur une photo (01 table, 03 cartes, 05 parc) passe en blanc */
+    var rq=0;function clair(){rq=0;if(!toc.classList.contains('d3-toc-on')||innerWidth<1100)return;
+      liens.forEach(function(a){var r=a.getBoundingClientRect(),x=r.left+r.width/2,photo=false;
+        [.25,.5,.75].forEach(function(f){var pile=document.elementsFromPoint(x,r.top+r.height*f);
+          for(var i=0;i<pile.length;i++){var e=pile[i];if(toc.contains(e))continue;if(/^(IMG|VIDEO|PICTURE)$/.test(e.tagName))photo=true;break}});
+        a.classList.toggle('clair',photo)})}
+    function demandeClair(){if(!rq)rq=requestAnimationFrame(clair)}
+    addEventListener('scroll',demandeClair,{passive:true});addEventListener('resize',demandeClair);ecoute.push(function(){setTimeout(demandeClair,60)})}
+
+  /* --- barre de bascule « Structure 1 2 3 », au-dessus de la barre des propositions --- */
+  var bb=document.createElement('div');bb.className='d3-bascule';
+  var lab=document.createElement('span');lab.textContent='Structure';bb.appendChild(lab);
+  ['1','2','3'].forEach(function(n){var a=document.createElement('a');a.textContent=n;if(n===S)a.className='on';
+    var lien=function(){a.href='dispo-3.html?s='+n+'&v='+(+new Date()%100000)+location.hash};lien();
+    a.addEventListener('click',lien);addEventListener('hashchange',lien);bb.appendChild(a)});
+  document.body.appendChild(bb);
+}
 })();
 </script>
 <script>
@@ -2098,7 +2246,7 @@ document.body.appendChild(b);});
 </div>
 
 <div id="statement" class="d3-planche d3-s1">
-  <div class="d3-label d3-tx"><span class="d3-num">01</span><span class="d3-nom">La maison</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">La maison</span></div>
   <h2 class="d3-t d3-tx" data-fit><span class="d3-l">Vis avec un</span> <span class="d3-l">entourage qui</span> <span class="d3-l"><em>te ressemble</em>.</span></h2>
   <figure class="d3-ph d3-salon d3-dl"><picture><source media="(min-width:600px)" srcset="dispo-img/d3-salon-d.jpg"><img src="dispo-img/d3-salon-m.jpg" alt="" width="384" height="480" decoding="async" loading="lazy"></picture></figure>
   <figure class="d3-ph d3-table d3-dr"><picture><source media="(min-width:600px)" srcset="dispo-img/d3-table-d.jpg"><img src="dispo-img/d3-table-m.jpg" alt="La salle à manger de la Maison 52 : une grande table en bois entourée de chaises blanches, une cheminée en marbre et un parquet en chevrons." width="768" height="960" decoding="async"></picture></figure>
@@ -2109,7 +2257,8 @@ document.body.appendChild(b);});
 </div>
 
 <section class="d3-planche d3-s2" id="fp-3">
-  <div class="d3-label d3-tx"><span class="d3-num">02</span><span class="d3-nom">Pour qui</span></div>
+  <div class="d3-ouv d3-ouv-02"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-02-d.jpg"><img src="dispo-img/d3-ouv-02-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Pour qui</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">Pour qui</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Tu t'y</span> <span class="d3-l">retrouves ?</span></h3>
   <div class="d3-pers">
     <article class="d3-p d3-p1"><figure class="d3-ph d3-dl"><img src="dispo-img/d3-p-fondateur.jpg" alt="" width="640" height="800" decoding="async" loading="lazy"></figure><span class="d3-idx d3-tx">Fondateur</span><h4 class="d3-tx">Tu lances ta boîte</h4><p class="d3-tx">Tout repose sur toi. Ici tu gardes un cadre : des horaires, un bureau, et des gens à qui parler du problème du jour.</p></article><article class="d3-p d3-p2"><figure class="d3-ph d3-dr"><img src="dispo-img/d3-p-independant.jpg" alt="" width="640" height="800" decoding="async" loading="lazy"></figure><span class="d3-idx d3-tx">Indépendant</span><h4 class="d3-tx">Tu travailles pour toi</h4><p class="d3-tx">Freelance, consultant, créatif : tu veux séparer la vie et le travail sans payer un espace vide.</p></article><article class="d3-p d3-p3"><figure class="d3-ph d3-dl"><img src="dispo-img/d3-p-etudiant.jpg" alt="" width="640" height="800" decoding="async" loading="lazy"></figure><span class="d3-idx d3-tx">Étudiant-entrepreneur</span><h4 class="d3-tx">Tu construis en parallèle</h4><p class="d3-tx">Près du campus, sans retomber dans un kot où personne ne construit rien.</p></article><article class="d3-p d3-p4"><figure class="d3-ph d3-dr"><img src="dispo-img/d3-p-transition.jpg" alt="" width="640" height="800" decoding="async" loading="lazy"></figure><span class="d3-idx d3-tx">En transition</span><h4 class="d3-tx">Tu prépares ton saut</h4><p class="d3-tx">Encore salarié, mais un projet sérieux le soir et le week-end. Un endroit qui pousse à passer le cap.</p></article>
@@ -2118,7 +2267,8 @@ document.body.appendChild(b);});
 </section>
 
 <section class="d3-planche d3-s3" id="fp-2">
-  <div class="d3-label d3-tx"><span class="d3-num">03</span><span class="d3-nom">La vie au 52</span></div>
+  <div class="d3-ouv d3-ouv-03"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-03-d.jpg"><img src="dispo-img/d3-ouv-03-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">La vie au 52</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">La vie au 52</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-lg"><span class="d3-l">Une maison</span> <span class="d3-l">pensée pour</span></span> <span class="d3-lg"><span class="d3-l">les journées</span> <span class="d3-l">de travail.</span></span></h3>
   <div class="d3-cf">
   <div class="cards">
@@ -2162,8 +2312,9 @@ document.body.appendChild(b);});
 
 
 <section class="d3-planche d3-s4" id="fp-invest">
-  <div class="d3-label d3-tx"><span class="d3-num">04</span><span class="d3-nom">Le loyer</span></div>
-  <h3 class="d3-t d3-t4 d3-tx"><span class="d3-l4a"><span class="d3-l4x">Ton loyer n'est plus une charge,</span> <span class="d3-l4y">c'est un</span></span> <span class="d3-l d3-fitl"><em>investissement</em></span> <span class="d3-l4b">dans ton projet et dans toi.</span></h3>
+  <div class="d3-ouv d3-ouv-04"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-04-d.jpg"><img src="dispo-img/d3-ouv-04-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Le loyer</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">Le loyer</span></div>
+  <h3 class="d3-t d3-t4 d3-tx">Ton loyer n'est plus une charge, c'est un <em>investissement</em> dans ton projet et dans toi.</h3>
   <div class="d3-tab">
     <div class="d3-row d3-tx"><h4>Un seul montant, tout dedans</h4><p>Logement et espace de travail au même endroit : tu ne paies pas un kot d'un côté et un bureau de l'autre.</p></div>
     <div class="d3-row d3-tx"><h4>Du temps rendu</h4><p>Pas de trajet, pas d'installation. Le temps gagné retourne dans ton projet.</p></div>
@@ -2176,8 +2327,9 @@ document.body.appendChild(b);});
 
 <div class="snapwrap">
 <section class="d3-planche d3-s5" id="fp-5">
+  <div class="d3-ouv d3-ouv-05"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-05-d.jpg"><img src="dispo-img/d3-ouv-05-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Le quartier</span></div>
   <figure class="d3-ph d3-wz d3-dr"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-wisterzee-d.jpg"><img src="dispo-img/d3-wisterzee-m.jpg" alt="Le parc de Wisterzée à Court-Saint-Étienne : un étang et de grands arbres" width="572" height="1680" decoding="async" loading="lazy"></picture></figure>
-  <div class="d3-label d3-tx"><span class="d3-num">05</span><span class="d3-nom">Le quartier</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">Le quartier</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Proche de</span> <span class="d3-l"><em>tout.</em></span></h3>
   <p class="d3-lead d3-tx">Court-Saint-Étienne, c'est la campagne du Brabant wallon avec un train direct vers Bruxelles. Tout ce que tu fais dans une journée tient dans un rayon de cinq minutes.</p>
   <ul class="d3-lieux">
@@ -2207,7 +2359,8 @@ document.body.appendChild(b);});
 <div id="after">
   <section id="s-candidater" class="d3-planche d3-s6">
     <span id="rejoindre" class="ancre-rejoindre" aria-hidden="true"></span>
-    <div class="d3-label d3-tx"><span class="d3-num">06</span><span class="d3-nom">Rejoindre</span></div>
+    <div class="d3-ouv d3-ouv-06"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-06-d.jpg"><img src="dispo-img/d3-ouv-06-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Rejoindre</span></div>
+    <div class="d3-label d3-tx"><span class="d3-nom">Rejoindre</span></div>
     <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Dis-nous</span> <span class="d3-l">qui tu es.</span></h3>
     <div class="d3-intro d3-tx"><div class="intro">
         <strong>Explique-nous en quelques lignes qui tu es et ce que tu construis.</strong><br><br>
@@ -2230,7 +2383,8 @@ document.body.appendChild(b);});
   </section>
 
 <section class="d3-planche d3-s7" id="fp-4">
-  <div class="d3-label d3-tx"><span class="d3-num">07</span><span class="d3-nom">FAQ</span></div>
+  <div class="d3-ouv d3-ouv-07"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-07-d.jpg"><img src="dispo-img/d3-ouv-07-m.jpg" alt="" width="1080" height="476" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">FAQ</span></div>
+  <div class="d3-label d3-tx"><span class="d3-nom">FAQ</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Questions.</span></h3>
   <div class="faq">
     <div class="faq-item"><h4 class="faq-h"><button type="button" class="faq-b" id="faq-q1" aria-expanded="false" aria-controls="faq-r1"><span class="faq-t">Quel est le loyer ?</span><span class="ind" aria-hidden="true">+</span></button></h4>
