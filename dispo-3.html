@@ -715,7 +715,7 @@ html.h3-v5 #intro,#relais5,#trait5{bottom:auto;height:100vh;height:100lvh}
   function quandDom(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn();}
   function quandPret(fn){var fait=false,une=function(){if(!fait){fait=true;fn()}};
     quandDom(function(){var p=document.fonts?Promise.all([document.fonts.load("500 100px 'Syne'"),police52()]):Promise.resolve();p.then(une,une);setTimeout(une,1200);});}
-  /* proposition 3 (27/10) : le « 52 » du titre a sa propre police (chiffres alignes) : on l'attend aussi avant de mesurer */
+  /* proposition 3 (27/10) : on attend aussi la police du « 52 » du titre avant de mesurer (option a : Syne, deja attendue ; option b : Uncut Sans 500) */
   function police52(){var e=document.querySelector('#hero-ui h1 em');if(!e)return Promise.resolve();var c=getComputedStyle(e);
     return document.fonts.load(c.fontStyle+' '+c.fontWeight+' 100px '+c.fontFamily,'52');}
   function calque(mode){var intro=document.createElement('div');intro.id='intro';intro.className='calque-'+(mode||'clair');
@@ -992,8 +992,7 @@ PH.quandDom(function(){
       (paresseux?' loading="lazy"':' fetchpriority="low"')+' alt=""></figure>';
     d.querySelector('img').alt=alt;return d;}
   /* 1. la table, juste sous la phrase (premiere image utile : pas de chargement differe) */
-  var table=bande('bd-table','demo-sam.jpg',1600,1200,'La salle à manger de la Maison 52 : une grande table en bois entourée de chaises blanches, une cheminée en marbre et un parquet en chevrons.',false);
-  st.parentNode.insertBefore(table,st.nextSibling);
+  var table=null;  /* direction 3 : plus de bande de la table (la planche a ses propres photos) : demo-sam.jpg n'est plus charge pour rien */
   /* 2. 01 sur fond clair, la facade dessous (meme photo, meme texte alternatif que le site) */
   var facade=null;if(f1){f1.classList.remove('photo-fond');f1.classList.add('bd-01');
   /* la photo de 01 d'aujourd'hui, partout (cadrage regle en CSS : balcon et porte dans la bande) */
