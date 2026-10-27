@@ -9,6 +9,7 @@
 <meta name="author" content="Maison 52">
 <link rel="preload" href="/fonts/syne-500.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/uncut-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/uncut-sans-500.woff2" as="font" type="font/woff2" crossorigin>
 <meta property="og:site_name" content="Maison 52">
 <meta property="og:locale" content="fr_BE">
 <meta property="og:type" content="website">
@@ -713,7 +714,10 @@ html.h3-v5 #intro,#relais5,#trait5{bottom:auto;height:100vh;height:100lvh}
   var R=document.documentElement;R.classList.add('h3','h3-v5');
   function quandDom(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn();}
   function quandPret(fn){var fait=false,une=function(){if(!fait){fait=true;fn()}};
-    quandDom(function(){var p=document.fonts?document.fonts.load("500 100px 'Syne'"):Promise.resolve();p.then(une,une);setTimeout(une,1200);});}
+    quandDom(function(){var p=document.fonts?Promise.all([document.fonts.load("500 100px 'Syne'"),police52()]):Promise.resolve();p.then(une,une);setTimeout(une,1200);});}
+  /* proposition 3 (27/10) : le « 52 » du titre a sa propre police (chiffres alignes) : on l'attend aussi avant de mesurer */
+  function police52(){var e=document.querySelector('#hero-ui h1 em');if(!e)return Promise.resolve();var c=getComputedStyle(e);
+    return document.fonts.load(c.fontStyle+' '+c.fontWeight+' 100px '+c.fontFamily,'52');}
   function calque(mode){var intro=document.createElement('div');intro.id='intro';intro.className='calque-'+(mode||'clair');
     var mot=document.createElement('div');mot.className='mot';mot.innerHTML=document.querySelector('#hero-ui h1').innerHTML;
     intro.appendChild(mot);document.body.appendChild(intro);return {intro:intro,mot:mot};}
@@ -775,7 +779,7 @@ function taille(mot){var m=mot.querySelector('.r5m'),n=mot.querySelector('.r5c')
 /* trait d'ombre sous les lettres blanches pendant le vol (serre, sans grand halo) : il les detache de la facade
    blanche. Divise par l'echelle pour arriver a la bonne finesse. Il s'efface quand le vrai titre et son halo
    apparaissent dessous. */
-var TRAIT='0 1px 3px rgba(0,0,0,.5),0 3px 16px rgba(0,0,0,.22)';
+var TRAIT='0 2px 30px rgba(0,0,0,.28)';  /* proposition 3 (27/10) : l'ombre douce du titre, plus de trait serre */
 function ombre5(trait,h1,em){
   [['.r5m',h1],['.r5c',em]].forEach(function(x){var p=trait.querySelector(x[0]),
     s=parseFloat(getComputedStyle(x[1]).fontSize)/parseFloat(getComputedStyle(p).fontSize);
@@ -1682,7 +1686,7 @@ html.f8-tailles :is(#statement,#fp-3,#fp-2,#fp-invest) .wsplit.in{transform:none
    Direction 3 « La planche » (25/10)
    Une planche d'architecte : grille stricte visible par ses alignements, photos de tailles
    differentes qui sortent du bord de l'ecran, texte cale contre elles comme des legendes,
-   noms de section sans numero (27/10 : trois structures, voir la fin).
+   noms de section sans numero (27/10 : structure 1 « Titre courant », voir la fin).
    Marges = 6vw, exactement celles de la barre de menu et des sections 03, 06 et 07 (relecture : avant 16 / 48 px,
    le grand numero depassait de 7 px / 38 px a gauche du logo « Maison 52 »).
    Grille telephone : 6 colonnes, marges 6vw, goutieres 10 px (a 390 px : lignes a 23, 82, 141, 200, 259, 318 ; fin 367).
@@ -1704,7 +1708,7 @@ html.d3 :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-plan
 html.d3 .d3-planche > *{min-width:0}
 
 /* ---------- etiquette (27/10) : plus de grand numero de planche (« les 01, 02, 03 font tres Claude ») ; il ne reste que le nom
-   de la section. Sa forme depend de la structure choisie (html.d3-s1 / d3-s2 / d3-s3, voir la fin du fichier). ---------- */
+   de la section, en petit au-dessus du titre (structure 1 « Titre courant », voir la fin du fichier). ---------- */
 html.d3 .d3-label{grid-column:2/8;grid-row:1;display:flex;flex-wrap:nowrap;align-items:baseline;margin:0;min-width:0}
 html.d3 .d3-nom{flex:none;margin:0;white-space:nowrap;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:14px;line-height:1.2;letter-spacing:0;color:var(--d3-enc)}
 
@@ -1965,119 +1969,85 @@ html.d3 .d3-pied footer .legal{grid-column:1/7;grid-row:2;margin-top:40px;max-wi
 }
 
 /* =====================================================================
-   27/10 — TROIS STRUCTURES SANS NUMEROS, sur la meme page : ?s=1, ?s=2, ?s=3 (classe d3-s1 / d3-s2 / d3-s3 sur <html>, d3.js).
-   Sections : #statement La maison, #fp-3 Pour qui, #fp-2 La vie au 52, #fp-invest Le loyer, #fp-5 Le quartier,
-   #s-candidater Rejoindre, #fp-4 FAQ. Le carrousel de 03 et le formulaire de 06 ne sont pas touches.
-   ===================================================================== */
-
-/* ---------- elements propres a une structure : caches par defaut ---------- */
-html.d3 .d3-ouv{display:none}
-html.d3 .d3-toc{display:none}
-
-/* ---------- STRUCTURE 1 « Titre courant » ----------
+   27/10 — STRUCTURE 1 « TITRE COURANT » (choisie par Sebastien le 27/10 ; les structures 2 « Ouvertures en photo » et
+   3 « Cartouche d'architecte » sont retirees). Sections : #statement La maison, #fp-3 Pour qui, #fp-2 La vie au 52,
+   #fp-invest Le loyer, #fp-5 Le quartier, #s-candidater Rejoindre, #fp-4 FAQ. Le carrousel de 03 et le formulaire de 06
+   ne sont pas touches.
    Le nom de la section en cours remplace « Court-Saint-Etienne » dans la barre (fondu, d3.js) ; « Court-Saint-Etienne »
-   revient sur les deux videos et le pied de page. Dans la page : un vrai blanc entre les sections et, au debut de chacune,
-   le nom en petit au-dessus du titre (Uncut Sans 500 14 px, encre). */
+   revient sur les deux videos et sur le pied de page. Dans la page : un vrai blanc entre les sections et, au debut de
+   chacune, le nom en petit au-dessus du titre (Uncut Sans 500 14 px, encre).
+   ===================================================================== */
 html.d3 #nav .brand{position:relative}
 html.d3 #nav .brand .d3-cur{position:absolute;left:0;bottom:0;margin:0;white-space:nowrap;transition:opacity .22s ease,color .2s ease}
 html.d3 #nav .brand .d3-cur.d3-cur-off{opacity:0}
-html.d3-s1 #nav .brand .muted:not(.d3-cur){transition:opacity .22s ease,color .2s ease}
-html.d3-s1.d3-cur-on #nav .brand .muted:not(.d3-cur){opacity:0}
+html.d3 #nav .brand .muted:not(.d3-cur){transition:opacity .22s ease,color .2s ease}
+html.d3.d3-cur-on #nav .brand .muted:not(.d3-cur){opacity:0}
 @media(prefers-reduced-motion:reduce){html.d3 #nav .brand .muted{transition:none !important}}
 
-html.d3-s1 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{padding-top:112px !important;scroll-margin-top:calc(var(--d3-bar) - 48px) !important}
-html.d3:is(.d3-s1,.d3-s2) :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:14px !important}
+html.d3 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{padding-top:112px !important;scroll-margin-top:calc(var(--d3-bar) - 48px) !important}
+html.d3 :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:14px !important}
 
-/* ---------- STRUCTURE 2 « Ouvertures en photo » ----------
-   De 02 a 07, une bande photo bord a bord ouvre la section, le nom pose dessus en grand (Syne 500, blanc, leger voile en bas) ;
-   01 garde son ouverture (la video la precede) et le nom en petit au-dessus du titre. 07 : bande fine.
-   La bande occupe la rangee 1 de la grille (celle de l'etiquette, cachee ici) sur toute la largeur (pistes de marge comprises). */
-html.d3-s2 .d3-ouv{display:block;position:relative;grid-column:1/-1;grid-row:1;margin:0;height:45vh;height:45svh;min-height:250px;overflow:hidden;background:#D9D6D1}
-html.d3-s2 .d3-ouv.d3-ouv-07{height:22vh;height:22svh;min-height:150px}
-html.d3-s2 .d3-ouv picture{display:block;width:100%;height:100%}
-html.d3-s2 .d3-ouv img{display:block;width:100%;height:100%;object-fit:cover;border-radius:0;transform-origin:50% 60%}
-html.d3-s2 .d3-ouv::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to top,rgba(20,19,18,.44) 0%,rgba(20,19,18,.16) 40%,rgba(20,19,18,0) 66%)}
-html.d3-s2 .d3-ouv-nom{position:absolute;z-index:1;left:6vw;right:6vw;bottom:18px;color:#fff;font-family:'Syne',sans-serif;font-weight:500;font-size:15vw;line-height:1;letter-spacing:-.03em;white-space:nowrap;text-shadow:0 1px 28px rgba(0,0,0,.16)}
-html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{padding-top:0 !important;scroll-margin-top:var(--d3-bar) !important}
-html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4) .d3-label{display:none}
-html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:44px !important}
-/* mouvement : la photo se pose (leger recul de 7 %) et le nom apparait en fondu, une fois ; rien en « Reduire les animations » */
-html.d3-anim.d3-s2 .d3-ouv img{transform:scale(1.07);transition:transform 1.8s cubic-bezier(.2,.65,.25,1)}
-html.d3-anim.d3-s2 .d3-ouv.d3-vu img{transform:none}
-html.d3-anim.d3-s2 .d3-ouv .d3-ouv-nom{opacity:0;transition:opacity 1s cubic-bezier(.4,0,.2,1) .25s}
-html.d3-anim.d3-s2 .d3-ouv.d3-vu .d3-ouv-nom{opacity:1}
+/* ---------- ordinateur : blanc plus grand ; 05 (photo collee sur toute la hauteur) garde son haut a 0, l'espace passe
+   dans sa colonne de texte ---------- */
+@media(min-width:861px){
+  html.d3 :is(#fp-3,#fp-2,#fp-invest,#s-candidater,#fp-4).d3-planche{padding-top:176px !important;scroll-margin-top:calc(var(--d3-bar) - 96px) !important}
+  html.d3 #fp-5.d3-planche{padding-top:0 !important;scroll-margin-top:var(--d3-bar) !important}
+  html.d3 #fp-5 .d3-label{padding-top:176px}
+  html.d3 :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:20px !important}
+  html.d3 .d3-nom{font-size:14px}
+}
 
-/* ---------- STRUCTURE 3 « Cartouche d'architecte » ----------
-   A la place du numero, un cartouche ouvert : un filet sur toute la largeur de la grille, et dessous, sur une ligne,
-   « Maison 52 » (gris), le nom de la section (encre) cale sur la 3e colonne, « Court-Saint-Etienne » (gris) a droite ; puis le titre.
-   Ordinateur >= 1100 px : sommaire fixe dans la marge gauche (d3.js). */
-html.d3-s3 :is(#fp-3,#fp-2).d3-planche{padding-top:72px !important}
-html.d3-s3 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche{scroll-margin-top:calc(var(--d3-bar) - 32px) !important}
-html.d3-s3 .d3-label{border-top:1px solid var(--d3-enc);padding-top:9px;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:12px;line-height:1.2;letter-spacing:0;color:var(--d3-gris)}
-html.d3-s3 .d3-label::before{content:"Maison 52";flex:none;white-space:nowrap;width:calc((100% - 50px) / 6 * 2 + 20px)}
-html.d3-s3 .d3-nom{font-size:12px;line-height:1.2;color:var(--d3-enc)}
-html.d3-s3 .d3-label::after{content:"Court-Saint-\00C9tienne";flex:none;margin-left:auto;padding-left:12px;white-space:nowrap}
-
-/* ---------- barre de bascule « Structure 1 2 3 » (au-dessus de la barre des propositions, meme style) ---------- */
+/* =====================================================================
+   27/10 — TITRE « MAISON 52 » SUR LA VIDEO D'OUVERTURE
+   Retour de Sebastien : « il a pas des bordures ou la mauvaise police ? ». Les deux etaient vrais :
+   1. Les « bordures » : l'ombre du titre (0 1px 3px a 55 % + 0 4px 34px a 55 %, page en ligne) est serree et sombre ; sur la
+      facade blanche elle dessinait un liseré gris autour de chaque lettre. Elle devient UNE ombre douce et large (30 px a 28 %),
+      qui ne dessine plus de contour ; pour que le blanc reste lisible sur la facade, un voile radial discret assombrit la video
+      autour du titre (20 % de noir au centre, 11 % a mi-rayon, rien au bord ; ellipse de 62 % x 20 % de l'ecran).
+      Mesure (contraste blanc / pixels a 1-6 px autour des lettres, tels qu'affiches, video de 1,0 a 5,1 s par 0,25 s, a 390 et
+      1440 ; outil : dispo/d3/titre/contraste.mjs) : sur la facade claire, le titre et la phrase dessous sont plus lisibles
+      qu'avec l'ancienne ombre (pire instant, titre : 2,25 -> 2,53 a 390, 2,89 -> 3,20 a 1440 ; phrase : 1,53 -> 1,81 et
+      1,40 -> 1,64). Le « 52 » orange reste comme avant (pire instant ~1,0-1,2 : orange sur la haie, aucun reglage d'ombre n'y change rien).
+      Voile plus fort essaye : 26 % et 34 % au centre gagnent encore en lisibilite, mais grisent la facade.
+      La phrase sous le titre herite de la meme ombre ; la copie d'ombre du Relais (#trait5) aussi (edits_d3.py).
+   2. La « mauvaise police » : le « 52 » est en Syne 500 comme « Maison », mais Syne dessine par defaut des chiffres
+      elzeviriens (le 5 descend sous la ligne, le 2 n'a que la hauteur des minuscules) : le 52 semblait plus petit, plus bas,
+      d'une autre police. Deux options (test : ?c=a / ?c=b ; page propre : construire-dispo.py --c a|b) :
+        a) Syne 500 aux chiffres alignes (lnum, deja dans le fichier de police) : la meme police que « Maison », chiffres de la
+           hauteur des capitales (650/1000 = M), meme ligne de pied, meme approche ;
+        b) Uncut Sans 500 (la police des textes, deja chargee) : chiffres a la hauteur des capitales de « Maison »
+           (taille x 650/700), meme ligne de pied, approche -0,012 em : l'ecart entre le 5 et le 2 = l'ecart moyen des lettres
+           de « Maison » (mesure a l'encre : 4,9 px a 390, 11,8 px a 1440).
+      Le « 52 » geant de l'ouverture (#intro .r5c, copies #relais5 / #trait5) prend la meme police, sinon il ne retombe pas
+      exactement sur le titre.
+   ===================================================================== */
+html.d3 #hero-ui{text-shadow:0 2px 30px rgba(0,0,0,.28)}
+html.d3 #hero .film::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 62% 20% at 50% 50%,rgba(0,0,0,.2),rgba(0,0,0,.11) 50%,rgba(0,0,0,0) 100%)}
+/*C:a*/
+html.d3-ca #hero-ui h1 em,html.d3-ca :is(#intro,#relais5,#trait5) .r5c{font-variant-numeric:lining-nums}
+/*/C:a*/
+/*C:b*/
+html.d3-cb #hero-ui h1 em{font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:.928571em;letter-spacing:-.012em}
+html.d3-cb :is(#intro,#relais5,#trait5) .r5c{font-family:'Uncut Sans',sans-serif;font-size:.928571em}
+/*/C:b*/
+/*TEST*/
+/* ---------- barre de bascule « 52 : A B » (page de test seulement ; au-dessus de la barre des propositions, meme style) ---------- */
 .d3-bascule{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(56px + env(safe-area-inset-bottom,0px));z-index:500;display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(20,20,20,.9);font:500 12px/1 -apple-system,Helvetica,Arial,sans-serif;white-space:nowrap}
 .d3-bascule span{color:rgba(255,255,255,.62);padding:0 6px 0 11px}
 .d3-bascule a{color:#fff;padding:10px 13px;border-radius:999px;text-decoration:none}
 .d3-bascule a.on{background:#E26A3E}
-
-/* ---------- ordinateur ---------- */
-@media(min-width:861px){
-  /* 1 : blanc plus grand ; 05 (photo collee sur toute la hauteur) garde son haut a 0, l'espace passe dans sa colonne de texte */
-  html.d3-s1 :is(#fp-3,#fp-2,#fp-invest,#s-candidater,#fp-4).d3-planche{padding-top:176px !important;scroll-margin-top:calc(var(--d3-bar) - 96px) !important}
-  html.d3-s1 #fp-5.d3-planche{padding-top:0 !important;scroll-margin-top:var(--d3-bar) !important}
-  html.d3-s1 #fp-5 .d3-label{padding-top:176px}
-  html.d3:is(.d3-s1,.d3-s2) :is(#statement,#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:20px !important}
-  html.d3:is(.d3-s1,.d3-s2) .d3-nom{font-size:14px}
-
-  /* 2 : bande de 60 vh ; titres (et formulaire, questions) a 96 px sous la bande ; la photo collee de 05 commence sous la bande */
-  html.d3-s2 .d3-ouv{height:60vh;min-height:380px;max-height:780px}
-  html.d3-s2 .d3-ouv.d3-ouv-07{height:30vh;min-height:200px;max-height:360px}
-  html.d3-s2 .d3-ouv-nom{font-size:8.5vw;bottom:36px}
-  html.d3-s2 :is(#fp-3,#fp-2,#fp-invest,#fp-5,#s-candidater,#fp-4).d3-planche .d3-t{margin-top:96px !important}
-  html.d3-s2 #s-candidater .d3-form{margin-top:96px}
-  html.d3-s2 #fp-4 .faq{margin-top:96px}
-  html.d3-s2 #fp-5 .d3-wz{grid-row:2/-1}
-
-  /* 3 : cartouche en 13 px, le nom cale sur la 4e colonne (comme le 2e profil de 02) ; 05 : dans sa colonne de texte */
-  html.d3-s3 :is(#fp-3,#fp-2).d3-planche{padding-top:112px !important}
-  html.d3-s3 :is(#fp-3,#fp-2,#fp-invest,#s-candidater,#fp-4).d3-planche{scroll-margin-top:calc(var(--d3-bar) - 56px) !important}
-  html.d3-s3 #fp-5.d3-planche{scroll-margin-top:var(--d3-bar) !important}
-  html.d3-s3 .d3-label{padding-top:11px;font-size:13px}
-  html.d3-s3 .d3-nom{font-size:13px}
-  html.d3-s3 .d3-label::before{width:calc((100% - 264px) / 12 * 3 + 72px)}
-  html.d3-s3 #fp-5 .d3-label{padding-top:11px;margin-top:112px}
-  html.d3-s3 #fp-5 .d3-label::before{width:calc((100% - 72px) / 4 + 24px)}
-}
-@media(min-width:861px) and (max-width:1199px){
-  html.d3-s3 #fp-5 .d3-label::before{width:calc((100% - 120px) / 6 * 2 + 48px)}
-}
-/* sommaire de la structure 3 : en colonne dans la marge gauche, ecrit a la verticale (la marge fait 6vw, 66 px a 1100 :
-   trop etroite pour « La vie au 52 » couche), centre sur 3vw ; visible seulement entre les deux videos (d3-toc-on) ;
-   le nom en cours a l'encre, les autres en gris ; en blanc quand il passe sur une photo (01 table, 03 cartes, 05 parc). */
-@media(min-width:1100px){
-  html.d3-s3 .d3-toc{display:flex;position:fixed;z-index:30;left:3vw;top:50%;transform:translate(-50%,-50%);writing-mode:vertical-rl;gap:24px;margin:0;padding:0;
-    width:max-content;height:max-content;pointer-events:none;  /* (sans max-content, la boite verticale prenait toute la largeur de l'ecran et captait les clics) */
-    opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
-  html.d3-s3 .d3-toc.d3-toc-on{opacity:1;visibility:visible;transition:opacity .4s ease}
-  html.d3-s3 .d3-toc:not(.d3-toc-on) a{pointer-events:none}
-  html.d3-s3 .d3-toc a{display:block;pointer-events:auto;padding:4px 2px;font-family:'Uncut Sans',sans-serif;font-weight:500;font-size:12px;line-height:1;letter-spacing:0;color:#9C9A96;text-decoration:none;white-space:nowrap;transition:color .25s ease}
-  html.d3-s3 .d3-toc a:hover,html.d3-s3 .d3-toc a.on{color:var(--d3-enc)}
-  html.d3-s3 .d3-toc a.clair{color:rgba(255,255,255,.7);text-shadow:0 1px 10px rgba(0,0,0,.3)}
-  html.d3-s3 .d3-toc a.clair.on,html.d3-s3 .d3-toc a.clair:hover{color:#fff}
-}
-@media(prefers-reduced-motion:reduce){html.d3-s3 .d3-toc,html.d3-s3 .d3-toc a{transition:none !important}}
+/*/TEST*/
 </style>
 <script>
 /* Direction 3 « La planche » : titres ajustes a la largeur de leur bloc, balayage des photos, fondu du texte. */
 (function(){
 var R=document.documentElement;R.classList.add('d3');
-/* 27/10 : trois structures sans numeros, sur la meme page : ?s=1 « Titre courant », ?s=2 « Ouvertures en photo »,
-   ?s=3 « Cartouche d'architecte » (defaut 1). Classe posee sur <html> avant le premier rendu (ce script est dans <head>). */
-var S=(/[?&]s=([123])(?:&|$)/.exec(location.search)||[0,'1'])[1];R.classList.add('d3-s'+S);
+/* 27/10 : structure 1 « Titre courant » (choisie par Sebastien ; les structures 2 et 3 sont retirees).
+   Police du « 52 » du titre du hero (d3.css) : option a (Syne aux chiffres alignes) ou b (Uncut Sans 500).
+   Page de test : ?c=a / ?c=b (defaut a) ; page propre : fixee par construire-dispo.py --c. Classe posee sur <html> avant le
+   premier rendu (ce script est dans <head>) : le relais de l'ouverture mesure le « 52 » deja dans sa police. */
+var C=/*C*/(/[?&]c=([ab])(?:&|$)/.exec(location.search)||[0,'a'])[1]/*/C*/;R.classList.add('d3-c'+C);
 var mq=matchMedia('(prefers-reduced-motion: reduce)');
 /* « Reduire les animations » : aucun etat cache, tout est visible d'emblee */
 if(!mq.matches)R.classList.add('d3-anim');
@@ -2137,8 +2107,8 @@ pret(function(){
 
   structure();
 
-  /* apparitions : une seule fois, quand l'element entre dans l'ecran (bandes d'ouverture de la structure 2 comprises) */
-  var els=[].slice.call(document.querySelectorAll('.d3-planche .d3-tx,.d3-planche .d3-ph,.d3-planche .d3-ouv'));
+  /* apparitions : une seule fois, quand l'element entre dans l'ecran */
+  var els=[].slice.call(document.querySelectorAll('.d3-planche .d3-tx,.d3-planche .d3-ph'));
   if(mq.matches||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('d3-vu')});return}
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('d3-vu');io.unobserve(e.target)}})},
     {rootMargin:'0px 0px -8% 0px',threshold:0});
@@ -2148,59 +2118,56 @@ pret(function(){
 });
 
 /* =====================================================================
-   27/10 : les trois structures (section en cours, nom dans la barre, sommaire, barre de bascule)
+   27/10 : structure 1 « Titre courant » : le nom de la section en cours dans la barre, sous « Maison 52 »
    ===================================================================== */
 function structure(){
   var SEC=[['statement','La maison'],['fp-3','Pour qui'],['fp-2','La vie au 52'],['fp-invest','Le loyer'],['fp-5','Le quartier'],['s-candidater','Rejoindre'],['fp-4','FAQ']]
     .map(function(x){return {id:x[0],nom:x[1],el:document.getElementById(x[0])}}).filter(function(x){return x.el});
   var reduit=matchMedia('(prefers-reduced-motion: reduce)');
-  var ecoute=[];function annonce(id){ecoute.forEach(function(f){f(id)})}
+  var br=document.querySelector('#nav .brand');if(!br||!SEC.length||!('IntersectionObserver' in window))return;
+  function nomDe(id){for(var i=0;i<SEC.length;i++)if(SEC[i].id===id)return SEC[i].nom;return null}
+
+  /* le nom de la section en cours remplace « Court-Saint-Etienne » dans la barre, en fondu */
+  var cur=document.createElement('span');cur.className='caps muted d3-cur';cur.setAttribute('aria-hidden','true');br.appendChild(cur);
+  var att=0,affiche=null;
+  function montre(id){var n=nomDe(id);clearTimeout(att);
+    R.classList.toggle('d3-cur-on',!!n);
+    if(!n){cur.classList.add('d3-cur-off');affiche=null;return}
+    if(affiche===null||reduit.matches){cur.textContent=n;affiche=n;cur.classList.remove('d3-cur-off');return}
+    if(n===affiche)return;
+    cur.classList.add('d3-cur-off');affiche=n;
+    att=setTimeout(function(){cur.textContent=n;cur.classList.remove('d3-cur-off')},180)}
+  cur.classList.add('d3-cur-off');
 
   /* section en cours : celle qui coupe une ligne fine a 40 % de la hauteur de l'ecran ; aucune (video d'ouverture,
-     video de fin, pied de page) -> null */
-  if('IntersectionObserver' in window&&SEC.length){var dans={},cour=undefined;
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){dans[e.target.id]=e.isIntersecting});
-      var c=null;SEC.forEach(function(x){if(dans[x.id])c=x.id});if(c!==cour){cour=c;annonce(c)}},{rootMargin:'-40% 0px -59% 0px',threshold:0});
-    SEC.forEach(function(x){io.observe(x.el)})}
-  function nomDe(id){for(var i=0;i<SEC.length;i++)if(SEC[i].id===id)return SEC[i].nom;return null}
-  function va(id){var e=document.getElementById(id);if(e)e.scrollIntoView({behavior:reduit.matches?'auto':'smooth',block:'start'})}
-
-  /* --- structure 1 : le nom de la section en cours remplace « Court-Saint-Etienne » dans la barre, en fondu --- */
-  if(S==='1'){var br=document.querySelector('#nav .brand');
-    if(br){var cur=document.createElement('span');cur.className='caps muted d3-cur';cur.setAttribute('aria-hidden','true');br.appendChild(cur);
-      var att=0,affiche=null;
-      ecoute.push(function(id){var n=nomDe(id);clearTimeout(att);
-        R.classList.toggle('d3-cur-on',!!n);
-        if(!n){cur.classList.add('d3-cur-off');affiche=null;return}
-        if(affiche===null||reduit.matches){cur.textContent=n;affiche=n;cur.classList.remove('d3-cur-off');return}
-        if(n===affiche)return;
-        cur.classList.add('d3-cur-off');affiche=n;
-        att=setTimeout(function(){cur.textContent=n;cur.classList.remove('d3-cur-off')},180)});
-      cur.classList.add('d3-cur-off')}}
-
-  /* --- structure 3 : sommaire dans la marge gauche (ordinateur >= 1100 px, regles dans d3.css) --- */
-  if(S==='3'){var toc=document.createElement('nav');toc.className='d3-toc';toc.setAttribute('aria-label','Sommaire');
-    var liens=SEC.map(function(x){var a=document.createElement('a');a.href='#'+x.id;a.textContent=x.nom;a.dataset.id=x.id;
-      a.addEventListener('click',function(ev){ev.preventDefault();va(x.id)});toc.appendChild(a);return a});
-    document.body.appendChild(toc);
-    ecoute.push(function(id){toc.classList.toggle('d3-toc-on',!!id);liens.forEach(function(a){a.classList.toggle('on',a.dataset.id===id)})});
-    /* un nom pose sur une photo (01 table, 03 cartes, 05 parc) passe en blanc */
-    var rq=0;function clair(){rq=0;if(!toc.classList.contains('d3-toc-on')||innerWidth<1100)return;
-      liens.forEach(function(a){var r=a.getBoundingClientRect(),x=r.left+r.width/2,photo=false;
-        [.25,.5,.75].forEach(function(f){var pile=document.elementsFromPoint(x,r.top+r.height*f);
-          for(var i=0;i<pile.length;i++){var e=pile[i];if(toc.contains(e))continue;if(/^(IMG|VIDEO|PICTURE)$/.test(e.tagName))photo=true;break}});
-        a.classList.toggle('clair',photo)})}
-    function demandeClair(){if(!rq)rq=requestAnimationFrame(clair)}
-    addEventListener('scroll',demandeClair,{passive:true});addEventListener('resize',demandeClair);ecoute.push(function(){setTimeout(demandeClair,60)})}
-
-  /* --- barre de bascule « Structure 1 2 3 », au-dessus de la barre des propositions --- */
+     video de fin) -> « Court-Saint-Etienne ». Pied de page (corrige le 27/10 : la barre restait sur « FAQ ») : le pied
+     (bandeau + coordonnees, 480 a 530 px) n'atteint jamais la ligne des 40 % : tout en bas de la page, la ligne tombe
+     encore dans la FAQ. Le pied compte donc des qu'il occupe la moitie basse de l'ecran (son haut au-dessus du milieu)
+     ou qu'il est entierement visible (bas de page) ; la barre revient alors a « Court-Saint-Etienne ». */
+  var dans={},cour=null,pied=false,dernier;
+  function publie(){var id=pied?null:cour;if(id!==dernier){dernier=id;montre(id)}}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){dans[e.target.id]=e.isIntersecting});
+    var c=null;SEC.forEach(function(x){if(dans[x.id])c=x.id});cour=c;publie()},{rootMargin:'-40% 0px -59% 0px',threshold:0});
+  SEC.forEach(function(x){io.observe(x.el)});
+  var P=document.querySelector('.d3-pied');
+  if(P){var rq=0;
+    var surPied=function(){rq=0;var r=P.getBoundingClientRect(),h=innerHeight,v=r.top<h*.5||(r.top<h&&r.bottom<=h+1);if(v!==pied){pied=v;publie()}};
+    var demandePied=function(){if(!rq)rq=requestAnimationFrame(surPied)};
+    addEventListener('scroll',demandePied,{passive:true});addEventListener('resize',demandePied);surPied()}
+  publie();
+}
+/*TEST*/
+/* barre de bascule « 52 : A B » (page de test seulement), au-dessus de la barre des propositions */
+function bascule52(){
   var bb=document.createElement('div');bb.className='d3-bascule';
-  var lab=document.createElement('span');lab.textContent='Structure';bb.appendChild(lab);
-  ['1','2','3'].forEach(function(n){var a=document.createElement('a');a.textContent=n;if(n===S)a.className='on';
-    var lien=function(){a.href='dispo-3.html?s='+n+'&v='+(+new Date()%100000)+location.hash};lien();
+  var lab=document.createElement('span');lab.textContent='52 :';bb.appendChild(lab);
+  ['a','b'].forEach(function(n){var a=document.createElement('a');a.textContent=n.toUpperCase();if(n===C)a.className='on';
+    var lien=function(){a.href='dispo-3.html?c='+n+'&v='+(+new Date()%100000)+location.hash};lien();
     a.addEventListener('click',lien);addEventListener('hashchange',lien);bb.appendChild(a)});
   document.body.appendChild(bb);
 }
+pret(bascule52);
+/*/TEST*/
 })();
 </script>
 <script>
@@ -2257,7 +2224,6 @@ document.body.appendChild(b);});
 </div>
 
 <section class="d3-planche d3-s2" id="fp-3">
-  <div class="d3-ouv d3-ouv-02"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-02-d.jpg"><img src="dispo-img/d3-ouv-02-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Pour qui</span></div>
   <div class="d3-label d3-tx"><span class="d3-nom">Pour qui</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Tu t'y</span> <span class="d3-l">retrouves ?</span></h3>
   <div class="d3-pers">
@@ -2267,7 +2233,6 @@ document.body.appendChild(b);});
 </section>
 
 <section class="d3-planche d3-s3" id="fp-2">
-  <div class="d3-ouv d3-ouv-03"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-03-d.jpg"><img src="dispo-img/d3-ouv-03-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">La vie au 52</span></div>
   <div class="d3-label d3-tx"><span class="d3-nom">La vie au 52</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-lg"><span class="d3-l">Une maison</span> <span class="d3-l">pensée pour</span></span> <span class="d3-lg"><span class="d3-l">les journées</span> <span class="d3-l">de travail.</span></span></h3>
   <div class="d3-cf">
@@ -2312,7 +2277,6 @@ document.body.appendChild(b);});
 
 
 <section class="d3-planche d3-s4" id="fp-invest">
-  <div class="d3-ouv d3-ouv-04"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-04-d.jpg"><img src="dispo-img/d3-ouv-04-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Le loyer</span></div>
   <div class="d3-label d3-tx"><span class="d3-nom">Le loyer</span></div>
   <h3 class="d3-t d3-t4 d3-tx">Ton loyer n'est plus une charge, c'est un <em>investissement</em> dans ton projet et dans toi.</h3>
   <div class="d3-tab">
@@ -2327,7 +2291,6 @@ document.body.appendChild(b);});
 
 <div class="snapwrap">
 <section class="d3-planche d3-s5" id="fp-5">
-  <div class="d3-ouv d3-ouv-05"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-05-d.jpg"><img src="dispo-img/d3-ouv-05-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Le quartier</span></div>
   <figure class="d3-ph d3-wz d3-dr"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-wisterzee-d.jpg"><img src="dispo-img/d3-wisterzee-m.jpg" alt="Le parc de Wisterzée à Court-Saint-Étienne : un étang et de grands arbres" width="572" height="1680" decoding="async" loading="lazy"></picture></figure>
   <div class="d3-label d3-tx"><span class="d3-nom">Le quartier</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Proche de</span> <span class="d3-l"><em>tout.</em></span></h3>
@@ -2359,7 +2322,6 @@ document.body.appendChild(b);});
 <div id="after">
   <section id="s-candidater" class="d3-planche d3-s6">
     <span id="rejoindre" class="ancre-rejoindre" aria-hidden="true"></span>
-    <div class="d3-ouv d3-ouv-06"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-06-d.jpg"><img src="dispo-img/d3-ouv-06-m.jpg" alt="" width="1080" height="900" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">Rejoindre</span></div>
     <div class="d3-label d3-tx"><span class="d3-nom">Rejoindre</span></div>
     <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Dis-nous</span> <span class="d3-l">qui tu es.</span></h3>
     <div class="d3-intro d3-tx"><div class="intro">
@@ -2383,7 +2345,6 @@ document.body.appendChild(b);});
   </section>
 
 <section class="d3-planche d3-s7" id="fp-4">
-  <div class="d3-ouv d3-ouv-07"><picture><source media="(min-width:861px)" srcset="dispo-img/d3-ouv-07-d.jpg"><img src="dispo-img/d3-ouv-07-m.jpg" alt="" width="1080" height="476" loading="lazy" decoding="async"></picture><span class="d3-ouv-nom">FAQ</span></div>
   <div class="d3-label d3-tx"><span class="d3-nom">FAQ</span></div>
   <h3 class="d3-t d3-tx" data-fit><span class="d3-l">Questions.</span></h3>
   <div class="faq">
